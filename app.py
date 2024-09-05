@@ -61,15 +61,14 @@ if st.button("Predict Stress Level"):
     # Display the prediction
     st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction[0]})")
 
-    # Create a gauge chart with five sections and an arrow indicator
+    # Create a gauge chart with proper colors and an arrow indicator
     fig = go.Figure(go.Indicator(
-        mode="gauge+number+delta",
+        mode="gauge+number",
         value=prediction[0],
-        delta={'reference': 0},
         title={'text': "Stress Level"},
         gauge={
             'axis': {'range': [0, 4], 'tickvals': [0, 1, 2, 3, 4], 'ticktext': ['No', 'Low', 'Moderate', 'High', 'Max']},
-            'bar': {'color': "white"},  # No bar in the center
+            'bar': {'color': "white"},  # No center bar
             'steps': [
                 {'range': [0, 1], 'color': "lime"},      # No Stress
                 {'range': [1, 2], 'color': "green"},     # Low Stress
@@ -78,7 +77,7 @@ if st.button("Predict Stress Level"):
                 {'range': [4, 5], 'color': "red"}        # Max Stress
             ],
             'threshold': {
-                'line': {'color': "black", 'width': 4},
+                'line': {'color': "black", 'width': 6},
                 'thickness': 0.75,
                 'value': prediction[0]
             }
@@ -87,3 +86,4 @@ if st.button("Predict Stress Level"):
 
     # Render the gauge chart in Streamlit
     st.plotly_chart(fig)
+
