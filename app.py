@@ -46,9 +46,9 @@ user_input = get_user_input()
 # Predict button
 if st.button("Predict Stress Level"):
     # Predict the stress level
-    prediction = model.predict(user_input)
+    prediction = model.predict(user_input)[0]
     
-    # Map the prediction to stress level description
+    # Define stress levels and corresponding descriptions
     stress_descriptions = {
         0: "No Stress",
         1: "Low Stress",
@@ -56,34 +56,54 @@ if st.button("Predict Stress Level"):
         3: "High Stress",
         4: "Max Stress"
     }
-    stress_level = stress_descriptions.get(prediction[0], "Unknown")
-
-    # Display the prediction
-    st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction[0]})")
-
-    # Create a gauge chart with proper colors and an arrow indicator
-    fig = go.Figure(go.Indicator(
-        mode="gauge+number",
-        value=prediction[0],
-        title={'text': "Stress Level"},
-        gauge={
-            'axis': {'range': [0, 4], 'tickvals': [0, 1, 2, 3, 4], 'ticktext': ['No', 'Low', 'Moderate', 'High', 'Max']},
-            'bar': {'color': "white"},  # No center bar
-            'steps': [
-                {'range': [0, 1], 'color': "lime"},      # No Stress
-                {'range': [1, 2], 'color': "green"},     # Low Stress
-                {'range': [2, 3], 'color': "yellow"},    # Moderate Stress
-                {'range': [3, 4], 'color': "orange"},    # High Stress
-                {'range': [4, 5], 'color': "red"}        # Max Stress
-            ],
-            'threshold': {
-                'line': {'color': "black", 'width': 6},
-                'thickness': 0.75,
-                'value': prediction[0]
-            }
-        }
+    stress_level = stress_descriptions.get(prediction, "Unknown")
+    
+    # Define the bar segments
+    segments = ["No", "Low", "Moderate", "High", "Max"]
+    colors = ["lime", "green", "yellow", "orange", "red"]
+    
+    # Create a horizontal bar with sections
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=[1, 1, 1, 1, 1],
+        y=["Stress Level"],
+        marker_color=colors,
+        orientation="h",
+        showlegend=False,
+        hoverinfo="none"
     ))
-
-    # Render the gauge chart in Streamlit
+    
+    # Add the chat bubble using annotations
+    fig.add_annotation(
+        x=prediction,  # The position of the chat bubble
+        y=1.1,  # Slightly above the bar
+        text=f"<b>{stress_level}</b>",
+        showarrow=False,
+        font=dict(size=14, color="black"),
+        align="center",
+        bgcolor="white",
+        bordercolor=colors[prediction],
+        borderwidth=2,
+        borderpad=4
+    )
+    
+    # Update layout for a clean look
+    fig.update_layout(
+        xaxis=dict(
+            tickvals=[0, 1, 2, 3, 4],
+            ticktext=segments,
+            showgrid=False,
+            zeroline=False
+        ),
+        yaxis=dict(showticklabels=False, showgrid=False),
+        plot_bgcolor="white",
+        margin=dict(l=20, r=20, t=20, b=20),
+        height=200,
+        width=600
+    )
+    
+    # Display the result as a bar
     st.plotly_chart(fig)
 
+    # Show predicted stress level
+    st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction})")
