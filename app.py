@@ -58,11 +58,19 @@ if st.button("Predict Stress Level"):
     }
     stress_level = stress_descriptions.get(prediction, "Unknown")
     
-    # Define the bar segments
-    segments = ["No", "Low", "Moderate", "High", "Max"]
-    colors = ["lime", "green", "yellow", "orange", "red"]
+    # Define colors dynamically based on the predicted stress level
+    colors = ['lime', 'lime', 'lime', 'lime', 'lime']  # Default to lime (No Stress)
     
-    # Create a horizontal bar with sections
+    if prediction == 1:  # Low Stress
+        colors = ['lime', 'green', 'lime', 'lime', 'lime']
+    elif prediction == 2:  # Moderate Stress
+        colors = ['lime', 'green', 'yellow', 'lime', 'lime']
+    elif prediction == 3:  # High Stress
+        colors = ['lime', 'green', 'yellow', 'orange', 'lime']
+    elif prediction == 4:  # Max Stress
+        colors = ['lime', 'green', 'yellow', 'orange', 'red']
+
+    # Create a horizontal bar with dynamic color
     fig = go.Figure()
     fig.add_trace(go.Bar(
         x=[1, 1, 1, 1, 1],
@@ -91,7 +99,7 @@ if st.button("Predict Stress Level"):
     fig.update_layout(
         xaxis=dict(
             tickvals=[0, 1, 2, 3, 4],
-            ticktext=segments,
+            ticktext=["No", "Low", "Moderate", "High", "Max"],
             showgrid=False,
             zeroline=False
         ),
