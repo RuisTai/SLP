@@ -62,34 +62,7 @@ with st.container():
         # Display the predicted stress level below the input
         st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction})")
 
-# Create a container for the visualization and white circle chart
-with st.container():
-    # Create a two-column layout within the container
-    col1, col2, col3 = st.columns([1, 0.5, 2])  # Adjust ratios as needed
 
-    # Column 1: White Circle Chart
-    with col1:
-        # Create a white circle chart (pie chart with a single white segment)
-        fig_circle = go.Figure()
-
-        fig_circle.add_trace(go.Pie(
-            labels=[''],
-            values=[1],
-            hole=0.5,
-            marker_colors=['white'],
-            showlegend=False,
-            textinfo='none'
-        ))
-
-        fig_circle.update_layout(
-            margin=dict(l=0, r=0, t=0, b=0),
-            height=200,
-            width=200,
-            plot_bgcolor='white',
-            paper_bgcolor='white'
-        )
-
-        st.plotly_chart(fig_circle)
 
     # Column 3: Visualization section
     with col3:
@@ -127,7 +100,7 @@ with st.container():
             plot_bgcolor="white",
             margin=dict(l=30, r=30, t=30, b=30),
             height=200,
-            width=600
+            width=800
         )
         
         # Add the chat bubble above the correct section
