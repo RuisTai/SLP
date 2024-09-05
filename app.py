@@ -58,12 +58,11 @@ if st.button("Predict Stress Level"):
     }
     stress_level = stress_descriptions.get(prediction, "Unknown")
     
-    # Define static color for all sections
+    # Define the fixed color for all five sections
     colors = ['lime', 'green', 'yellow', 'orange', 'red']
     
-    # Create a horizontal bar with fixed sections and colors
-    fig = go.Figure()
-    fig.add_trace(go.Bar(
+    # Create a horizontal bar that always shows the five color sections
+    fig = go.Figure(go.Bar(
         x=[1, 1, 1, 1, 1],  # Equal width for all sections
         y=["Stress Level"],
         marker_color=colors,  # Apply the colors for each segment
@@ -72,16 +71,16 @@ if st.button("Predict Stress Level"):
         hoverinfo="none"
     ))
     
-    # Add the chat bubble dynamically based on the predicted level
+    # Add the chat bubble above the correct section based on the predicted stress level
     fig.add_annotation(
-        x=prediction,  # The position of the chat bubble
+        x=prediction,  # The position of the chat bubble based on the predicted stress level
         y=1.1,  # Slightly above the bar
         text=f"<b>{stress_level}</b>",
         showarrow=False,
         font=dict(size=14, color="black"),
         align="center",
         bgcolor="white",
-        bordercolor=colors[prediction],  # Match the chat bubble border to the predicted level color
+        bordercolor=colors[prediction],  # Match the chat bubble border color to the predicted level
         borderwidth=2,
         borderpad=4
     )
