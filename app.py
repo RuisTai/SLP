@@ -9,8 +9,8 @@ model = joblib.load('gradient_boosting_model.pkl')
 # Streamlit app title
 st.title("Stress Prediction System")
 
-# Create two columns for layout
-col1, col2 = st.columns([1, 2])  # Adjust the ratio as needed
+# Create three columns for layout
+col1, col2, col3 = st.columns([1, 0.5, 2])  # Adjust the ratio as needed
 
 # Column 1: Input section
 with col1:
@@ -65,8 +65,32 @@ with col1:
         # Display the predicted stress level below the input
         st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction})")
 
-# Column 2: Visualization section
+# Column 2: White Circle Chart
 with col2:
+    # Create a white circle chart (pie chart with a single white segment)
+    fig_circle = go.Figure()
+
+    fig_circle.add_trace(go.Pie(
+        labels=[''],
+        values=[1],
+        hole=0.5,
+        marker_colors=['white'],
+        showlegend=False,
+        textinfo='none'
+    ))
+
+    fig_circle.update_layout(
+        margin=dict(l=0, r=0, t=0, b=0),
+        height=200,
+        width=200,
+        plot_bgcolor='white',
+        paper_bgcolor='white'
+    )
+
+    st.plotly_chart(fig_circle)
+
+# Column 3: Visualization section
+with col3:
     # Add some spacing
     st.write("")  # Empty line for spacing
     
