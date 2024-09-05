@@ -13,22 +13,22 @@ st.write("Enter the features below to predict the stress level (0 to 4):")
 
 # Function to get user input
 def get_user_input():
-    age = st.number_input("Age", min_value=0, max_value=70, value=0)
+    age = st.number_input("Age", min_value=0, max_value=70, value=0, step=1)
     marital_status = st.selectbox("Marital Status", options=["Yes", "No"])
     gender = st.selectbox("Gender", options=["Male", "Female"])
-    bmi = st.number_input("BMI", min_value=2.0, max_value=4.0, value=0)
-    snoring_rate = st.number_input("Snoring Rate", min_value=-1.0, max_value=8.0, value=0)
-    respiration_rate = st.number_input("Respiration Rate", min_value=-1.0, max_value=3.0, value=0)
-    body_temperature = st.number_input("Body Temperature", min_value=80.0, max_value=100.0, value=0)
-    limb_movement = st.number_input("Limb Movement", min_value=-2.0, max_value=4.0, value=0)
-    blood_oxygen = st.number_input("Blood Oxygen", min_value=79.0, max_value=100.0, value=0)
-    eye_movement = st.number_input("Eye Movement", min_value=0.0, max_value=8.0, value=0)
-    sleeping_hours = st.number_input("Sleeping Hours", min_value=0.0, max_value=9.0, value=0)
-    heart_rate = st.number_input("Heart Rate", min_value=-1.0, max_value=3.0, value=0)
-    bmi_age_adjusted = st.number_input("Mmi_age_adjusted", min_value=-1.0, max_value=3.0, value=0)
+    bmi = st.number_input("BMI", min_value=2.0, max_value=4.0, value=2.0, step=0.1)
+    snoring_rate = st.number_input("Snoring Rate", min_value=-1.0, max_value=8.0, value=-1.0, step=0.1)
+    respiration_rate = st.number_input("Respiration Rate", min_value=-1.0, max_value=3.0, value=-1.0, step=0.1)
+    body_temperature = st.number_input("Body Temperature", min_value=80.0, max_value=100.0, value=80.0, step=0.1)
+    limb_movement = st.number_input("Limb Movement", min_value=-2.0, max_value=4.0, value=-2.0, step=0.1)
+    blood_oxygen = st.number_input("Blood Oxygen", min_value=79.0, max_value=100.0, value=79.0, step=0.1)
+    eye_movement = st.number_input("Eye Movement", min_value=0.0, max_value=8.0, value=0.0, step=0.1)
+    sleeping_hours = st.number_input("Sleeping Hours", min_value=0.0, max_value=9.0, value=0.0, step=0.1)
+    heart_rate = st.number_input("Heart Rate", min_value=-1.0, max_value=3.0, value=-1.0, step=0.1)
+    bmi_age_adjusted = st.number_input("BMI Age Adjusted", min_value=-1.0, max_value=3.0, value=-1.0, step=0.1)
 
     # Convert marital status and gender to numerical values
-    marital_status = 1 if marital_status == "Married" else 0
+    marital_status = 1 if marital_status == "Yes" else 0
     gender = 1 if gender == "Male" else 0
 
     # Create an array of user inputs
