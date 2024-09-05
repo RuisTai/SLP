@@ -54,28 +54,28 @@ if st.button("Predict Stress Level"):
         1: "Low Stress",
         2: "Moderate Stress",
         3: "High Stress",
-        4: "Very High Stress"
+        4: "Max Stress"
     }
     stress_level = stress_descriptions.get(prediction[0], "Unknown")
 
     # Display the prediction
     st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction[0]})")
 
-    # Create a gauge chart with an arrow indicator
+    # Create a gauge chart with five sections and an arrow indicator
     fig = go.Figure(go.Indicator(
         mode="gauge+number+delta",
         value=prediction[0],
         delta={'reference': 0},
         title={'text': "Stress Level"},
         gauge={
-            'axis': {'range': [0, 4], 'tickvals': [0, 1, 2, 3, 4], 'ticktext': ['No Stress', 'Low Stress', 'Moderate Stress', 'High Stress', 'Very High Stress']},
-            'bar': {'color': "white"},  # Remove the blue bar
+            'axis': {'range': [0, 4], 'tickvals': [0, 1, 2, 3, 4], 'ticktext': ['No', 'Low', 'Moderate', 'High', 'Max']},
+            'bar': {'color': "white"},  # No bar in the center
             'steps': [
-                {'range': [0, 1], 'color': "lightgreen"},
-                {'range': [1, 2], 'color': "green"},
-                {'range': [2, 3], 'color': "yellow"},
-                {'range': [3, 4], 'color': "orange"},
-                {'range': [4, 5], 'color': "red"}
+                {'range': [0, 1], 'color': "lime"},      # No Stress
+                {'range': [1, 2], 'color': "green"},     # Low Stress
+                {'range': [2, 3], 'color': "yellow"},    # Moderate Stress
+                {'range': [3, 4], 'color': "orange"},    # High Stress
+                {'range': [4, 5], 'color': "red"}        # Max Stress
             ],
             'threshold': {
                 'line': {'color': "black", 'width': 4},
