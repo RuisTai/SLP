@@ -56,38 +56,46 @@ if st.button("Predict Stress Level"):
     }
     stress_level = stress_descriptions.get(prediction, "Unknown")
     
-    # Define colors for the stress levels
-    colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
+    # Define the colors for each stress level
+    colors = ['lime', 'green', 'lightyellow', 'orange', 'red']
     
-    # Create a half-circular gauge chart
+    # Create a horizontal bar chart with five sections
     fig = go.Figure()
 
-    # Add the curved bar sections
+    # Add each section to the bar chart
     for i in range(5):
-        fig.add_trace(go.Barpolar(
-            r=[1] * (i + 1) + [0],
-            theta=[(i * 36 + 18)] * (i + 1) + [0],  # Center the bars in the half-circle
+        fig.add_trace(go.Bar(
+            x=[1],
+            y=[0],
+            orientation='h',
+            name=stress_descriptions[i],
             marker_color=colors[i],
+            width=0.5,
             showlegend=False
         ))
 
-    # Add a pointer (arrow) to indicate the stress level
-    fig.add_trace(go.Scatterpolar(
-        r=[1],
-        theta=[prediction * 36 + 18],  # Position the arrow based on the prediction
-        mode='markers+text',
-        marker=dict(size=15, color='black', symbol='arrow-bar-up'),
-        text=[f'<b>{stress_level}</b>'],
-        textposition='top center',
-        showlegend=False
-    ))
-
-    # Add annotation for better visualization
+    # Update layout to arrange sections
+    fig.update_layout(
+        barmode='stack',
+        xaxis=dict(
+            tickvals=[0, 1, 2, 3, 4],
+            ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
+            showgrid=False,
+            zeroline=False
+        ),
+        yaxis=dict(showticklabels=False, showgrid=False),
+        plot_bgcolor="white",
+        margin=dict(l=20, r=20, t=20, b=20),
+        height=200,
+        width=600
+    )
+    
+    # Add the chat bubble above the correct section
     fig.add_annotation(
-        x=prediction * 36 + 18,
-        y=1.1,
+        x=prediction + 0.5,  # Position the chat bubble based on the prediction
+        y=0.5,
         text=f"<b>{stress_level}</b>",
-        showarrow=True,
+        showarrow=False,
         font=dict(size=14, color="black"),
         align="center",
         bgcolor="white",
@@ -95,28 +103,8 @@ if st.button("Predict Stress Level"):
         borderwidth=2,
         borderpad=4
     )
-
-    # Update layout for a half-circle gauge design
-    fig.update_layout(
-        polar=dict(
-            radialaxis=dict(
-                visible=False,
-                range=[0, 1]
-            ),
-            angularaxis=dict(
-                tickvals=[i * 36 + 18 for i in range(5)],
-                ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
-                showgrid=False,
-                showticklabels=True
-            )
-        ),
-        showlegend=False,
-        height=400,
-        width=600,
-        margin=dict(l=20, r=20, t=20, b=20)
-    )
     
-    # Display the gauge chart in Streamlit
+    # Display the bar chart in Streamlit
     st.plotly_chart(fig)
 
     # Show the predicted stress level below the chart
