@@ -9,11 +9,8 @@ model = joblib.load('gradient_boosting_model.pkl')
 # Streamlit app title
 st.title("Stress Prediction System")
 
-# Create three columns for layout
-col1, col3 = st.columns([10, 15])  # Adjust the ratio as needed
-
-# Column 1: Input section
-with col1:
+# Create a container for the input section
+with st.container():
     st.write("Enter the features below to predict the stress level (0 to 4):")
     
     # Function to get user input
@@ -65,82 +62,87 @@ with col1:
         # Display the predicted stress level below the input
         st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction})")
 
-# # Column 2: White Circle Chart
-# with col2:
-#     # Create a white circle chart (pie chart with a single white segment)
-#     fig_circle = go.Figure()
+# Create a container for the visualization and white circle chart
+with st.container():
+    # Create a two-column layout within the container
+    col1, col2, col3 = st.columns([1, 0.5, 2])  # Adjust ratios as needed
 
-#     fig_circle.add_trace(go.Pie(
-#         labels=[''],
-#         values=[1],
-#         hole=0.5,
-#         marker_colors=['white'],
-#         showlegend=False,
-#         textinfo='none'
-#     ))
+    # Column 1: White Circle Chart
+    with col1:
+        # Create a white circle chart (pie chart with a single white segment)
+        fig_circle = go.Figure()
 
-#     fig_circle.update_layout(
-#         margin=dict(l=0, r=0, t=0, b=0),
-#         height=200,
-#         width=200,
-#         plot_bgcolor='white',
-#         paper_bgcolor='white'
-#     )
-
-#     st.plotly_chart(fig_circle)
-
-# Column 3: Visualization section
-with col3:
-    # Add some spacing
-    st.write("")  # Empty line for spacing
-    
-    # Define a gradient of colors from lime to red
-    colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
-    
-    # Create a horizontal bar chart with five sections
-    fig = go.Figure()
-
-    # Add each section to the bar chart
-    for i in range(5):
-        fig.add_trace(go.Bar(
-            x=[1],
-            y=[0],
-            orientation='h',
-            name=stress_descriptions[i],
-            marker_color=colors[i],
-            width=0.5,
-            showlegend=False
+        fig_circle.add_trace(go.Pie(
+            labels=[''],
+            values=[1],
+            hole=0.5,
+            marker_colors=['white'],
+            showlegend=False,
+            textinfo='none'
         ))
 
-    # Update layout to arrange sections
-    fig.update_layout(
-        barmode='stack',
-        xaxis=dict(
-            tickvals=[0, 1, 2, 3, 4],
-            ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
-            showgrid=False,
-            zeroline=False
-        ),
-        yaxis=dict(showticklabels=False, showgrid=False),
-        plot_bgcolor="white",
-        margin=dict(l=30, r=30, t=30, b=30),
-        height=200,
-        width=600
-    )
-    
-    # Add the chat bubble above the correct section
-    fig.add_annotation(
-        x=prediction + 0.5,  # Position the chat bubble based on the prediction
-        y=0.5,
-        text=f"<b>{stress_level}</b>",
-        showarrow=False,
-        font=dict(size=14, color="black"),
-        align="center",
-        bgcolor="white",
-        bordercolor=colors[prediction],
-        borderwidth=2,
-        borderpad=4
-    )
-    
-    # Display the bar chart in Streamlit
-    st.plotly_chart(fig)
+        fig_circle.update_layout(
+            margin=dict(l=0, r=0, t=0, b=0),
+            height=200,
+            width=200,
+            plot_bgcolor='white',
+            paper_bgcolor='white'
+        )
+
+        st.plotly_chart(fig_circle)
+
+    # Column 3: Visualization section
+    with col3:
+        # Add some spacing
+        st.write("")  # Empty line for spacing
+        
+        # Define a gradient of colors from lime to red
+        colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
+        
+        # Create a horizontal bar chart with five sections
+        fig = go.Figure()
+
+        # Add each section to the bar chart
+        for i in range(5):
+            fig.add_trace(go.Bar(
+                x=[1],
+                y=[0],
+                orientation='h',
+                name=stress_descriptions[i],
+                marker_color=colors[i],
+                width=0.5,
+                showlegend=False
+            ))
+
+        # Update layout to arrange sections
+        fig.update_layout(
+            barmode='stack',
+            xaxis=dict(
+                tickvals=[0, 1, 2, 3, 4],
+                ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
+                showgrid=False,
+                zeroline=False
+            ),
+            yaxis=dict(showticklabels=False, showgrid=False),
+            plot_bgcolor="white",
+            margin=dict(l=30, r=30, t=30, b=30),
+            height=200,
+            width=600
+        )
+        
+        # Add the chat bubble above the correct section
+        fig.add_annotation(
+            x=prediction + 0.5,  # Position the chat bubble based on the prediction
+            y=0.5,
+            text=f"<b>{stress_level}</b>",
+            showarrow=False,
+            font=dict(size=14, color="black"),
+            align="center",
+            bgcolor="white",
+            bordercolor=colors[prediction],
+            borderwidth=2,
+            borderpad=4
+        )
+        
+        # Display the bar chart in Streamlit
+        st.plotly_chart(fig)
