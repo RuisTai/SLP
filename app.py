@@ -56,8 +56,8 @@ if st.button("Predict Stress Level"):
     }
     stress_level = stress_descriptions.get(prediction, "Unknown")
     
-    # Define the colors for each stress level
-    colors = ['lime', 'green', 'lightyellow', 'orange', 'red']
+    # Define a gradient of colors from lime to red
+    colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
     
     # Create a horizontal bar chart with five sections
     fig = go.Figure()
