@@ -85,7 +85,7 @@ if st.button("Predict Stress Level"):
         ),
         yaxis=dict(showticklabels=False, showgrid=False),
         plot_bgcolor="white",
-        margin=dict(l=20, r=20, t=20, b=20),
+        margin=dict(l=30, r=30, t=30, b=30),
         height=200,
         width=600
     )
