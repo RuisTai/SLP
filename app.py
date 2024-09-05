@@ -14,24 +14,22 @@ st.write("Enter the features below to predict the stress level (0 to 4):")
 
 # Function to get user input
 def get_user_input():
-    age = st.number_input("Age", min_value=0, max_value=70, value=0, step=1)  # Int values
+    age = st.number_input("Age", min_value=0, max_value=70, value=0, step=1)
     marital_status = st.selectbox("Marital Status", options=["Yes", "No"])
     gender = st.selectbox("Gender", options=["Male", "Female"])
-    bmi = st.number_input("BMI", min_value=2.0, max_value=4.0, value=2.0, step=0.1)  # Float values
-    snoring_rate = st.number_input("Snoring Rate", min_value=-1.0, max_value=8.0, value=-1.0, step=0.1)  # Float values
-    respiration_rate = st.number_input("Respiration Rate", min_value=-1.0, max_value=3.0, value=-1.0, step=0.1)  # Float values
-    body_temperature = st.number_input("Body Temperature", min_value=80.0, max_value=100.0, value=80.0, step=0.1)  # Float values
-    limb_movement = st.number_input("Limb Movement", min_value=-2.0, max_value=4.0, value=-2.0, step=0.1)  # Float values
-    blood_oxygen = st.number_input("Blood Oxygen", min_value=79.0, max_value=100.0, value=79.0, step=0.1)  # Float values
-    eye_movement = st.number_input("Eye Movement", min_value=0.0, max_value=8.0, value=0.0, step=0.1)  # Float values
-    sleeping_hours = st.number_input("Sleeping Hours", min_value=0.0, max_value=9.0, value=0.0, step=0.1)  # Float values
-    heart_rate = st.number_input("Heart Rate", min_value=-1.0, max_value=3.0, value=-1.0, step=0.1)  # Float values
+    bmi = st.number_input("BMI", min_value=2.0, max_value=4.0, value=2.0, step=0.1)
+    snoring_rate = st.number_input("Snoring Rate", min_value=-1.0, max_value=8.0, value=-1.0, step=0.1)
+    respiration_rate = st.number_input("Respiration Rate", min_value=-1.0, max_value=3.0, value=-1.0, step=0.1)
+    body_temperature = st.number_input("Body Temperature", min_value=80.0, max_value=100.0, value=80.0, step=0.1)
+    limb_movement = st.number_input("Limb Movement", min_value=-2.0, max_value=4.0, value=-2.0, step=0.1)
+    blood_oxygen = st.number_input("Blood Oxygen", min_value=79.0, max_value=100.0, value=79.0, step=0.1)
+    eye_movement = st.number_input("Eye Movement", min_value=0.0, max_value=8.0, value=0.0, step=0.1)
+    sleeping_hours = st.number_input("Sleeping Hours", min_value=0.0, max_value=9.0, value=0.0, step=0.1)
+    heart_rate = st.number_input("Heart Rate", min_value=-1.0, max_value=3.0, value=-1.0, step=0.1)
 
-    # Convert marital status and gender to numerical values
-    marital_status = 1 if marital_status == "Yes" else 0  # Update to match "Yes"/"No"
+    marital_status = 1 if marital_status == "Yes" else 0
     gender = 1 if gender == "Male" else 0
 
-    # Create an array of user inputs
     input_data = np.array([
         age, marital_status, gender, bmi, snoring_rate, respiration_rate,
         body_temperature, limb_movement, blood_oxygen, eye_movement,
@@ -58,38 +56,30 @@ if st.button("Predict Stress Level"):
     }
     stress_level = stress_descriptions.get(prediction, "Unknown")
     
-    # Define the fixed color for all five sections
-    colors = ['lime', 'green', 'yellow', 'orange', 'red']
+    # Define the colors for each stress level
+    colors = ['lime', 'green', 'lightyellow', 'orange', 'red']
     
-    # Create a horizontal bar that always shows the five color sections
-    fig = go.Figure(go.Bar(
-        x=[1, 1, 1, 1, 1],  # Equal width for all sections
-        y=["Stress Level"],
-        marker_color=colors,  # Apply the colors for each segment
-        orientation="h",
-        showlegend=False,
-        hoverinfo="none"
-    ))
-    
-    # Add the chat bubble above the correct section based on the predicted stress level
-    fig.add_annotation(
-        x=prediction,  # The position of the chat bubble based on the predicted stress level
-        y=1.1,  # Slightly above the bar
-        text=f"<b>{stress_level}</b>",
-        showarrow=False,
-        font=dict(size=14, color="black"),
-        align="center",
-        bgcolor="white",
-        bordercolor=colors[prediction],  # Match the chat bubble border color to the predicted level
-        borderwidth=2,
-        borderpad=4
-    )
-    
-    # Update layout for a clean look
+    # Create a horizontal bar chart with five sections
+    fig = go.Figure()
+
+    # Add each section to the bar chart
+    for i in range(5):
+        fig.add_trace(go.Bar(
+            x=[1],
+            y=[0],
+            orientation='h',
+            name=stress_descriptions[i],
+            marker_color=colors[i],
+            width=0.5,
+            showlegend=False
+        ))
+
+    # Update layout to arrange sections
     fig.update_layout(
+        barmode='stack',
         xaxis=dict(
-            tickvals=[0, 1, 2, 3, 4],  # Mark the five sections
-            ticktext=["No", "Low", "Moderate", "High", "Max"],
+            tickvals=[0, 1, 2, 3, 4],
+            ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
             showgrid=False,
             zeroline=False
         ),
@@ -98,6 +88,20 @@ if st.button("Predict Stress Level"):
         margin=dict(l=20, r=20, t=20, b=20),
         height=200,
         width=600
+    )
+    
+    # Add the chat bubble above the correct section
+    fig.add_annotation(
+        x=prediction + 0.5,  # Position the chat bubble based on the prediction
+        y=0.5,
+        text=f"<b>{stress_level}</b>",
+        showarrow=False,
+        font=dict(size=14, color="black"),
+        align="center",
+        bgcolor="white",
+        bordercolor=colors[prediction],
+        borderwidth=2,
+        borderpad=4
     )
     
     # Display the bar chart in Streamlit
