@@ -58,30 +58,21 @@ if st.button("Predict Stress Level"):
     }
     stress_level = stress_descriptions.get(prediction, "Unknown")
     
-    # Define colors dynamically based on the predicted stress level
-    colors = ['lime', 'lime', 'lime', 'lime', 'lime']  # Default to lime (No Stress)
+    # Define static color for all sections
+    colors = ['lime', 'green', 'yellow', 'orange', 'red']
     
-    if prediction == 1:  # Low Stress
-        colors = ['lime', 'green', 'lime', 'lime', 'lime']
-    elif prediction == 2:  # Moderate Stress
-        colors = ['lime', 'green', 'yellow', 'lime', 'lime']
-    elif prediction == 3:  # High Stress
-        colors = ['lime', 'green', 'yellow', 'orange', 'lime']
-    elif prediction == 4:  # Max Stress
-        colors = ['lime', 'green', 'yellow', 'orange', 'red']
-
-    # Create a horizontal bar with dynamic color
+    # Create a horizontal bar with fixed sections and colors
     fig = go.Figure()
     fig.add_trace(go.Bar(
-        x=[1, 1, 1, 1, 1],
+        x=[1, 1, 1, 1, 1],  # Equal width for all sections
         y=["Stress Level"],
-        marker_color=colors,
+        marker_color=colors,  # Apply the colors for each segment
         orientation="h",
         showlegend=False,
         hoverinfo="none"
     ))
     
-    # Add the chat bubble using annotations
+    # Add the chat bubble dynamically based on the predicted level
     fig.add_annotation(
         x=prediction,  # The position of the chat bubble
         y=1.1,  # Slightly above the bar
@@ -90,7 +81,7 @@ if st.button("Predict Stress Level"):
         font=dict(size=14, color="black"),
         align="center",
         bgcolor="white",
-        bordercolor=colors[prediction],
+        bordercolor=colors[prediction],  # Match the chat bubble border to the predicted level color
         borderwidth=2,
         borderpad=4
     )
@@ -98,7 +89,7 @@ if st.button("Predict Stress Level"):
     # Update layout for a clean look
     fig.update_layout(
         xaxis=dict(
-            tickvals=[0, 1, 2, 3, 4],
+            tickvals=[0, 1, 2, 3, 4],  # Mark the five sections
             ticktext=["No", "Low", "Moderate", "High", "Max"],
             showgrid=False,
             zeroline=False
@@ -110,8 +101,8 @@ if st.button("Predict Stress Level"):
         width=600
     )
     
-    # Display the result as a bar
+    # Display the bar chart in Streamlit
     st.plotly_chart(fig)
 
-    # Show predicted stress level
+    # Show the predicted stress level below the chart
     st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction})")
