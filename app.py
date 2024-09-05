@@ -9,8 +9,8 @@ model = joblib.load('gradient_boosting_model.pkl')
 # Streamlit app title
 st.title("Stress Prediction System")
 
-# Create a container for the input section
-with st.container():
+# Sidebar for input section
+with st.sidebar:
     st.write("Enter the features below to predict the stress level (0 to 4):")
     
     # Function to get user input
@@ -60,62 +60,59 @@ with st.container():
         stress_level = stress_descriptions.get(prediction, "Unknown")
 
         # Display the predicted stress level below the input
-        st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction})")
+        st.session_state.predicted_stress_level = f"Predicted Stress Level: {stress_level} (Level {prediction})"
 
+# Main area for visualization
+if 'predicted_stress_level' in st.session_state:
+    st.subheader(st.session_state.predicted_stress_level)
 
+    # Define a gradient of colors from lime to red
+    colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
+    
+    # Create a horizontal bar chart with five sections
+    fig = go.Figure()
 
-    # Column 3: Visualization section
-    with col3:
-        # Add some spacing
-        st.write("")  # Empty line for spacing
-        
-        # Define a gradient of colors from lime to red
-        colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
-        
-        # Create a horizontal bar chart with five sections
-        fig = go.Figure()
+    # Add each section to the bar chart
+    for i in range(5):
+        fig.add_trace(go.Bar(
+            x=[1],
+            y=[0],
+            orientation='h',
+            name=stress_descriptions[i],
+            marker_color=colors[i],
+            width=0.5,
+            showlegend=False
+        ))
 
-        # Add each section to the bar chart
-        for i in range(5):
-            fig.add_trace(go.Bar(
-                x=[1],
-                y=[0],
-                orientation='h',
-                name=stress_descriptions[i],
-                marker_color=colors[i],
-                width=0.5,
-                showlegend=False
-            ))
-
-        # Update layout to arrange sections
-        fig.update_layout(
-            barmode='stack',
-            xaxis=dict(
-                tickvals=[0, 1, 2, 3, 4],
-                ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
-                showgrid=False,
-                zeroline=False
-            ),
-            yaxis=dict(showticklabels=False, showgrid=False),
-            plot_bgcolor="white",
-            margin=dict(l=30, r=30, t=30, b=30),
-            height=200,
-            width=800
-        )
-        
-        # Add the chat bubble above the correct section
-        fig.add_annotation(
-            x=prediction + 0.5,  # Position the chat bubble based on the prediction
-            y=0.5,
-            text=f"<b>{stress_level}</b>",
-            showarrow=False,
-            font=dict(size=14, color="black"),
-            align="center",
-            bgcolor="white",
-            bordercolor=colors[prediction],
-            borderwidth=2,
-            borderpad=4
-        )
-        
-        # Display the bar chart in Streamlit
-        st.plotly_chart(fig)
+    # Update layout to arrange sections
+    fig.update_layout(
+        barmode='stack',
+        xaxis=dict(
+            tickvals=[0, 1, 2, 3, 4],
+            ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
+            showgrid=False,
+            zeroline=False
+        ),
+        yaxis=dict(showticklabels=False, showgrid=False),
+        plot_bgcolor="white",
+        margin=dict(l=30, r=30, t=30, b=30),
+        height=200,
+        width=600
+    )
+    
+    # Add the chat bubble above the correct section
+    fig.add_annotation(
+        x=prediction + 0.5,  # Position the chat bubble based on the prediction
+        y=0.5,
+        text=f"<b>{stress_level}</b>",
+        showarrow=False,
+        font=dict(size=14, color="black"),
+        align="center",
+        bgcolor="white",
+        bordercolor=colors[prediction],
+        borderwidth=2,
+        borderpad=4
+    )
+    
+    # Display the bar chart in Streamlit
+    st.plotly_chart(fig)
