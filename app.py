@@ -59,44 +59,33 @@ if st.button("Predict Stress Level"):
     # Define colors for the stress levels
     colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
     
-    # Create a circular gauge chart
+    # Create a half-circular gauge chart
     fig = go.Figure()
 
-    # Add sections of the meter (semi-circle)
-    fig.add_trace(go.Scatterpolar(
-        r=[1] * 5 + [0],
-        theta=[i * 72 for i in range(5)] + [0],  # 5 segments, each 72 degrees
-        fill='toself',
-        fillcolor='rgba(255,255,255,0)',
-        line_color='rgba(255,255,255,0)',
-        mode='lines',
-        showlegend=False
-    ))
-
+    # Add the curved bar sections
     for i in range(5):
-        fig.add_trace(go.Scatterpolar(
+        fig.add_trace(go.Barpolar(
             r=[1] * (i + 1) + [0],
-            theta=[i * 72] * (i + 1) + [0],
-            fill='toself',
-            fillcolor=colors[i],
-            line_color=colors[i],
-            mode='lines',
+            theta=[(i * 36 + 18)] * (i + 1) + [0],  # Center the bars in the half-circle
+            marker_color=colors[i],
             showlegend=False
         ))
 
-    # Add a pointer to indicate the stress level
+    # Add a pointer (arrow) to indicate the stress level
     fig.add_trace(go.Scatterpolar(
         r=[1],
-        theta=[prediction * 72],
-        mode='markers',
-        marker=dict(size=10, color='black'),
+        theta=[prediction * 36 + 18],  # Position the arrow based on the prediction
+        mode='markers+text',
+        marker=dict(size=15, color='black', symbol='arrow-bar-up'),
+        text=[f'<b>{stress_level}</b>'],
+        textposition='top center',
         showlegend=False
     ))
 
-    # Add the chat bubble above the correct section
+    # Add annotation for better visualization
     fig.add_annotation(
-        x=prediction * 72,
-        y=1.2,
+        x=prediction * 36 + 18,
+        y=1.1,
         text=f"<b>{stress_level}</b>",
         showarrow=True,
         font=dict(size=14, color="black"),
@@ -107,7 +96,7 @@ if st.button("Predict Stress Level"):
         borderpad=4
     )
 
-    # Update layout for a meter design
+    # Update layout for a half-circle gauge design
     fig.update_layout(
         polar=dict(
             radialaxis=dict(
@@ -115,7 +104,7 @@ if st.button("Predict Stress Level"):
                 range=[0, 1]
             ),
             angularaxis=dict(
-                tickvals=[i * 72 for i in range(5)],
+                tickvals=[i * 36 + 18 for i in range(5)],
                 ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
                 showgrid=False,
                 showticklabels=True
@@ -123,7 +112,7 @@ if st.button("Predict Stress Level"):
         ),
         showlegend=False,
         height=400,
-        width=400,
+        width=600,
         margin=dict(l=20, r=20, t=20, b=20)
     )
     
