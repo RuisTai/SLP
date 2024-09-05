@@ -44,6 +44,9 @@ with col1:
 
     user_input = get_user_input()
 
+    # Add some spacing
+    st.write("")  # Empty line for spacing
+
     # Predict button
     if st.button("Predict Stress Level"):
         # Predict the stress level
@@ -64,6 +67,9 @@ with col1:
 
 # Column 2: Visualization section
 with col2:
+    # Add some spacing
+    st.write("")  # Empty line for spacing
+    
     # Define a gradient of colors from lime to red
     colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
     
