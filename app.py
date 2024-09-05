@@ -10,7 +10,7 @@ model = joblib.load('gradient_boosting_model.pkl')
 st.title("Stress Prediction System")
 
 # Create three columns for layout
-col1, col2, col3 = st.columns([3, 3, 3])  # Adjust the ratio as needed
+col1, col2, col3 = st.columns([5, 5, 15])  # Adjust the ratio as needed
 
 # Column 1: Input section
 with col1:
