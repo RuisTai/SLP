@@ -183,10 +183,6 @@ if st.button("Predict Stress Level"):
     # Predict the stress level
     prediction = model.predict(user_input)[0]
     stress_level = stress_descriptions.get(prediction, "Unknown")
-
-    # Display the predicted stress level below the input
-    st.subheader(st.session_state.predicted_stress_level)
-    st.write(f"Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
     
     # Add the chat bubble above the correct section
     fig.add_annotation(
@@ -223,6 +219,10 @@ if st.button("Predict Stress Level"):
     st.write(f"Eye Movement: {eye_movement} {eye_desc}", unsafe_allow_html=True)
     st.write(f"Sleeping Hours: {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
     st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
+
+    # Display the predicted stress level below the input
+    st.subheader(st.session_state.predicted_stress_level)
+    st.write(f"Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
 
 # Main area for visualization
 if 'predicted_stress_level' in st.session_state:
