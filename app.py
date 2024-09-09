@@ -90,91 +90,91 @@ fig.update_layout(
 # Function to decode user input back to human-readable labels
 def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate):
     if age <= 18:
-        age_desc = "Adolescent"
+        age_desc = "(Adolescent)"
     elif age <= 24:
-        age_desc = "Young adult"
+        age_desc = "(Young adult)"
     elif age <= 45:
-        age_desc = "Adult"
+        age_desc = "(Adult)"
     elif age <= 64:
-        age_desc = "Middle age adult"
+        age_desc = "(Middle age adult)"
     else:
-        age_desc = "Older adult"
+        age_desc = "(Older adult)"
 
     if bmi < 18.5:
-        bmi_desc = "Underweight"
+        bmi_desc = "(Underweight)"
     elif bmi <= 24.9:
-        bmi_desc = "Normal weight"
+        bmi_desc = "(Normal weight)"
     elif bmi <= 29.9:
-        bmi_desc = "Overweight"
+        bmi_desc = "(Overweight)"
     elif bmi <= 30:
-        bmi_desc = "Obese"
+        bmi_desc = "<span style='color:orange'>(Obese)</span>"
     else:
-        bmi_desc = "<span style='color:red'>Extremely obese</span>"
+        bmi_desc = "<span style='color:red'>(Extremely Obese)</span>"
 
     marital_desc = "Married" if marital_status == 1 else "Not married"
     gender_desc = "Male" if gender == 1 else "Female"
 
     if snoring_rate <= 5:
-        snoring_desc = "Normal"
+        snoring_desc = "(Normal)"
     elif snoring_rate <= 15:
-        snoring_desc = "Mild snoring"
+        snoring_desc = "(Mild snoring)"
     elif snoring_rate <= 30:
-        snoring_desc = "Moderate snoring"
+        snoring_desc = "(Moderate snoring)"
     elif snoring_rate <= 45:
-        snoring_desc = "Heavy snoring"
+        snoring_desc = "<span style='color:orange'>(Heavy Snoring)</span>"
     else:
-        snoring_desc = "<span style='color:red'>Severe snoring</span>"
+        snoring_desc = "<span style='color:red'>(Severe Snoring)</span>"
 
     if respiration_rate <= 11:
-        respiration_desc = "Hypoventilation"
+        respiration_desc = "<span style='color:orange'>((Hypoventilation-Slow Breath)</span>"
     elif 12 <= respiration_rate <= 20:
-        respiration_desc = "Normal"
+        respiration_desc = "(Normal)"
     else:
-        respiration_desc = "<span style='color:red'>Hyperventilation</span>"
+        respiration_desc = "<span style='color:red'>(Hyperventilation-Rapid Breath)</span>"
 
     if body_temperature < 79:
-        body_temp_desc = "Hypothermia"
+        body_temp_desc = "<span style='color:red'>(Hypothermia-Low)</span>"
     elif 80 <= body_temperature <= 100:
-        body_temp_desc = "Normal"
+        body_temp_desc = "(Normal)"
     else:
-        body_temp_desc = "<span style='color:red'>Hyperthermia</span>"
-
+        body_temp_desc = "<span style='color:red'>(Hyperthermia-High)</span>"
+_
     if limb_movement <= 5:
-        limb_desc = "Normal"
+        limb_desc = "(Normal)"
     elif 6 <= limb_movement <= 25:
-        limb_desc = "Moderate"
+        limb_desc = "(Moderate)"
     else:
         limb_desc = "<span style='color:red'>Severe</span>"
 
     if blood_oxygen <= 69:
-        oxygen_desc = "<span style='color:red'>Cynosis</span>"
+        oxygen_desc = "<span style='color:red'>(Cyanosis-Low)</span>"
     elif blood_oxygen <= 79:
-        oxygen_desc = "<span style='color:red'>Severe hypoxia</span>"
+        oxygen_desc = "<span style='color:red'>(Severe Hypoxia)</span>"
     elif blood_oxygen <= 89:
-        oxygen_desc = "<span style='color:red'>Low Oxygen Level</span>"
+        oxygen_desc = "<span style='color:orange'>(Low Oxygen Level)</span>"
     elif 90 <= blood_oxygen <= 94:
-        oxygen_desc = "Moderate Oxygen Level"
+        oxygen_desc = "(Moderate Oxygen Level)"
     else:
-        oxygen_desc = "Normal Oxygen Level"
+        oxygen_desc = "(Normal Oxygen Level)"
 
     if eye_movement <= 25:
-        eye_desc = "Normal"
+        eye_desc = "(Normal)"
     else:
-        eye_desc = "<span style='color:red'>High REM</span>"
+        eye_desc = "<span style='color:red'>(High REM)</span>"
 
     if sleeping_hours <= 6:
-        sleep_desc = "Sleep deprivation"
+        sleep_desc = "<span style='color:red'>(Sleep Deprivation)</span>"
     elif 7 <= sleeping_hours <= 9:
-        sleep_desc = "Normal"
+        sleep_desc = "(Normal)"
     else:
-        sleep_desc = "<span style='color:red'>Hypersomnia</span>"
+        sleep_desc = "<span style='color:red'>(Hypersomnia)</span>"
 
     if heart_rate <= 39:
-        heart_desc = "Bradycardia"
+        heart_desc = "<span style='color:red'>(Bradycardia-Too Slow)</span>"
     elif 40 <= heart_rate <= 75:
-        heart_desc = "Normal"
+        heart_desc = "(Normal)"
     else:
-        heart_desc = "<span style='color:red'>Tachycardia</span>"
+        heart_desc = "<span style='color:red'>(Tachycardia-Too Rapid)</span>"
 
     return age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc
 
@@ -210,18 +210,18 @@ if st.button("Predict Stress Level"):
     )
     
     st.markdown(f"**Your Input Interpretation:**")
-    st.write(f"Age: {age} ({age_desc})")
-    st.write(f"BMI: {bmi} ({bmi_desc})", unsafe_allow_html=True)
+    st.write(f"Age: {age} {age_desc}", unsafe_allow_html=True)
+    st.write(f"BMI: {bmi} {bmi_desc}", unsafe_allow_html=True)
     st.write(f"Marital Status: {marital_desc}")
     st.write(f"Gender: {gender_desc}")
-    st.write(f"Snoring Rate: {snoring_rate} ({snoring_desc})")
-    st.write(f"Respiration Rate: {respiration_rate} ({respiration_desc})")
-    st.write(f"Body Temperature: {body_temperature} °F ({body_temp_desc})")
-    st.write(f"Limb Movement: {limb_movement} ({limb_desc})")
-    st.write(f"Blood Oxygen: {blood_oxygen} ({oxygen_desc})")
-    st.write(f"Eye Movement: {eye_movement} ({eye_desc})")
-    st.write(f"Sleeping Hours: {sleeping_hours} ({sleep_desc})")
-    st.markdown(f"Heart Rate: {heart_rate} ({heart_desc})", unsafe_allow_html=True)
+    st.write(f"Snoring Rate: {snoring_rate} {snoring_desc}", unsafe_allow_html=True)
+    st.write(f"Respiration Rate: {respiration_rate} {respiration_desc}", unsafe_allow_html=True)
+    st.write(f"Body Temperature: {body_temperature} °F {body_temp_desc}", unsafe_allow_html=True)
+    st.write(f"Limb Movement: {limb_movement} {limb_desc}", unsafe_allow_html=True)
+    st.write(f"Blood Oxygen: {blood_oxygen} {oxygen_desc}", unsafe_allow_html=True)
+    st.write(f"Eye Movement: {eye_movement} {eye_desc}", unsafe_allow_html=True)
+    st.write(f"Sleeping Hours: {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
+    st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
 
 # Main area for visualization
 if 'predicted_stress_level' in st.session_state:
