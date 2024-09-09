@@ -41,9 +41,6 @@ with st.sidebar:
 
     user_input, age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate = get_user_input()
 
-    # Add some spacing
-    st.write("")  # Empty line for spacing
-
 # Define stress levels and corresponding descriptions
 stress_descriptions = {
     0: "No Stress",
@@ -86,6 +83,9 @@ fig.update_layout(
     height=200,
     width=600
 )
+
+# Display the initial bar chart in Streamlit (without the bubble)
+st.plotly_chart(fig)
 
 # Function to decode user input back to human-readable labels
 def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate):
@@ -177,9 +177,6 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
         heart_desc = "<span style='color:red'>(Tachycardia-Too Rapid)</span>"
 
     return age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc
-
-# Display the initial bar chart in Streamlit (without the bubble)
-st.plotly_chart(fig)
 
 # Predict button
 if st.button("Predict Stress Level"):
