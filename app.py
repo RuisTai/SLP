@@ -226,7 +226,6 @@ if st.button("Predict Stress Level"):
 
 # Main area for visualization
 if 'predicted_stress_level' in st.session_state:
-    st.write(f"Predicted Stress Level: ")
     
 else:
     # Display the initial bar chart in Streamlit
