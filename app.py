@@ -199,7 +199,6 @@ if st.button("Predict Stress Level"):
     )
     
     # Display the updated bar chart with the chat bubble
-    st.subheader(st.session_state.predicted_stress_level)
     st.plotly_chart(fig)
 
     # Decode and display the interpretations of the user's input
@@ -224,16 +223,11 @@ if st.button("Predict Stress Level"):
     st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
 
     # Display the predicted stress level below the input
-    st.write("") 
-    st.write("") 
     # st.subheader(st.session_state.predicted_stress_level)
     st.write(f"Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
 
 # Main area for visualization
 if 'predicted_stress_level' in st.session_state:
-    st.write("") 
-    st.write("") 
-    st.write("") 
     st.subheader(st.session_state.predicted_stress_level)
 else:
     # Display the initial bar chart in Streamlit
