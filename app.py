@@ -225,7 +225,7 @@ if st.button("Predict Stress Level"):
     # Display the predicted stress level below the input
     st.write("") 
     st.write("") 
-    st.subheader(st.session_state.predicted_stress_level)
+    # st.subheader(st.session_state.predicted_stress_level)
     st.write(f"Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
 
 # Main area for visualization
