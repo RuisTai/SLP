@@ -37,9 +37,9 @@ with st.sidebar:
             sleeping_hours, heart_rate
         ]).reshape(1, -1)
 
-        return input_data
+        return input_data, age, bmi, marital_status, gender
 
-    user_input = get_user_input()
+    user_input, age, bmi, marital_status, gender = get_user_input()
 
     # Add some spacing
     st.write("")  # Empty line for spacing
@@ -87,9 +87,6 @@ fig.update_layout(
     width=600
 )
 
-# Display the initial bar chart in Streamlit
-st.plotly_chart(fig)
-
 # Predict button
 if st.button("Predict Stress Level"):
     # Predict the stress level
@@ -116,6 +113,46 @@ if st.button("Predict Stress Level"):
     # Display the updated bar chart with the chat bubble
     st.plotly_chart(fig)
 
+    # Function to decode user input back to human-readable labels
+    def decode_user_input(age, bmi, marital_status, gender):
+        if age <= 18:
+            age_desc = "Adolescent"
+        elif age <= 24:
+            age_desc = "Young adult"
+        elif age <= 45:
+            age_desc = "Adult"
+        elif age <= 64:
+            age_desc = "Middle age adult"
+        else:
+            age_desc = "Older adult"
+
+        if bmi < 18.5:
+            bmi_desc = "Underweight"
+        elif bmi <= 24.9:
+            bmi_desc = "Normal weight"
+        elif bmi <= 29.9:
+            bmi_desc = "Overweight"
+        elif bmi <= 30:
+            bmi_desc = "Obese"
+        else:
+            bmi_desc = "Extremely obese"
+
+        marital_desc = "Married" if marital_status == 1 else "Not married"
+        gender_desc = "Male" if gender == 1 else "Female"
+
+        return age_desc, bmi_desc, marital_desc, gender_desc
+
+    # Decode and display the interpretations of the user's input
+    age_desc, bmi_desc, marital_desc, gender_desc = decode_user_input(age, bmi, marital_status, gender)
+    st.markdown(f"**Your Input Interpretation:**")
+    st.write(f"Age: {age} ({age_desc})")
+    st.write(f"BMI: {bmi} ({bmi_desc})")
+    st.write(f"Marital Status: {marital_desc}")
+    st.write(f"Gender: {gender_desc}")
+
 # Main area for visualization
 if 'predicted_stress_level' in st.session_state:
     st.subheader(st.session_state.predicted_stress_level)
+else:
+    # Display the initial bar chart in Streamlit
+    st.plotly_chart(fig)
