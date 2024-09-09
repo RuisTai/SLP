@@ -138,7 +138,7 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
         body_temp_desc = "(Normal)"
     else:
         body_temp_desc = "<span style='color:red'>(Hyperthermia-High)</span>"
-_
+
     if limb_movement <= 5:
         limb_desc = "(Normal)"
     elif 6 <= limb_movement <= 25:
