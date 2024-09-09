@@ -109,7 +109,7 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
     elif bmi <= 30:
         bmi_desc = "Obese"
     else:
-        bmi_desc = "Extremely obese"
+        bmi_desc = "<span style='color:red'>Extremely obese</span>"
 
     marital_desc = "Married" if marital_status == 1 else "Not married"
     gender_desc = "Male" if gender == 1 else "Female"
@@ -123,35 +123,35 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
     elif snoring_rate <= 45:
         snoring_desc = "Heavy snoring"
     else:
-        snoring_desc = "Severe snoring"
+        snoring_desc = "<span style='color:red'>Severe snoring</span>"
 
     if respiration_rate <= 11:
         respiration_desc = "Hypoventilation"
     elif 12 <= respiration_rate <= 20:
         respiration_desc = "Normal"
     else:
-        respiration_desc = "Hyperventilation"
+        respiration_desc = "<span style='color:red'>Hyperventilation</span>"
 
     if body_temperature < 79:
         body_temp_desc = "Hypothermia"
     elif 80 <= body_temperature <= 100:
         body_temp_desc = "Normal"
     else:
-        body_temp_desc = "Hyperthermia"
+        body_temp_desc = "<span style='color:red'>Hyperthermia</span>"
 
     if limb_movement <= 5:
         limb_desc = "Normal"
     elif 6 <= limb_movement <= 25:
         limb_desc = "Moderate"
     else:
-        limb_desc = "Severe"
+        limb_desc = "<span style='color:red'>Severe</span>"
 
     if blood_oxygen <= 69:
-        oxygen_desc = "Cynosis"
+        oxygen_desc = "<span style='color:red'>Cynosis</span>"
     elif blood_oxygen <= 79:
-        oxygen_desc = "Severe hypoxia"
+        oxygen_desc = "<span style='color:red'>Severe hypoxia</span>"
     elif blood_oxygen <= 89:
-        oxygen_desc = "Low Oxygen Level"
+        oxygen_desc = "<span style='color:red'>Low Oxygen Level</span>"
     elif 90 <= blood_oxygen <= 94:
         oxygen_desc = "Moderate Oxygen Level"
     else:
@@ -160,21 +160,21 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
     if eye_movement <= 25:
         eye_desc = "Normal"
     else:
-        eye_desc = "High REM"
+        eye_desc = "<span style='color:red'>High REM</span>"
 
     if sleeping_hours <= 6:
         sleep_desc = "Sleep deprivation"
     elif 7 <= sleeping_hours <= 9:
         sleep_desc = "Normal"
     else:
-        sleep_desc = "Hypersomnia"
+        sleep_desc = "<span style='color:red'>Hypersomnia</span>"
 
     if heart_rate <= 39:
         heart_desc = "Bradycardia"
     elif 40 <= heart_rate <= 75:
         heart_desc = "Normal"
     else:
-        heart_desc = "Tachycardia"
+        heart_desc = "<span style='color:red'>Tachycardia</span>"
 
     return age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc
 
@@ -221,7 +221,7 @@ if st.button("Predict Stress Level"):
     st.write(f"Blood Oxygen: {blood_oxygen} ({oxygen_desc})")
     st.write(f"Eye Movement: {eye_movement} ({eye_desc})")
     st.write(f"Sleeping Hours: {sleeping_hours} ({sleep_desc})")
-    st.write(f"Heart Rate: {heart_rate} ({heart_desc})")
+    st.markdown(f"Heart Rate: {heart_rate} ({heart_desc})", unsafe_allow_html=True)
 
 # Main area for visualization
 if 'predicted_stress_level' in st.session_state:
@@ -229,3 +229,4 @@ if 'predicted_stress_level' in st.session_state:
 else:
     # Display the initial bar chart in Streamlit
     st.plotly_chart(fig)
+
