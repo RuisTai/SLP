@@ -233,6 +233,7 @@ if 'predicted_stress_level' in st.session_state:
     st.write("") 
     st.write("") 
     st.write("") 
+    st.subheader(st.session_state.predicted_stress_level)
 else:
     # Display the initial bar chart in Streamlit
     st.plotly_chart(fig)
