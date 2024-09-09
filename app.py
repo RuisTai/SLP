@@ -178,6 +178,9 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
 
     return age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc
 
+# Display the initial bar chart in Streamlit (without the bubble)
+st.plotly_chart(fig)
+
 # Predict button
 if st.button("Predict Stress Level"):
     # Predict the stress level
@@ -222,14 +225,9 @@ if st.button("Predict Stress Level"):
     st.write(f"Sleeping Hours: {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
     st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
 
-    # Display the predicted stress level below the input
-    # st.subheader(st.session_state.predicted_stress_level)
-    st.write(f"Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
-
-# Main area for visualization
-if 'predicted_stress_level' in st.session_state:
-    st.subheader(st.session_state.predicted_stress_level)
-else:
-    # Display the initial bar chart in Streamlit
-    # st.plotly_chart(fig)
+    # Display the predicted stress level below the input interpretation
+    st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction})")
+    
+    # Display suggestions for stress reduction
+    st.write("Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
 
