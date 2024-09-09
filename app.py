@@ -19,13 +19,13 @@ with st.sidebar:
         marital_status = st.selectbox("Marital Status", options=["Yes", "No"])
         gender = st.selectbox("Gender", options=["Male", "Female"])
         bmi = st.number_input("BMI (Enter input : 18.0~40.0)", min_value=18.0, max_value=40.0, value=25, step=0.1)
-        snoring_rate = st.number_input("Snoring Rate (Enter input : 0~50)", min_value=0.0, max_value=50.0, value=5, step=0.1)
-        respiration_rate = st.number_input("Respiration Rate  (Enter input : 0~50)", min_value=0.0, max_value=50.0, value=15, step=0.1)
+        snoring_rate = st.number_input("Snoring Rate (Enter input : 0~50)", min_value=-1.0, max_value=50.0, value=5, step=0.1)
+        respiration_rate = st.number_input("Respiration Rate  (Enter input : 0~50)", min_value=-1.0, max_value=50.0, value=15, step=0.1)
         body_temperature = st.number_input("Body Temperature °F (Enter input : 60~110)", min_value=60.0, max_value=110.0, value=90.0, step=0.1)
-        limb_movement = st.number_input("Limb Movement (Enter input : 0~35)", min_value=0.0, max_value=35.0, value=3, step=0.1)
+        limb_movement = st.number_input("Limb Movement (Enter input : 0~35)", min_value=-1.0, max_value=35.0, value=3, step=0.1)
         blood_oxygen = st.number_input("Blood Oxygen (Enter input : 60~110)", min_value=60.0, max_value=110.0, value=80.0, step=0.1)
-        eye_movement = st.number_input("Eye Movement  (Enter input : 0~35)", min_value=0.0, max_value=35.0, value=20, step=0.1)
-        sleeping_hours = st.number_input("Sleeping Hours (Enter input : 0~24)", min_value=0.0, max_value=24.0, value=8, step=0.1)
+        eye_movement = st.number_input("Eye Movement  (Enter input : 0~35)", min_value=-1.0, max_value=35.0, value=20, step=0.1)
+        sleeping_hours = st.number_input("Sleeping Hours (Enter input : 0~24)", min_value=-1.0, max_value=24.0, value=8, step=0.1)
         heart_rate = st.number_input("Heart Rate (Enter input : 30~100)", min_value=30.0, max_value=100.0, value=70, step=0.1)
 
         marital_status = 1 if marital_status == "Yes" else 0
