@@ -186,7 +186,7 @@ if st.button("Predict Stress Level"):
 
     # Display the predicted stress level below the input
     st.session_state.predicted_stress_level = f"Predicted Stress Level: {stress_level} (Level {prediction})"
-    st.session_state.suggestion = f"Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3"
+    st.write(f"Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
     
     # Add the chat bubble above the correct section
     fig.add_annotation(
