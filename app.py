@@ -211,7 +211,7 @@ if st.button("Predict Stress Level"):
     
     st.markdown(f"**Your Input Interpretation:**")
     st.write(f"Age: {age} ({age_desc})")
-    st.write(f"BMI: {bmi} ({bmi_desc})")
+    st.write(f"BMI: {bmi} ({bmi_desc})", unsafe_allow_html=True)
     st.write(f"Marital Status: {marital_desc}")
     st.write(f"Gender: {gender_desc}")
     st.write(f"Snoring Rate: {snoring_rate} ({snoring_desc})")
