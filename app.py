@@ -44,61 +44,60 @@ with st.sidebar:
     # Add some spacing
     st.write("")  # Empty line for spacing
 
-    # Predict button
-    if st.button("Predict Stress Level"):
-        # Predict the stress level
-        prediction = model.predict(user_input)[0]
-        
-        # Define stress levels and corresponding descriptions
-        stress_descriptions = {
-            0: "No Stress",
-            1: "Low Stress",
-            2: "Moderate Stress",
-            3: "High Stress",
-            4: "Max Stress"
-        }
-        stress_level = stress_descriptions.get(prediction, "Unknown")
+# Define stress levels and corresponding descriptions
+stress_descriptions = {
+    0: "No Stress",
+    1: "Low Stress",
+    2: "Moderate Stress",
+    3: "High Stress",
+    4: "Max Stress"
+}
 
-        # Display the predicted stress level below the input
-        st.session_state.predicted_stress_level = f"Predicted Stress Level: {stress_level} (Level {prediction})"
+# Define a gradient of colors from lime to red
+colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
 
-# Main area for visualization
-if 'predicted_stress_level' in st.session_state:
-    st.subheader(st.session_state.predicted_stress_level)
+# Create a horizontal bar chart with five sections
+fig = go.Figure()
 
-    # Define a gradient of colors from lime to red
-    colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
-    
-    # Create a horizontal bar chart with five sections
-    fig = go.Figure()
+# Add each section to the bar chart
+for i in range(5):
+    fig.add_trace(go.Bar(
+        x=[1],
+        y=[0],
+        orientation='h',
+        name=stress_descriptions[i],
+        marker_color=colors[i],
+        width=0.5,
+        showlegend=False
+    ))
 
-    # Add each section to the bar chart
-    for i in range(5):
-        fig.add_trace(go.Bar(
-            x=[1],
-            y=[0],
-            orientation='h',
-            name=stress_descriptions[i],
-            marker_color=colors[i],
-            width=0.5,
-            showlegend=False
-        ))
+# Update layout to arrange sections
+fig.update_layout(
+    barmode='stack',
+    xaxis=dict(
+        tickvals=[0, 1, 2, 3, 4],
+        ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
+        showgrid=False,
+        zeroline=False
+    ),
+    yaxis=dict(showticklabels=False, showgrid=False),
+    plot_bgcolor="white",
+    margin=dict(l=30, r=30, t=30, b=30),
+    height=200,
+    width=600
+)
 
-    # Update layout to arrange sections
-    fig.update_layout(
-        barmode='stack',
-        xaxis=dict(
-            tickvals=[0, 1, 2, 3, 4],
-            ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
-            showgrid=False,
-            zeroline=False
-        ),
-        yaxis=dict(showticklabels=False, showgrid=False),
-        plot_bgcolor="white",
-        margin=dict(l=30, r=30, t=30, b=30),
-        height=200,
-        width=600
-    )
+# Display the initial bar chart in Streamlit
+st.plotly_chart(fig)
+
+# Predict button
+if st.button("Predict Stress Level"):
+    # Predict the stress level
+    prediction = model.predict(user_input)[0]
+    stress_level = stress_descriptions.get(prediction, "Unknown")
+
+    # Display the predicted stress level below the input
+    st.session_state.predicted_stress_level = f"Predicted Stress Level: {stress_level} (Level {prediction})"
     
     # Add the chat bubble above the correct section
     fig.add_annotation(
@@ -114,5 +113,9 @@ if 'predicted_stress_level' in st.session_state:
         borderpad=4
     )
     
-    # Display the bar chart in Streamlit
+    # Display the updated bar chart with the chat bubble
     st.plotly_chart(fig)
+
+# Main area for visualization
+if 'predicted_stress_level' in st.session_state:
+    st.subheader(st.session_state.predicted_stress_level)
