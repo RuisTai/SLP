@@ -185,7 +185,7 @@ if st.button("Predict Stress Level"):
     stress_level = stress_descriptions.get(prediction, "Unknown")
 
     # Display the predicted stress level below the input
-    st.session_state.predicted_stress_level = f"Predicted Stress Level: {stress_level} (Level {prediction})"
+    st.subheader.session_state.predicted_stress_level = f"Predicted Stress Level: {stress_level} (Level {prediction})"
     st.write(f"Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
     
     # Add the chat bubble above the correct section
@@ -226,7 +226,7 @@ if st.button("Predict Stress Level"):
 
 # Main area for visualization
 if 'predicted_stress_level' in st.session_state:
-    st.write(f"Predicted Stress Level: ")
+    st.subheader.write(f"Predicted Stress Level: ")
     
 else:
     # Display the initial bar chart in Streamlit
