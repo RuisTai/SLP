@@ -199,6 +199,7 @@ if st.button("Predict Stress Level"):
     )
     
     # Display the updated bar chart with the chat bubble
+    st.subheader(st.session_state.predicted_stress_level)
     st.plotly_chart(fig)
 
     # Decode and display the interpretations of the user's input
