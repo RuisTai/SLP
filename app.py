@@ -206,6 +206,8 @@ if st.button("Predict Stress Level"):
         age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate
     )
     
+    st.write("") 
+    st.write("") 
     st.markdown(f"**Your Input Interpretation:**")
     st.write(f"Age: {age} {age_desc}", unsafe_allow_html=True)
     st.write(f"BMI: {bmi} {bmi_desc}", unsafe_allow_html=True)
@@ -221,12 +223,16 @@ if st.button("Predict Stress Level"):
     st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
 
     # Display the predicted stress level below the input
+    st.write("") 
+    st.write("") 
     st.subheader(st.session_state.predicted_stress_level)
     st.write(f"Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
 
 # Main area for visualization
 if 'predicted_stress_level' in st.session_state:
-    
+    st.write("") 
+    st.write("") 
+    st.write("") 
 else:
     # Display the initial bar chart in Streamlit
     st.plotly_chart(fig)
