@@ -15,7 +15,7 @@ with st.sidebar:
     
     # Function to get user input
     def get_user_input():
-        age = st.number_input("Age (Enter input : 18~80)"), min_value=18, max_value=80, value=0, step=1)
+        age = st.number_input("Age (Enter input : 18~80)", min_value=18, max_value=80, value=0, step=1)
         marital_status = st.selectbox("Marital Status", options=["Yes", "No"])
         gender = st.selectbox("Gender", options=["Male", "Female"])
         bmi = st.number_input("BMI (Enter input : 18.0~40.0)", min_value=2.0, max_value=4.0, value=2.0, step=0.1)
