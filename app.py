@@ -226,5 +226,6 @@ if st.button("Predict Stress Level"):
     st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction})")
     
     # Display suggestions for stress reduction
-    st.write("Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
+    st.divider()
+    st.caption("Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
 
