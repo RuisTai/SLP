@@ -227,5 +227,5 @@ if st.button("Predict Stress Level"):
     
     # Display suggestions for stress reduction
     st.divider()
-    st.caption("Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM <3")
+    st.caption("Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM emojis :heart:")
 
