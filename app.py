@@ -105,9 +105,9 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
     elif bmi <= 24.9:
         bmi_desc = "(Normal weight)"
     elif bmi <= 29.9:
-        bmi_desc = "(Overweight)"
+        bmi_desc = "<span style='color:orange'>(Overweight)</span>"
     elif bmi <= 30:
-        bmi_desc = "<span style='color:orange'>(Obese)</span>"
+        bmi_desc = "<span style='color:red'>(Obese)</span>"
     else:
         bmi_desc = "<span style='color:red'>(Extremely Obese)</span>"
 
