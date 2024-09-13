@@ -22,30 +22,37 @@ with st.sidebar:
     st.write("Enter the features below to predict the stress level from 0 to 4:")
 
     # Function to get user input
+        # Function to get user input
     def get_user_input():
         age = st.number_input("Age (Enter input : 18~80)", min_value=18, max_value=80, value=22, step=1)
         marital_status = st.selectbox("Marital Status", options=["Yes", "No"])
         gender = st.selectbox("Gender", options=["Male", "Female"])
         bmi = st.number_input("BMI (Enter input : 18.0~40.0)", min_value=18.0, max_value=40.0, value=25.0, step=0.1)
-        snoring_rate = st.number_input("Snoring Rate (Enter input : 0~50)", min_value=-1.0, max_value=50.0, value=5.0, step=0.1)
+        snoring_rate = st.text_input("Snoring Rate (Enter input : 0~50)", value="")
         respiration_rate = st.number_input("Respiration Rate (Enter input : 0~50)", min_value=-1.0, max_value=50.0, value=15.0, step=0.1)
         body_temperature = st.number_input("Body Temperature °F (Enter input : 60~110)", min_value=60.0, max_value=110.0, value=90.0, step=0.1)
-        limb_movement = st.number_input("Limb Movement (Enter input : 0~35)", min_value=-1.0, max_value=35.0, value=3.0, step=0.1)
+        limb_movement = st.text_input("Limb Movement (Enter input : 0~35)", value="")
         blood_oxygen = st.number_input("Blood Oxygen (Enter input : 60~110)", min_value=60.0, max_value=110.0, value=80.0, step=0.1)
-        eye_movement = st.number_input("Eye Movement (Enter input : 0~35)", min_value=-1.0, max_value=35.0, value=20.0, step=0.1)
+        eye_movement = st.text_input("Eye Movement (Enter input : 0~35)", value="")
         sleeping_hours = st.number_input("Sleeping Hours (Enter input : 0~24)", min_value=-1.0, max_value=24.0, value=8.0, step=0.1)
         heart_rate = st.number_input("Heart Rate (Enter input : 30~100)", min_value=30.0, max_value=100.0, value=70.0, step=0.1)
-
+    
         marital_status = 1 if marital_status == "Yes" else 0
         gender = 1 if gender == "Male" else 0
-
+        
+        # Convert empty or invalid inputs to zero
+        snoring_rate = float(snoring_rate) if snoring_rate else 0
+        limb_movement = float(limb_movement) if limb_movement else 0
+        eye_movement = float(eye_movement) if eye_movement else 0
+    
         input_data = np.array([
             age, marital_status, gender, bmi, snoring_rate, respiration_rate,
             body_temperature, limb_movement, blood_oxygen, eye_movement,
             sleeping_hours, heart_rate
         ]).reshape(1, -1)
-
+    
         return input_data, age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate
+
 
     user_input, age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate = get_user_input()
 
@@ -190,18 +197,28 @@ if st.button("Predict Stress Level"):
     prediction = model.predict(user_input)[0]
     stress_level = stress_descriptions.get(prediction, "Unknown")
     
+    # Check if any of the optional inputs are empty or zero
+    incomplete_data_warning = ""
+    if snoring_rate == 0 or limb_movement == 0 or eye_movement == 0:
+        incomplete_data_warning = (
+            "Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero. "
+            "The prediction may not be highly accurate due to incomplete data."
+        )
+    
     # Add the chat bubble above the correct section
     fig.add_annotation(
         x=prediction + 0.5,  # Position the chat bubble based on the prediction
         y=0.5,
-        text=f"<b>{stress_level}</b>",
-        showarrow=False,
-        font=dict(size=14, color="black"),
+        text=f"<b>{stress_level}</b><br>{incomplete_data_warning}",
+        showarrow=True,
+        arrowhead=2,
+        ax=0,
+        ay=-40,
+        font=dict(size=12, color="black"),
         align="center",
         bgcolor="white",
-        bordercolor=colors[prediction],
-        borderwidth=2,
-        borderpad=4
+        bordercolor="black",
+        borderwidth=1
     )
     
     # Display the updated bar chart with the chat bubble
