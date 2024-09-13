@@ -278,3 +278,7 @@ if st.session_state.history:
 
     st.markdown(create_download_link(df_history), unsafe_allow_html=True)
 
+   if incomplete_data_warning:
+        st.write(f"**Warning:** {incomplete_data_warning}")
+       
+
