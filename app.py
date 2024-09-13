@@ -247,7 +247,7 @@ if st.button("Predict Stress Level"):
     st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
 
     if incomplete_data_warning:
-        st.write(f"**Warning:** {incomplete_data_warning}")
+        st.write(f"**Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
 
     # Save user input and prediction to history
     st.session_state.history.append({
