@@ -90,6 +90,98 @@ fig.update_layout(
     width=600
 )
 
+# Function to decode user input back to human-readable labels
+def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate):
+    if age <= 18:
+        age_desc = "(Adolescent)"
+    elif age <= 24:
+        age_desc = "(Young adult)"
+    elif age <= 45:
+        age_desc = "(Adult)"
+    elif age <= 64:
+        age_desc = "(Middle age adult)"
+    else:
+        age_desc = "(Older adult)"
+
+    if bmi < 18.5:
+        bmi_desc = "(Underweight)"
+    elif bmi <= 24.9:
+        bmi_desc = "(Normal weight)"
+    elif bmi <= 29.9:
+        bmi_desc = "<span style='color:orange'>(Overweight)</span>"
+    elif bmi <= 30:
+        bmi_desc = "<span style='color:red'>(Obese)</span>"
+    else:
+        bmi_desc = "<span style='color:red'>(Extremely Obese)</span>"
+
+    marital_desc = "Married" if marital_status == 1 else "Not married"
+    gender_desc = "Male" if gender == 1 else "Female"
+
+    if snoring_rate <= 5:
+        snoring_desc = "(Normal)"
+    elif snoring_rate <= 15:
+        snoring_desc = "(Mild snoring)"
+    elif snoring_rate <= 30:
+        snoring_desc = "(Moderate snoring)"
+    elif snoring_rate <= 45:
+        snoring_desc = "<span style='color:orange'>(Heavy Snoring)</span>"
+    else:
+        snoring_desc = "<span style='color:red'>(Severe Snoring)</span>"
+
+    if respiration_rate <= 11:
+        respiration_desc = "<span style='color:orange'>((Hypoventilation-Slow Breath)</span>"
+    elif 12 <= respiration_rate <= 20:
+        respiration_desc = "(Normal)"
+    else:
+        respiration_desc = "<span style='color:red'>(Hyperventilation-Rapid Breath)</span>"
+
+    if body_temperature < 79:
+        body_temp_desc = "<span style='color:red'>(Hypothermia-Low)</span>"
+    elif 80 <= body_temperature <= 100:
+        body_temp_desc = "(Normal)"
+    else:
+        body_temp_desc = "<span style='color:red'>(Hyperthermia-High)</span>"
+
+    if limb_movement <= 5:
+        limb_desc = "(Normal)"
+    elif 6 <= limb_movement <= 25:
+        limb_desc = "(Moderate)"
+    else:
+        limb_desc = "<span style='color:red'>Severe</span>"
+
+    if blood_oxygen <= 69:
+        oxygen_desc = "<span style='color:red'>(Cyanosis-Low)</span>"
+    elif blood_oxygen <= 79:
+        oxygen_desc = "<span style='color:red'>(Severe Hypoxia)</span>"
+    elif blood_oxygen <= 89:
+        oxygen_desc = "<span style='color:orange'>(Low Oxygen Level)</span>"
+    elif 90 <= blood_oxygen <= 94:
+        oxygen_desc = "(Moderate Oxygen Level)"
+    else:
+        oxygen_desc = "(Normal Oxygen Level)"
+
+    if eye_movement <= 25:
+        eye_desc = "(Normal)"
+    else:
+        eye_desc = "<span style='color:red'>(High REM)</span>"
+
+    if sleeping_hours <= 6:
+        sleep_desc = "<span style='color:red'>(Sleep Deprivation)</span>"
+    elif 7 <= sleeping_hours <= 9:
+        sleep_desc = "(Normal)"
+    else:
+        sleep_desc = "<span style='color:red'>(Hypersomnia)</span>"
+
+    if heart_rate <= 39:
+        heart_desc = "<span style='color:red'>(Bradycardia-Too Slow)</span>"
+    elif 40 <= heart_rate <= 75:
+        heart_desc = "(Normal)"
+    else:
+        heart_desc = "<span style='color:red'>(Tachycardia-Too Rapid)</span>"
+
+    return age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc
+
+
 # Predict button
 if st.button("Predict Stress Level"):
     # Predict the stress level
