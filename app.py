@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 from io import BytesIO
+import base64 
+
 
 # Load the trained Gradient Boosting model
 model = joblib.load('gradient_boosting_model.pkl')
