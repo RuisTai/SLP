@@ -245,8 +245,6 @@ if st.button("Predict Stress Level"):
     st.write(f"Sleeping Hours: {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
     st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
 
-    if incomplete_data_warning:
-        st.write(f"**Warning:** {incomplete_data_warning}")
 
     # Save user input and prediction to history
     st.session_state.history.append({
@@ -281,6 +279,8 @@ if st.session_state.history:
 
     st.markdown(create_download_link(df_history), unsafe_allow_html=True)
 
+if incomplete_data_warning:
+        st.write(f"**Warning:** {incomplete_data_warning}")
 
        
 
