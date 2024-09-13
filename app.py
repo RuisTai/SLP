@@ -201,8 +201,8 @@ if st.button("Predict Stress Level"):
     incomplete_data_warning = ""
     if snoring_rate == 0 or limb_movement == 0 or eye_movement == 0:
         incomplete_data_warning = (
-            "<span style='color:lightblue'>Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span>"
-            "<span style='color:lightblue'>The prediction may not be highly accurate due to incomplete data.)</span>"
+            "<span style='color:#f5b16e'>Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span>"
+            "<span style='color:#f5b16e'>The prediction may not be highly accurate due to incomplete data.)</span>"
         )
     
     # Add the chat bubble above the correct section
