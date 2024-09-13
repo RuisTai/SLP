@@ -95,8 +95,8 @@ fig.update_layout(
     yaxis=dict(showticklabels=False, showgrid=False),
     plot_bgcolor="white",
     margin=dict(l=30, r=30, t=30, b=30),
-    height=200,
-    width=600
+    height=300,
+    width=700
 )
 
 # Function to decode user input back to human-readable labels
@@ -218,7 +218,7 @@ if st.button("Predict Stress Level"):
         align="center",
         bgcolor="white",
         bordercolor=colors[prediction],
-        borderwidth=2,
+        borderwidth=3,
         borderpad=5
     )
     
@@ -246,6 +246,8 @@ if st.button("Predict Stress Level"):
     st.write(f"Sleeping Hours: {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
     st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
 
+if incomplete_data_warning:
+        st.write(f"**Warning:** {incomplete_data_warning}")
 
     # Save user input and prediction to history
     st.session_state.history.append({
@@ -280,8 +282,7 @@ if st.session_state.history:
 
     st.markdown(create_download_link(df_history), unsafe_allow_html=True)
 
-if incomplete_data_warning:
-        st.write(f"**Warning:** {incomplete_data_warning}")
+
 
        
 
