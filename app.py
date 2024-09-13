@@ -209,16 +209,17 @@ if st.button("Predict Stress Level"):
     fig.add_annotation(
         x=prediction + 0.5,  # Position the chat bubble based on the prediction
         y=0.5,
-        text=f"<b>{stress_level}</b><br>{incomplete_data_warning}",
+        text=f"<b>{stress_level}</b>",
         showarrow=True,
         arrowhead=2,
         ax=0,
         ay=-40,
-        font=dict(size=12, color="black"),
+        font=dict(size=14, color="black"),
         align="center",
         bgcolor="white",
-        bordercolor="black",
-        borderwidth=1
+        bordercolor=colors[prediction],
+        borderwidth=2,
+        borderpad=5
     )
     
     # Display the updated bar chart with the chat bubble
