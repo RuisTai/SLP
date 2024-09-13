@@ -131,7 +131,7 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
         snoring_desc = "<span style='color:red'>(Severe Snoring)</span>"
 
     if respiration_rate <= 11:
-        respiration_desc = "<span style='color:orange'>((Hypoventilation-Slow Breath)</span>"
+        respiration_desc = "<span style='color:orange'>(Hypoventilation-Slow Breath)</span>"
     elif 12 <= respiration_rate <= 20:
         respiration_desc = "(Normal)"
     else:
@@ -149,7 +149,7 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
     elif 6 <= limb_movement <= 25:
         limb_desc = "(Moderate)"
     else:
-        limb_desc = "<span style='color:red'>Severe</span>"
+        limb_desc = "<span style='color:red'>(Severe)</span>"
 
     if blood_oxygen <= 69:
         oxygen_desc = "<span style='color:red'>(Cyanosis-Low)</span>"
