@@ -60,56 +60,36 @@ with st.sidebar:
             "Sleeping Hours": sleeping_hours, "Heart Rate": heart_rate
         })
 
-        # Define stress levels and corresponding descriptions
-        stress_descriptions = {
-            0: "No Stress",
-            1: "Low Stress",
-            2: "Moderate Stress",
-            3: "High Stress",
-            4: "Max Stress"
-        }
-
-        # Define a gradient of colors from lime to red
-        colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
-
-        # Create a horizontal bar chart with five sections
-        fig = go.Figure()
-
-        for i in range(5):
-            fig.add_trace(go.Bar(
-                x=[1],
-                y=[0],
-                orientation='h',
-                name=stress_descriptions[i],
-                marker_color=colors[i],
-                width=0.5,
-                showlegend=False
-            ))
-
-        fig.update_layout(
-            barmode='stack',
-            xaxis=dict(
-                tickvals=[0, 1, 2, 3, 4],
-                ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
-                showgrid=False,
-                zeroline=False
-            ),
-            yaxis=dict(showticklabels=False, showgrid=False),
-            plot_bgcolor="white",
-            margin=dict(l=30, r=30, t=30, b=30),
-            height=200,
-            width=600
-        )
-
-        # Predict button
+        # Button to predict the stress level
         if st.button("Predict Stress Level"):
+            # Prediction and results moved outside sidebar
             prediction = model.predict(user_input)[0]
-            stress_level = stress_descriptions.get(prediction, "Unknown")
+            stress_descriptions = {
+                0: "No Stress",
+                1: "Low Stress",
+                2: "Moderate Stress",
+                3: "High Stress",
+                4: "Max Stress"
+            }
+
+            # Define colors and create chart
+            colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
+            fig = go.Figure()
+            for i in range(5):
+                fig.add_trace(go.Bar(
+                    x=[1],
+                    y=[0],
+                    orientation='h',
+                    name=stress_descriptions[i],
+                    marker_color=colors[i],
+                    width=0.5,
+                    showlegend=False
+                ))
 
             fig.add_annotation(
                 x=prediction + 0.5,
                 y=0.5,
-                text=f"<b>{stress_level}</b>",
+                text=f"<b>{stress_descriptions[prediction]}</b>",
                 showarrow=False,
                 font=dict(size=14, color="black"),
                 align="center",
@@ -119,10 +99,24 @@ with st.sidebar:
                 borderpad=4
             )
 
-            st.plotly_chart(fig)
+            fig.update_layout(
+                barmode='stack',
+                xaxis=dict(
+                    tickvals=[0, 1, 2, 3, 4],
+                    ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
+                    showgrid=False,
+                    zeroline=False
+                ),
+                yaxis=dict(showticklabels=False, showgrid=False),
+                plot_bgcolor="white",
+                margin=dict(l=30, r=30, t=30, b=30),
+                height=200,
+                width=600
+            )
 
-            # Display the predicted stress level
-            st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction})")
+            # Display the chart and result on the main page (not sidebar)
+            st.plotly_chart(fig)
+            st.subheader(f"Predicted Stress Level: {stress_descriptions[prediction]} (Level {prediction})")
 
     elif selected_function == "Download Input History":
         # Convert input history to DataFrame
