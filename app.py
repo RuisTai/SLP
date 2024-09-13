@@ -212,18 +212,21 @@ if st.button("Predict Stress Level"):
         age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate
     )
 
-    st.write(f"Age: {age} {age_desc}")
-    st.write(f"BMI: {bmi} {bmi_desc}")
+    st.write("") 
+    st.write("") 
+    st.markdown(f"**Your Input Interpretation:**")
+    st.write(f"Age: {age} {age_desc}", unsafe_allow_html=True)
+    st.write(f"BMI: {bmi} {bmi_desc}", unsafe_allow_html=True)
     st.write(f"Marital Status: {marital_desc}")
     st.write(f"Gender: {gender_desc}")
-    st.write(f"Snoring Rate: {snoring_rate} {snoring_desc}")
-    st.write(f"Respiration Rate: {respiration_rate} {respiration_desc}")
-    st.write(f"Body Temperature: {body_temperature} {body_temp_desc}")
-    st.write(f"Limb Movement: {limb_movement} {limb_desc}")
-    st.write(f"Blood Oxygen: {blood_oxygen} {oxygen_desc}")
-    st.write(f"Eye Movement: {eye_movement} {eye_desc}")
-    st.write(f"Sleeping Hours: {sleeping_hours} {sleep_desc}")
-    st.write(f"Heart Rate: {heart_rate} {heart_desc}")
+    st.write(f"Snoring Rate: {snoring_rate} {snoring_desc}", unsafe_allow_html=True)
+    st.write(f"Respiration Rate: {respiration_rate} {respiration_desc}", unsafe_allow_html=True)
+    st.write(f"Body Temperature: {body_temperature} °F {body_temp_desc}", unsafe_allow_html=True)
+    st.write(f"Limb Movement: {limb_movement} {limb_desc}", unsafe_allow_html=True)
+    st.write(f"Blood Oxygen: {blood_oxygen} {oxygen_desc}", unsafe_allow_html=True)
+    st.write(f"Eye Movement: {eye_movement} {eye_desc}", unsafe_allow_html=True)
+    st.write(f"Sleeping Hours: {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
+    st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
 
     # Save user input and prediction to history
     st.session_state.history.append({
@@ -241,6 +244,7 @@ if st.button("Predict Stress Level"):
         "Heart Rate": heart_rate,
         "Stress Level": stress_level
     })
+
 
 # Display user input history and provide download button
 st.subheader("Prediction History")
