@@ -1,0 +1,200 @@
+import streamlit as st
+import joblib
+import numpy as np
+import pandas as pd
+import plotly.graph_objects as go
+from io import BytesIO
+import base64
+
+# Load the trained Gradient Boosting model
+model = joblib.load('gradient_boosting_model.pkl')
+
+# Initialize history
+if 'history' not in st.session_state:
+    st.session_state.history = []
+if 'show_history' not in st.session_state:
+    st.session_state.show_history = False
+
+# Streamlit app title
+st.title("Stress Prediction System")
+
+# Sidebar for input section
+with st.sidebar:
+    st.write("Enter the features below to predict the stress level from 0 to 4:")
+
+    # Function to check if a value is numeric
+    def is_valid_number(input_value, min_value, max_value):
+        try:
+            float_val = float(input_value)
+            if min_value <= float_val <= max_value:
+                return True
+            else:
+                return False
+        except ValueError:
+            return False
+
+    # Function to get user input
+    def get_user_input():
+        age = st.number_input("Age (Enter input : 18~80)", min_value=18, max_value=80, value=22, step=1)
+        marital_status = st.selectbox("Marital Status", options=["Yes", "No"])
+        gender = st.selectbox("Gender", options=["Male", "Female"])
+        bmi = st.number_input("BMI (Enter input : 18.0~40.0)", min_value=18.0, max_value=40.0, value=25.0, step=0.1)
+        
+        snoring_rate = st.text_input("Snoring Rate (Enter input : 0~50)", value="")
+        respiration_rate = st.number_input("Respiration Rate (Enter input : 0~50)", min_value=-1.0, max_value=50.0, value=15.0, step=0.1)
+        body_temperature = st.number_input("Body Temperature °F (Enter input : 60~110)", min_value=60.0, max_value=110.0, value=90.0, step=0.1)
+        limb_movement = st.text_input("Limb Movement (Enter input : 0~35)", value="")
+        blood_oxygen = st.number_input("Blood Oxygen (Enter input : 60~110)", min_value=60.0, max_value=110.0, value=80.0, step=0.1)
+        eye_movement = st.text_input("Eye Movement (Enter input : 0~35)", value="")
+        sleeping_hours = st.number_input("Sleeping Hours (Enter input : 0~24)", min_value=-1.0, max_value=24.0, value=8.0, step=0.1)
+        heart_rate = st.number_input("Heart Rate (Enter input : 30~100)", min_value=30.0, max_value=100.0, value=70.0, step=0.1)
+
+        marital_status = 1 if marital_status == "Yes" else 0
+        gender = 1 if gender == "Male" else 0
+        
+        # Validate snoring_rate, limb_movement, and eye_movement for valid numeric input
+        if not is_valid_number(snoring_rate, 0, 50):
+            st.write("**Error:** Please insert the Snoring Rate within the range (0-50) and ensure it is a valid number.")
+            return None
+        if not is_valid_number(limb_movement, 0, 35):
+            st.write("**Error:** Please insert the Limb Movement within the range (0-35) and ensure it is a valid number.")
+            return None
+        if not is_valid_number(eye_movement, 0, 35):
+            st.write("**Error:** Please insert the Eye Movement within the range (0-35) and ensure it is a valid number.")
+            return None
+
+        # Convert valid inputs to float
+        snoring_rate = float(snoring_rate) if snoring_rate else 0
+        limb_movement = float(limb_movement) if limb_movement else 0
+        eye_movement = float(eye_movement) if eye_movement else 0
+    
+        input_data = np.array([
+            age, marital_status, gender, bmi, snoring_rate, respiration_rate,
+            body_temperature, limb_movement, blood_oxygen, eye_movement,
+            sleeping_hours, heart_rate
+        ]).reshape(1, -1)
+    
+        return input_data, age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate
+
+
+    user_input_data = get_user_input()
+    if user_input_data is None:
+        st.stop()
+
+    user_input, age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate = user_input_data
+
+# Define stress levels and corresponding descriptions
+stress_descriptions = {
+    0: "No Stress",
+    1: "Low Stress",
+    2: "Moderate Stress",
+    3: "High Stress",
+    4: "Max Stress"
+}
+
+# Define a gradient of colors from lime to red
+colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
+
+# Create a horizontal bar chart with five sections
+fig = go.Figure()
+
+# Add each section to the bar chart
+for i in range(5):
+    fig.add_trace(go.Bar(
+        x=[1],
+        y=[0],
+        orientation='h',
+        name=stress_descriptions[i],
+        marker_color=colors[i],
+        width=0.5,
+        showlegend=False
+    ))
+
+# Update layout to arrange sections
+fig.update_layout(
+    barmode='stack',
+    xaxis=dict(
+        tickvals=[0, 1, 2, 3, 4],
+        ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
+        showgrid=False,
+        zeroline=False
+    ),
+    yaxis=dict(showticklabels=False, showgrid=False),
+    plot_bgcolor="white",
+    margin=dict(l=30, r=30, t=30, b=30),
+    height=200,
+    width=600
+)
+
+# Predict button
+if st.button("Predict Stress Level"):
+    # Predict the stress level
+    prediction = model.predict(user_input)[0]
+    stress_level = stress_descriptions.get(prediction, "Unknown")
+
+    # Get prediction probabilities
+    prediction_probabilities = model.predict_proba(user_input)[0]
+    accuracy = round(prediction_probabilities[prediction] * 100, 2)  # Convert to percentage
+
+    # Check if any of the optional inputs are empty or zero
+    incomplete_data_warning = ""
+    if snoring_rate == 0 or limb_movement == 0 or eye_movement == 0:
+        incomplete_data_warning = (
+            "<span style='color:#d61e40'>Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span>"
+            "<span style='color:#d61e40'>The prediction may not be highly accurate due to incomplete data.)</span>"
+        )
+    
+    # Add the chat bubble above the correct section
+    fig.add_annotation(
+        x=prediction + 0.5,  # Position the chat bubble based on the prediction
+        y=0.5,
+        text=f"<b>{stress_level}</b> ({accuracy}%)",  # Show the prediction with accuracy percentage
+        showarrow=True,
+        arrowhead=2,
+        ax=0,
+        ay=-40,
+        font=dict(size=14, color="black"),
+        align="center",
+        bgcolor="white",
+        bordercolor=colors[prediction],
+        borderwidth=2,
+        borderpad=4
+    )
+    
+    # Display the updated bar chart with the chat bubble
+    st.plotly_chart(fig)
+
+    # Save user input and prediction to history
+    st.session_state.history.append({
+        "Age": age,
+        "BMI": bmi,
+        "Marital Status": marital_status,
+        "Gender": gender,
+        "Snoring Rate": snoring_rate,
+        "Respiration Rate": respiration_rate,
+        "Body Temperature": body_temperature,
+        "Limb Movement": limb_movement,
+        "Blood Oxygen": blood_oxygen,
+        "Eye Movement": eye_movement,
+        "Sleeping Hours": sleeping_hours,
+        "Heart Rate": heart_rate,
+        "Stress Level": stress_level,
+        "Prediction Accuracy (%)": accuracy  # Store the accuracy percentage in the history
+    })
+
+# Button to toggle showing prediction history
+if st.button("Show Prediction History"):
+    st.session_state.show_history = not st.session_state.show_history  # Toggle history visibility
+
+# Display prediction history if the button was clicked
+if st.session_state.show_history and st.session_state.history:
+    df_history = pd.DataFrame(st.session_state.history)
+    st.write(df_history)
+    
+    # Create a downloadable CSV file
+    def create_download_link(df, filename="history.csv"):
+        csv = df.to_csv(index=False)
+        b64 = base64.b64encode(csv.encode()).decode()
+        return f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV file</a>'
+
+    st.markdown(create_download_link(df_history), unsafe_allow_html=True)
