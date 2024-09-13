@@ -114,6 +114,10 @@ with st.sidebar:
                 height=200,
                 width=600
             )
+            
+            # Display the chart and result on the main page (not sidebar
+            st.plotly_chart(fig)
+            st.subheader(f"Predicted Stress Level: {stress_descriptions[prediction]} (Level {prediction})")
 
     elif selected_function == "Download Input History":
         # Convert input history to DataFrame
@@ -131,6 +135,4 @@ with st.sidebar:
         else:
             st.write("No input history recorded yet.")
 
-# Display the chart and result on the main page (not sidebar
-            st.plotly_chart(fig)
-            st.subheader(f"Predicted Stress Level: {stress_descriptions[prediction]} (Level {prediction})")
+
