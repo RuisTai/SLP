@@ -13,6 +13,8 @@ model = joblib.load('gradient_boosting_model.pkl')
 # Initialize history
 if 'history' not in st.session_state:
     st.session_state.history = []
+if 'show_history' not in st.session_state:
+    st.session_state.show_history = False
 
 # Streamlit app title
 st.title("Stress Prediction System")
@@ -270,19 +272,36 @@ if st.button("Predict Stress Level"):
 st.subheader("Prediction History")
 
 
-# Button to show the prediction history
+# # Button to show the prediction history
+# if st.button("Show Prediction History"):
+#     if st.session_state.history:
+#         df_history = pd.DataFrame(st.session_state.history)
+#         st.write(df_history)
+    
+#         # Create a downloadable CSV file
+#         def create_download_link(df, filename="history.csv"):
+#             csv = df.to_csv(index=False)
+#             b64 = base64.b64encode(csv.encode()).decode()
+#             return f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV file</a>'
+    
+#         st.markdown(create_download_link(df_history), unsafe_allow_html=True)
+
+# Button to toggle showing prediction history
 if st.button("Show Prediction History"):
-    if st.session_state.history:
-        df_history = pd.DataFrame(st.session_state.history)
-        st.write(df_history)
+    st.session_state.show_history = not st.session_state.show_history  # Toggle history visibility
+
+# Display prediction history if the button was clicked
+if st.session_state.show_history and st.session_state.history:
+    df_history = pd.DataFrame(st.session_state.history)
+    st.write(df_history)
     
-        # Create a downloadable CSV file
-        def create_download_link(df, filename="history.csv"):
-            csv = df.to_csv(index=False)
-            b64 = base64.b64encode(csv.encode()).decode()
-            return f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV file</a>'
-    
-        st.markdown(create_download_link(df_history), unsafe_allow_html=True)
+    # Create a downloadable CSV file
+    def create_download_link(df, filename="history.csv"):
+        csv = df.to_csv(index=False)
+        b64 = base64.b64encode(csv.encode()).decode()
+        return f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV file</a>'
+
+    st.markdown(create_download_link(df_history), unsafe_allow_html=True)
 
 
 
