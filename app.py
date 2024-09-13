@@ -16,11 +16,12 @@ st.title("Stress Prediction System")
 
 # Sidebar for input section with dropdown
 with st.sidebar:
-    st.write("Enter the features below to predict the stress level from 0 to 4:")
 
     # Dropdown to select between functions
     selected_function = st.selectbox("Choose an action:", ["Predict Stress Level", "Download Input History"])
 
+    st.write("Enter the features below to predict the stress level from 0 to 4:")
+    
     # Function to get user input
     def get_user_input():
         age = st.number_input("Age (Enter input : 18~80)", min_value=18, max_value=80, value=22, step=1)
@@ -113,10 +114,9 @@ with st.sidebar:
                 height=200,
                 width=600
             )
-
-            # Display the chart and result on the main page (not sidebar)
-            st.plotly_chart(fig)
-            st.subheader(f"Predicted Stress Level: {stress_descriptions[prediction]} (Level {prediction})")
+# Display the chart and result on the main page (not sidebar
+st.plotly_chart(fig)
+st.subheader(f"Predicted Stress Level: {stress_descriptions[prediction]} (Level {prediction})")
 
     elif selected_function == "Download Input History":
         # Convert input history to DataFrame
