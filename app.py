@@ -195,78 +195,100 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
 
 # Predict button
 if st.button("Predict Stress Level"):
-    # Predict the stress level
-    prediction = model.predict(user_input)[0]
-    stress_level = stress_descriptions.get(prediction, "Unknown")
+    # Validate if all inputs are within the specified ranges
+    if not (18 <= age <= 80):
+        st.write("**Error:** Please insert the Age within the range (18-80).")
+    elif not (18.0 <= bmi <= 40.0):
+        st.write("**Error:** Please insert the BMI within the range (18.0-40.0).")
+    elif not (0 <= float(snoring_rate) <= 50):
+        st.write("**Error:** Please insert the Snoring Rate within the range (0-50).")
+    elif not (0 <= respiration_rate <= 50):
+        st.write("**Error:** Please insert the Respiration Rate within the range (0-50).")
+    elif not (60.0 <= body_temperature <= 110.0):
+        st.write("**Error:** Please insert the Body Temperature within the range (60.0-110.0 °F).")
+    elif not (0 <= float(limb_movement) <= 35):
+        st.write("**Error:** Please insert the Limb Movement within the range (0-35).")
+    elif not (60 <= blood_oxygen <= 110):
+        st.write("**Error:** Please insert the Blood Oxygen within the range (60-110).")
+    elif not (0 <= float(eye_movement) <= 35):
+        st.write("**Error:** Please insert the Eye Movement within the range (0-35).")
+    elif not (0 <= sleeping_hours <= 24):
+        st.write("**Error:** Please insert the Sleeping Hours within the range (0-24).")
+    elif not (30 <= heart_rate <= 100):
+        st.write("**Error:** Please insert the Heart Rate within the range (30-100).")
+    else:
+        # If inputs are valid, predict the stress level
+        prediction = model.predict(user_input)[0]
+        stress_level = stress_descriptions.get(prediction, "Unknown")
     
-    # Check if any of the optional inputs are empty or zero
-    incomplete_data_warning = ""
-    if snoring_rate == 0 or limb_movement == 0 or eye_movement == 0:
-        incomplete_data_warning = (
-            "<span style='color:#d61e40'>Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span>"
-            "<span style='color:#d61e40'>The prediction may not be highly accurate due to incomplete data.)</span>"
+        # Check if any of the optional inputs are empty or zero
+        incomplete_data_warning = ""
+        if snoring_rate == 0 or limb_movement == 0 or eye_movement == 0:
+            incomplete_data_warning = (
+                "<span style='color:#d61e40'>Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span>"
+                "<span style='color:#d61e40'>The prediction may not be highly accurate due to incomplete data.)</span>"
+            )
+    
+        # Add the chat bubble above the correct section
+        fig.add_annotation(
+            x=prediction + 0.5,  # Position the chat bubble based on the prediction
+            y=0.5,
+            text=f"<b>{stress_level}</b>",
+            showarrow=True,
+            arrowhead=2,
+            ax=0,
+            ay=-40,
+            font=dict(size=14, color="black"),
+            align="center",
+            bgcolor="white",
+            bordercolor=colors[prediction],
+            borderwidth=2,
+            borderpad=4
         )
     
-    # Add the chat bubble above the correct section
-    fig.add_annotation(
-        x=prediction + 0.5,  # Position the chat bubble based on the prediction
-        y=0.5,
-        text=f"<b>{stress_level}</b>",
-        showarrow=True,
-        arrowhead=2,
-        ax=0,
-        ay=-40,
-        font=dict(size=14, color="black"),
-        align="center",
-        bgcolor="white",
-        bordercolor=colors[prediction],
-        borderwidth=2,
-        borderpad=4
-    )
+        # Display the updated bar chart with the chat bubble
+        st.plotly_chart(fig)
     
-    # Display the updated bar chart with the chat bubble
-    st.plotly_chart(fig)
+        # Decode and display the interpretations of the user's input
+        age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc = decode_user_input(
+            age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate
+        )
 
-    # Decode and display the interpretations of the user's input
-    age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc = decode_user_input(
-        age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate
-    )
-
-    st.write("") 
-    st.write("") 
-    st.markdown(f"**Your Input Interpretation:**")
-    st.write(f"Age: {age} {age_desc}", unsafe_allow_html=True)
-    st.write(f"BMI: {bmi} {bmi_desc}", unsafe_allow_html=True)
-    st.write(f"Marital Status: {marital_desc}")
-    st.write(f"Gender: {gender_desc}")
-    st.write(f"Snoring Rate: {snoring_rate} {snoring_desc}", unsafe_allow_html=True)
-    st.write(f"Respiration Rate: {respiration_rate} {respiration_desc}", unsafe_allow_html=True)
-    st.write(f"Body Temperature: {body_temperature} °F {body_temp_desc}", unsafe_allow_html=True)
-    st.write(f"Limb Movement: {limb_movement} {limb_desc}", unsafe_allow_html=True)
-    st.write(f"Blood Oxygen: {blood_oxygen} {oxygen_desc}", unsafe_allow_html=True)
-    st.write(f"Eye Movement: {eye_movement} {eye_desc}", unsafe_allow_html=True)
-    st.write(f"Sleeping Hours: {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
-    st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
-
-    if incomplete_data_warning:
-        st.write(f"**Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
-
-    # Save user input and prediction to history
-    st.session_state.history.append({
-        "Age": age,
-        "BMI": bmi,
-        "Marital Status": marital_desc,
-        "Gender": gender_desc,
-        "Snoring Rate": snoring_rate,
-        "Respiration Rate": respiration_rate,
-        "Body Temperature": body_temperature,
-        "Limb Movement": limb_movement,
-        "Blood Oxygen": blood_oxygen,
-        "Eye Movement": eye_movement,
-        "Sleeping Hours": sleeping_hours,
-        "Heart Rate": heart_rate,
-        "Stress Level": stress_level
-    })
+        st.write("") 
+        st.write("") 
+        st.markdown(f"**Your Input Interpretation:**")
+        st.write(f"Age: {age} {age_desc}", unsafe_allow_html=True)
+        st.write(f"BMI: {bmi} {bmi_desc}", unsafe_allow_html=True)
+        st.write(f"Marital Status: {marital_desc}")
+        st.write(f"Gender: {gender_desc}")
+        st.write(f"Snoring Rate: {snoring_rate} {snoring_desc}", unsafe_allow_html=True)
+        st.write(f"Respiration Rate: {respiration_rate} {respiration_desc}", unsafe_allow_html=True)
+        st.write(f"Body Temperature: {body_temperature} °F {body_temp_desc}", unsafe_allow_html=True)
+        st.write(f"Limb Movement: {limb_movement} {limb_desc}", unsafe_allow_html=True)
+        st.write(f"Blood Oxygen: {blood_oxygen} {oxygen_desc}", unsafe_allow_html=True)
+        st.write(f"Eye Movement: {eye_movement} {eye_desc}", unsafe_allow_html=True)
+        st.write(f"Sleeping Hours: {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
+        st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
+    
+        if incomplete_data_warning:
+            st.write(f"**Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
+    
+        # Save user input and prediction to history
+        st.session_state.history.append({
+            "Age": age,
+            "BMI": bmi,
+            "Marital Status": marital_desc,
+            "Gender": gender_desc,
+            "Snoring Rate": snoring_rate,
+            "Respiration Rate": respiration_rate,
+            "Body Temperature": body_temperature,
+            "Limb Movement": limb_movement,
+            "Blood Oxygen": blood_oxygen,
+            "Eye Movement": eye_movement,
+            "Sleeping Hours": sleeping_hours,
+            "Heart Rate": heart_rate,
+            "Stress Level": stress_level
+        })
 
 # Display user input history and provide download button
 st.subheader("Prediction History")
