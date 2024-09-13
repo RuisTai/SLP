@@ -95,8 +95,8 @@ fig.update_layout(
     yaxis=dict(showticklabels=False, showgrid=False),
     plot_bgcolor="white",
     margin=dict(l=30, r=30, t=30, b=30),
-    height=300,
-    width=700
+    height=200,
+    width=600
 )
 
 # Function to decode user input back to human-readable labels
@@ -201,8 +201,8 @@ if st.button("Predict Stress Level"):
     incomplete_data_warning = ""
     if snoring_rate == 0 or limb_movement == 0 or eye_movement == 0:
         incomplete_data_warning = (
-            "Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero. "
-            "The prediction may not be highly accurate due to incomplete data."
+            "<span style='color:yellow'>Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span>"
+            "<span style='color:yellow'>The prediction may not be highly accurate due to incomplete data.)</span>"
         )
     
     # Add the chat bubble above the correct section
@@ -218,8 +218,8 @@ if st.button("Predict Stress Level"):
         align="center",
         bgcolor="white",
         bordercolor=colors[prediction],
-        borderwidth=3,
-        borderpad=5
+        borderwidth=2,
+        borderpad=4
     )
     
     # Display the updated bar chart with the chat bubble
