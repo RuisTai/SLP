@@ -4,4 +4,3 @@ joblib
 numpy
 pandas
 plotly
-base64
