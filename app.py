@@ -1,18 +1,26 @@
 import streamlit as st
 import joblib
 import numpy as np
+import pandas as pd
 import plotly.graph_objects as go
 
 # Load the trained Gradient Boosting model
 model = joblib.load('gradient_boosting_model.pkl')
 
+# Initialize an empty list to store input history
+if 'input_history' not in st.session_state:
+    st.session_state['input_history'] = []
+
 # Streamlit app title
 st.title("Stress Prediction System")
 
-# Sidebar for input section
+# Sidebar for input section with dropdown
 with st.sidebar:
     st.write("Enter the features below to predict the stress level from 0 to 4:")
-    
+
+    # Dropdown to select between functions
+    selected_function = st.selectbox("Choose an action:", ["Predict Stress Level", "Download Input History"])
+
     # Function to get user input
     def get_user_input():
         age = st.number_input("Age (Enter input : 18~80)", min_value=18, max_value=80, value=22, step=1)
@@ -39,193 +47,95 @@ with st.sidebar:
 
         return input_data, age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate
 
-    user_input, age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate = get_user_input()
+    if selected_function == "Predict Stress Level":
+        # Main function to predict stress level
+        user_input, age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate = get_user_input()
 
-# Define stress levels and corresponding descriptions
-stress_descriptions = {
-    0: "No Stress",
-    1: "Low Stress",
-    2: "Moderate Stress",
-    3: "High Stress",
-    4: "Max Stress"
-}
+        # Store user input in session state
+        st.session_state['input_history'].append({
+            "Age": age, "BMI": bmi, "Marital Status": marital_status, "Gender": gender,
+            "Snoring Rate": snoring_rate, "Respiration Rate": respiration_rate,
+            "Body Temperature": body_temperature, "Limb Movement": limb_movement,
+            "Blood Oxygen": blood_oxygen, "Eye Movement": eye_movement,
+            "Sleeping Hours": sleeping_hours, "Heart Rate": heart_rate
+        })
 
-# Define a gradient of colors from lime to red
-colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
+        # Define stress levels and corresponding descriptions
+        stress_descriptions = {
+            0: "No Stress",
+            1: "Low Stress",
+            2: "Moderate Stress",
+            3: "High Stress",
+            4: "Max Stress"
+        }
 
-# Create a horizontal bar chart with five sections
-fig = go.Figure()
+        # Define a gradient of colors from lime to red
+        colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
 
-# Add each section to the bar chart
-for i in range(5):
-    fig.add_trace(go.Bar(
-        x=[1],
-        y=[0],
-        orientation='h',
-        name=stress_descriptions[i],
-        marker_color=colors[i],
-        width=0.5,
-        showlegend=False
-    ))
+        # Create a horizontal bar chart with five sections
+        fig = go.Figure()
 
-# Update layout to arrange sections
-fig.update_layout(
-    barmode='stack',
-    xaxis=dict(
-        tickvals=[0, 1, 2, 3, 4],
-        ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
-        showgrid=False,
-        zeroline=False
-    ),
-    yaxis=dict(showticklabels=False, showgrid=False),
-    plot_bgcolor="white",
-    margin=dict(l=30, r=30, t=30, b=30),
-    height=200,
-    width=600
-)
+        for i in range(5):
+            fig.add_trace(go.Bar(
+                x=[1],
+                y=[0],
+                orientation='h',
+                name=stress_descriptions[i],
+                marker_color=colors[i],
+                width=0.5,
+                showlegend=False
+            ))
 
-# Display the initial bar chart in Streamlit (without the bubble)
-# st.plotly_chart(fig)
+        fig.update_layout(
+            barmode='stack',
+            xaxis=dict(
+                tickvals=[0, 1, 2, 3, 4],
+                ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
+                showgrid=False,
+                zeroline=False
+            ),
+            yaxis=dict(showticklabels=False, showgrid=False),
+            plot_bgcolor="white",
+            margin=dict(l=30, r=30, t=30, b=30),
+            height=200,
+            width=600
+        )
 
-# Function to decode user input back to human-readable labels
-def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate):
-    if age <= 18:
-        age_desc = "(Adolescent)"
-    elif age <= 24:
-        age_desc = "(Young adult)"
-    elif age <= 45:
-        age_desc = "(Adult)"
-    elif age <= 64:
-        age_desc = "(Middle age adult)"
-    else:
-        age_desc = "(Older adult)"
+        # Predict button
+        if st.button("Predict Stress Level"):
+            prediction = model.predict(user_input)[0]
+            stress_level = stress_descriptions.get(prediction, "Unknown")
 
-    if bmi < 18.5:
-        bmi_desc = "(Underweight)"
-    elif bmi <= 24.9:
-        bmi_desc = "(Normal weight)"
-    elif bmi <= 29.9:
-        bmi_desc = "<span style='color:orange'>(Overweight)</span>"
-    elif bmi <= 30:
-        bmi_desc = "<span style='color:red'>(Obese)</span>"
-    else:
-        bmi_desc = "<span style='color:red'>(Extremely Obese)</span>"
+            fig.add_annotation(
+                x=prediction + 0.5,
+                y=0.5,
+                text=f"<b>{stress_level}</b>",
+                showarrow=False,
+                font=dict(size=14, color="black"),
+                align="center",
+                bgcolor="white",
+                bordercolor=colors[prediction],
+                borderwidth=2,
+                borderpad=4
+            )
 
-    marital_desc = "Married" if marital_status == 1 else "Not married"
-    gender_desc = "Male" if gender == 1 else "Female"
+            st.plotly_chart(fig)
 
-    if snoring_rate <= 5:
-        snoring_desc = "(Normal)"
-    elif snoring_rate <= 15:
-        snoring_desc = "(Mild snoring)"
-    elif snoring_rate <= 30:
-        snoring_desc = "(Moderate snoring)"
-    elif snoring_rate <= 45:
-        snoring_desc = "<span style='color:orange'>(Heavy Snoring)</span>"
-    else:
-        snoring_desc = "<span style='color:red'>(Severe Snoring)</span>"
+            # Display the predicted stress level
+            st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction})")
 
-    if respiration_rate <= 11:
-        respiration_desc = "<span style='color:orange'>((Hypoventilation-Slow Breath)</span>"
-    elif 12 <= respiration_rate <= 20:
-        respiration_desc = "(Normal)"
-    else:
-        respiration_desc = "<span style='color:red'>(Hyperventilation-Rapid Breath)</span>"
+    elif selected_function == "Download Input History":
+        # Convert input history to DataFrame
+        input_history_df = pd.DataFrame(st.session_state['input_history'])
 
-    if body_temperature < 79:
-        body_temp_desc = "<span style='color:red'>(Hypothermia-Low)</span>"
-    elif 80 <= body_temperature <= 100:
-        body_temp_desc = "(Normal)"
-    else:
-        body_temp_desc = "<span style='color:red'>(Hyperthermia-High)</span>"
-
-    if limb_movement <= 5:
-        limb_desc = "(Normal)"
-    elif 6 <= limb_movement <= 25:
-        limb_desc = "(Moderate)"
-    else:
-        limb_desc = "<span style='color:red'>Severe</span>"
-
-    if blood_oxygen <= 69:
-        oxygen_desc = "<span style='color:red'>(Cyanosis-Low)</span>"
-    elif blood_oxygen <= 79:
-        oxygen_desc = "<span style='color:red'>(Severe Hypoxia)</span>"
-    elif blood_oxygen <= 89:
-        oxygen_desc = "<span style='color:orange'>(Low Oxygen Level)</span>"
-    elif 90 <= blood_oxygen <= 94:
-        oxygen_desc = "(Moderate Oxygen Level)"
-    else:
-        oxygen_desc = "(Normal Oxygen Level)"
-
-    if eye_movement <= 25:
-        eye_desc = "(Normal)"
-    else:
-        eye_desc = "<span style='color:red'>(High REM)</span>"
-
-    if sleeping_hours <= 6:
-        sleep_desc = "<span style='color:red'>(Sleep Deprivation)</span>"
-    elif 7 <= sleeping_hours <= 9:
-        sleep_desc = "(Normal)"
-    else:
-        sleep_desc = "<span style='color:red'>(Hypersomnia)</span>"
-
-    if heart_rate <= 39:
-        heart_desc = "<span style='color:red'>(Bradycardia-Too Slow)</span>"
-    elif 40 <= heart_rate <= 75:
-        heart_desc = "(Normal)"
-    else:
-        heart_desc = "<span style='color:red'>(Tachycardia-Too Rapid)</span>"
-
-    return age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc
-
-# Predict button
-if st.button("Predict Stress Level"):
-    # Predict the stress level
-    prediction = model.predict(user_input)[0]
-    stress_level = stress_descriptions.get(prediction, "Unknown")
-    
-    # Add the chat bubble above the correct section
-    fig.add_annotation(
-        x=prediction + 0.5,  # Position the chat bubble based on the prediction
-        y=0.5,
-        text=f"<b>{stress_level}</b>",
-        showarrow=False,
-        font=dict(size=14, color="black"),
-        align="center",
-        bgcolor="white",
-        bordercolor=colors[prediction],
-        borderwidth=2,
-        borderpad=4
-    )
-    
-    # Display the updated bar chart with the chat bubble
-    st.plotly_chart(fig)
-
-    # Decode and display the interpretations of the user's input
-    age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc = decode_user_input(
-        age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate
-    )
-    
-    st.write("") 
-    st.write("") 
-    st.markdown(f"**Your Input Interpretation:**")
-    st.write(f"Age: {age} {age_desc}", unsafe_allow_html=True)
-    st.write(f"BMI: {bmi} {bmi_desc}", unsafe_allow_html=True)
-    st.write(f"Marital Status: {marital_desc}")
-    st.write(f"Gender: {gender_desc}")
-    st.write(f"Snoring Rate: {snoring_rate} {snoring_desc}", unsafe_allow_html=True)
-    st.write(f"Respiration Rate: {respiration_rate} {respiration_desc}", unsafe_allow_html=True)
-    st.write(f"Body Temperature: {body_temperature} °F {body_temp_desc}", unsafe_allow_html=True)
-    st.write(f"Limb Movement: {limb_movement} {limb_desc}", unsafe_allow_html=True)
-    st.write(f"Blood Oxygen: {blood_oxygen} {oxygen_desc}", unsafe_allow_html=True)
-    st.write(f"Eye Movement: {eye_movement} {eye_desc}", unsafe_allow_html=True)
-    st.write(f"Sleeping Hours: {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
-    st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
-
-    # Display the predicted stress level below the input interpretation
-    st.subheader(f"Predicted Stress Level: {stress_level} (Level {prediction})")
-    
-    # Display suggestions for stress reduction
-    st.divider()
-    st.caption("Meditation, massage, and a warm shower before bed can help you reduce stress when sleeping. Have a SWEET DREAM :heart::crescent_moon:")
-
+        if not input_history_df.empty:
+            # Provide option to download input history as CSV
+            csv = input_history_df.to_csv(index=False)
+            st.download_button(
+                label="Download Input History as CSV",
+                data=csv,
+                file_name='input_history.csv',
+                mime='text/csv'
+            )
+        else:
+            st.write("No input history recorded yet.")
