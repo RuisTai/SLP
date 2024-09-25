@@ -521,8 +521,7 @@ if st.button("Predict Stress Level"):
             incomplete_data_warning = ""
             if snoring_rate_val == 0 or limb_movement_val == 0 or eye_movement_val == 0:
                 incomplete_data_warning = (
-                    "<span style='color:#d32f2f'>⚠️ 
-                    Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span><br>"
+                    "<span style='color:#d32f2f'>⚠️ \nNote: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span><br>"
                     "<span style='color:#d32f2f'>The prediction may not be highly accurate due to incomplete data.</span>"
                 )
         
@@ -570,9 +569,9 @@ if st.button("Predict Stress Level"):
             st.markdown(f"** **")
             
             # # Create three columns
-            col1, col2 = st.columns(2)
+            # col1, col2 = st.columns(2)
 
-            with col1:
+            with st.container():
                 age_color = get_status_color(age_desc)
                 st.markdown(
                     f"**🧑 Age:** {age} <span style='color:{age_color}'>{age_desc}</span>",
