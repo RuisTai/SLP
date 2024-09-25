@@ -26,7 +26,7 @@ def add_bg_from_local(image_file):
         st.error("The specified file was not found. Please check the file path.")
 
 # Correct way to specify the path in Windows using a raw string
-add_bg_from_local(r'C:\Users\ruist\OneDrive - Asia Pacific University\ClassMaterials-R\DEGREE 3 - SEM 1\FYP_Investigation\background.png.jpg')
+add_bg_from_local(r'C:\Users\ruist\Downloads\background.png.jpg')
 
 
 # Load the trained Gradient Boosting model
