@@ -103,7 +103,7 @@ for i in range(5):
         orientation='h',
         name=stress_descriptions[i],
         marker_color=colors[i],
-        width=0.6,
+        width=0.7,
         showlegend=False
     ))
 
@@ -119,8 +119,8 @@ fig.update_layout(
     yaxis=dict(showticklabels=False, showgrid=False),
     plot_bgcolor="white",
     margin=dict(l=20, r=20, t=20, b=20),
-    height=200,
-    width=600
+    height=300,
+    width=900
 )
 
 # Function to decode user input back to human-readable labels
