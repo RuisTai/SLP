@@ -6,6 +6,23 @@ import plotly.graph_objects as go
 from io import BytesIO
 import base64 
 
+def add_bg_from_local(image_file):
+    with open(image_file, "rb") as image_file:
+        encoded = base64.b64encode(image_file.read()).decode()
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("data:image/png;base64,{encoded}");
+            background-size: cover;
+            background-position: center;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+add_bg_from_local('"C:\Users\ruist\OneDrive - Asia Pacific University\ClassMaterials-R\DEGREE 3 - SEM 1\FYP_Investigation\background.png.jpg"')
+
 
 # Load the trained Gradient Boosting model
 model = joblib.load('gradient_boosting_model.pkl')
