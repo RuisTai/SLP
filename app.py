@@ -93,6 +93,15 @@ def set_professional_background():
         .plotly {
             margin: 0 auto;
         }
+        
+        /* Recommendation Container Styling */
+        .recommendation-container {
+            border-left: 4px solid #1A237E;
+            padding-left: 10px;
+            margin-bottom: 10px;
+            background-color: #E3F2FD; /* Light Blue Background */
+            border-radius: 5px;
+        }
         </style>
         """,
         unsafe_allow_html=True
@@ -407,78 +416,185 @@ def provide_recommendations(
     
     # BMI Recommendations
     if bmi < 18.5:
-        recommendations.append("📉 **Underweight**: Consider consulting a healthcare provider for a nutritional plan to reach a healthier weight.")
+        recommendations.append({
+            "emoji": "📉",
+            "title": "Underweight",
+            "message": "Consider consulting a healthcare provider for a nutritional plan to reach a healthier weight."
+        })
     elif bmi <= 24.9:
-        recommendations.append("✅ **Normal Weight**: Great job maintaining a healthy BMI!")
+        recommendations.append({
+            "emoji": "✅",
+            "title": "Normal Weight",
+            "message": "Great job maintaining a healthy BMI! Keep up the good work."
+        })
     elif bmi <= 29.9:
-        recommendations.append("⚖️ **Overweight**: Engaging in a balanced diet and regular physical activity can help manage your BMI.")
+        recommendations.append({
+            "emoji": "⚖️",
+            "title": "Overweight",
+            "message": "Engaging in a balanced diet and regular physical activity can help manage your BMI."
+        })
     else:
-        recommendations.append("📈 **Obese**: It's advisable to seek guidance from a healthcare professional for a comprehensive weight management plan.")
+        recommendations.append({
+            "emoji": "📈",
+            "title": "Obese",
+            "message": "It's advisable to seek guidance from a healthcare professional for a comprehensive weight management plan."
+        })
     
     # Blood Oxygen Recommendations
     if blood_oxygen < 90:
-        recommendations.append("🩸 **Low Blood Oxygen**: Low blood oxygen levels detected. Please consult a healthcare professional immediately.")
+        recommendations.append({
+            "emoji": "🩸",
+            "title": "Low Blood Oxygen",
+            "message": "Low blood oxygen levels detected. Please consult a healthcare professional immediately."
+        })
     elif blood_oxygen <= 94:
-        recommendations.append("🟠 **Low Oxygen Level**: Consider deep breathing exercises and ensure you're in a well-ventilated environment.")
+        recommendations.append({
+            "emoji": "🟠",
+            "title": "Low Oxygen Level",
+            "message": "Consider deep breathing exercises and ensure you're in a well-ventilated environment."
+        })
     else:
-        recommendations.append("🟢 **Normal Blood Oxygen**: Your blood oxygen levels are within the normal range.")
+        recommendations.append({
+            "emoji": "🟢",
+            "title": "Normal Blood Oxygen",
+            "message": "Your blood oxygen levels are within the normal range."
+        })
     
     # Heart Rate Recommendations
     if heart_rate < 40:
-        recommendations.append("❤️ **Bradycardia**: Abnormally low heart rate detected. Consider seeking medical advice.")
+        recommendations.append({
+            "emoji": "❤️",
+            "title": "Bradycardia",
+            "message": "Abnormally low heart rate detected. Consider seeking medical advice."
+        })
     elif heart_rate <= 75:
-        recommendations.append("🟢 **Normal Heart Rate**: Your heart rate is within the normal range.")
+        recommendations.append({
+            "emoji": "🟢",
+            "title": "Normal Heart Rate",
+            "message": "Your heart rate is within the normal range."
+        })
     else:
-        recommendations.append("❤️ **Tachycardia**: Abnormally high heart rate detected. It might be beneficial to engage in relaxation techniques or consult a healthcare provider.")
+        recommendations.append({
+            "emoji": "❤️",
+            "title": "Tachycardia",
+            "message": "Abnormally high heart rate detected. It might be beneficial to engage in relaxation techniques or consult a healthcare provider."
+        })
     
     # Snoring Rate Recommendations
     if snoring_rate > 30:
-        recommendations.append("😴 **Heavy Snoring**: Persistent heavy snoring may indicate sleep apnea. Consider consulting a sleep specialist.")
+        recommendations.append({
+            "emoji": "😴",
+            "title": "Heavy Snoring",
+            "message": "Persistent heavy snoring may indicate sleep apnea. Consider consulting a sleep specialist."
+        })
     elif snoring_rate > 15:
-        recommendations.append("😴 **Mild Snoring**: Moderate snoring can disrupt your sleep. Maintaining a healthy weight and avoiding alcohol before bedtime might help.")
+        recommendations.append({
+            "emoji": "😴",
+            "title": "Mild Snoring",
+            "message": "Moderate snoring can disrupt your sleep. Maintaining a healthy weight and avoiding alcohol before bedtime might help."
+        })
     else:
-        recommendations.append("✅ **Normal Snoring**: Your snoring rate is within the normal range.")
+        recommendations.append({
+            "emoji": "✅",
+            "title": "Normal Snoring",
+            "message": "Your snoring rate is within the normal range."
+        })
     
     # Respiration Rate Recommendations
     if respiration_rate < 12:
-        recommendations.append("🌬️ **Slow Respiration**: A lower respiration rate may indicate hypoventilation. Consider breathing exercises.")
+        recommendations.append({
+            "emoji": "🌬️",
+            "title": "Slow Respiration",
+            "message": "A lower respiration rate may indicate hypoventilation. Consider breathing exercises."
+        })
     elif respiration_rate > 20:
-        recommendations.append("🌬️ **Rapid Respiration**: A higher respiration rate may indicate hyperventilation. Practice relaxation techniques.")
+        recommendations.append({
+            "emoji": "🌬️",
+            "title": "Rapid Respiration",
+            "message": "A higher respiration rate may indicate hyperventilation. Practice relaxation techniques."
+        })
     else:
-        recommendations.append("🟢 **Normal Respiration Rate**: Your respiration rate is within the normal range.")
+        recommendations.append({
+            "emoji": "🟢",
+            "title": "Normal Respiration Rate",
+            "message": "Your respiration rate is within the normal range."
+        })
     
     # Body Temperature Recommendations
     if body_temperature < 97.0:
-        recommendations.append("🌡️ **Low Body Temperature**: Consider dressing warmly and consulting a healthcare provider if you feel unwell.")
+        recommendations.append({
+            "emoji": "🌡️",
+            "title": "Low Body Temperature",
+            "message": "Consider dressing warmly and consulting a healthcare provider if you feel unwell."
+        })
     elif body_temperature > 99.5:
-        recommendations.append("🌡️ **High Body Temperature**: Stay hydrated and consider seeking medical attention if the temperature persists.")
+        recommendations.append({
+            "emoji": "🌡️",
+            "title": "High Body Temperature",
+            "message": "Stay hydrated and consider seeking medical attention if the temperature persists."
+        })
     else:
-        recommendations.append("🟢 **Normal Body Temperature**: Your body temperature is within the normal range.")
+        recommendations.append({
+            "emoji": "🟢",
+            "title": "Normal Body Temperature",
+            "message": "Your body temperature is within the normal range."
+        })
     
     # Limb Movement Recommendations
     if limb_movement > 25:
-        recommendations.append("🦵 **Severe Limb Movement**: Excessive limb movement during sleep may affect sleep quality. Consider relaxation techniques before bedtime.")
+        recommendations.append({
+            "emoji": "🦵",
+            "title": "Severe Limb Movement",
+            "message": "Excessive limb movement during sleep may affect sleep quality. Consider relaxation techniques before bedtime."
+        })
     elif limb_movement > 5:
-        recommendations.append("🦵 **Moderate Limb Movement**: Some limb movement is normal, but excessive movement can disrupt sleep.")
+        recommendations.append({
+            "emoji": "🦵",
+            "title": "Moderate Limb Movement",
+            "message": "Some limb movement is normal, but excessive movement can disrupt sleep."
+        })
     else:
-        recommendations.append("✅ **Normal Limb Movement**: Your limb movement during sleep is within the normal range.")
+        recommendations.append({
+            "emoji": "✅",
+            "title": "Normal Limb Movement",
+            "message": "Your limb movement during sleep is within the normal range."
+        })
     
     # Eye Movement Recommendations
     if eye_movement > 25:
-        recommendations.append("👁️ **High REM Activity**: Elevated eye movement during sleep can be associated with stress. Consider stress-reduction techniques.")
+        recommendations.append({
+            "emoji": "👁️",
+            "title": "High REM Activity",
+            "message": "Elevated eye movement during sleep can be associated with stress. Consider stress-reduction techniques."
+        })
     else:
-        recommendations.append("🟢 **Normal Eye Movement**: Your eye movement during sleep is within the normal range.")
+        recommendations.append({
+            "emoji": "🟢",
+            "title": "Normal Eye Movement",
+            "message": "Your eye movement during sleep is within the normal range."
+        })
     
     # Sleeping Hours Recommendations
     if sleeping_hours < 6:
-        recommendations.append("🛌 **Sleep Deprivation**: Aim for 7-9 hours of sleep for optimal health. Consider establishing a regular sleep schedule.")
+        recommendations.append({
+            "emoji": "🛌",
+            "title": "Sleep Deprivation",
+            "message": "Aim for 7-9 hours of sleep for optimal health. Consider establishing a regular sleep schedule."
+        })
     elif sleeping_hours > 9:
-        recommendations.append("🛌 **Excessive Sleep**: Consistently sleeping more than 9 hours may affect your daily routine. Aim for 7-9 hours of sleep.")
+        recommendations.append({
+            "emoji": "🛌",
+            "title": "Excessive Sleep",
+            "message": "Consistently sleeping more than 9 hours may affect your daily routine. Aim for 7-9 hours of sleep."
+        })
     else:
-        recommendations.append("🟢 **Normal Sleeping Hours**: Your sleep duration is within the recommended range.")
+        recommendations.append({
+            "emoji": "🟢",
+            "title": "Normal Sleeping Hours",
+            "message": "Your sleep duration is within the recommended range."
+        })
     
     return recommendations
-
 
 # -------------------------------
 # 10. Predict Button Functionality
@@ -591,7 +707,11 @@ if st.button("Predict Stress Level"):
 
             st.markdown("## **💡 Recommendations:**")
             for rec in recommendations:
-                st.markdown(f"- {rec}")
+                with st.container():
+                    st.markdown(
+                        f"<div class='recommendation-container'><strong>{rec['emoji']} {rec['title']}:</strong> {rec['message']}</div>",
+                        unsafe_allow_html=True
+                    )
 
             # Save user input and prediction to history
             st.session_state.history.append({
@@ -609,3 +729,28 @@ if st.button("Predict Stress Level"):
                 "Heart Rate": heart_rate,
                 "Stress Level": stress_level
             })
+
+# -------------------------------
+# 11. Prediction History Section
+# -------------------------------
+st.markdown("## 🕒 **Prediction History**")
+
+# Button to toggle showing prediction history with unique key
+if st.button("Show Prediction History", key="show_history_btn"):
+    st.session_state.show_history = not st.session_state.show_history  # Toggle history visibility
+
+# Display prediction history if the button was clicked and history exists
+if st.session_state.show_history:
+    if st.session_state.history:
+        df_history = pd.DataFrame(st.session_state.history)
+        st.write(df_history)
+        
+        # Create a downloadable CSV file
+        def create_download_link(df, filename="history.csv"):
+            csv = df.to_csv(index=False)
+            b64 = base64.b64encode(csv.encode()).decode()
+            return f'<a href="data:file/csv;base64,{b64}" download="{filename}">📥 Download CSV file</a>'
+
+        st.markdown(create_download_link(df_history), unsafe_allow_html=True)
+    else:
+        st.info("No predictions made yet.")
