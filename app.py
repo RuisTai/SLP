@@ -136,17 +136,17 @@ if 'show_history' not in st.session_state:
 # -------------------------------
 # 4. Streamlit App Title
 # -------------------------------
-st.title("Stress Prediction System")
+st.title("🧠 **Stress Prediction System**")
 
 # -------------------------------
 # 5. Sidebar for Input with Help Texts
 # -------------------------------
 with st.sidebar:
     # Custom sidebar title with unique font styling
-    st.markdown("<h2>Input Features</h2>", unsafe_allow_html=True)
+    st.markdown("<h2>📋 Input Features</h2>", unsafe_allow_html=True)
     
     # Instructional text with customized font
-    st.markdown("<p>Enter the features below to predict the stress level from 0 to 4:</p>", unsafe_allow_html=True)
+    st.markdown("<p>Enter the features below to predict your stress level from 0 to 4:</p>", unsafe_allow_html=True)
 
     def get_user_input():
         age = st.number_input(
@@ -396,7 +396,29 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
     return age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc
 
 # -------------------------------
-# 9. Predict Button Functionality
+# 9. Recommendations Function
+# -------------------------------
+def provide_recommendations(bmi, blood_oxygen, heart_rate):
+    recommendations = []
+    
+    if bmi < 18.5:
+        recommendations.append("📉 **Underweight**: Consider consulting a healthcare provider for a nutritional plan to reach a healthier weight.")
+    elif bmi > 29.9:
+        recommendations.append("📈 **Overweight/Obese**: Engage in a balanced diet and regular physical activity to manage your BMI.")
+    
+    if blood_oxygen < 90:
+        recommendations.append("🩸 **Low Blood Oxygen**: Low blood oxygen levels detected. Please consult a healthcare professional.")
+    
+    if heart_rate < 40 or heart_rate > 75:
+        recommendations.append("❤️ **Abnormal Heart Rate**: Abnormal heart rate detected. Consider seeking medical advice.")
+    
+    if not recommendations:
+        recommendations.append("✅ **All your health indicators are within normal ranges. Keep maintaining your healthy lifestyle!**")
+    
+    return recommendations
+
+# -------------------------------
+# 10. Predict Button Functionality
 # -------------------------------
 if st.button("Predict Stress Level"):
     # Validate if all inputs are within the specified ranges
@@ -436,7 +458,7 @@ if st.button("Predict Stress Level"):
             incomplete_data_warning = ""
             if snoring_rate_val == 0 or limb_movement_val == 0 or eye_movement_val == 0:
                 incomplete_data_warning = (
-                    "<span style='color:#d61e40'>Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span>"
+                    "<span style='color:#d61e40'>⚠️ Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span>"
                     "<span style='color:#d61e40'> The prediction may not be highly accurate due to incomplete data.</span>"
                 )
         
@@ -465,26 +487,44 @@ if st.button("Predict Stress Level"):
                 age, bmi, marital_status, gender, snoring_rate_val, respiration_rate, body_temperature, limb_movement_val, blood_oxygen, eye_movement_val, sleeping_hours, heart_rate
             )
 
-            # Display interpretations with HTML styling
-            st.markdown("## **Your Input Interpretation:**")
-            st.markdown(f"**Age:** {age} {age_desc}", unsafe_allow_html=True)
-            st.markdown(f"**BMI:** {bmi} {bmi_desc}", unsafe_allow_html=True)
-            st.markdown(f"**Marital Status:** {marital_desc}")
-            st.markdown(f"**Gender:** {gender_desc}")
-            st.markdown(f"**Snoring Rate:** {snoring_rate_val} {snoring_desc}", unsafe_allow_html=True)
-            st.markdown(f"**Respiration Rate:** {respiration_rate} {respiration_desc}", unsafe_allow_html=True)
-            st.markdown(f"**Body Temperature:** {body_temperature} °F {body_temp_desc}", unsafe_allow_html=True)
-            st.markdown(f"**Limb Movement:** {limb_movement_val} {limb_desc}", unsafe_allow_html=True)
-            st.markdown(f"**Blood Oxygen:** {blood_oxygen} {oxygen_desc}", unsafe_allow_html=True)
-            st.markdown(f"**Eye Movement:** {eye_movement_val} {eye_desc}", unsafe_allow_html=True)
-            st.markdown(f"**Sleeping Hours:** {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
-            st.markdown(f"**Heart Rate:** {heart_rate} {heart_desc}", unsafe_allow_html=True)
-        
+            # Display interpretations with structured layout
+            st.markdown("## **📝 Your Input Interpretation:**")
+
+            # Create three columns
+            col1, col2, col3 = st.columns(3)
+
+            with col1:
+                st.markdown(f"**🧑 Age:** {age} {age_desc}")
+                st.markdown(f"**⚖️ BMI:** {bmi} {bmi_desc}")
+                st.markdown(f"**💍 Marital Status:** {marital_desc}")
+
+            with col2:
+                st.markdown(f"**♂️ Gender:** {gender_desc}")
+                st.markdown(f"**😴 Snoring Rate:** {snoring_rate_val} {snoring_desc}")
+                st.markdown(f"**🌬️ Respiration Rate:** {respiration_rate} {respiration_desc}")
+
+            with col3:
+                st.markdown(f"**🌡️ Body Temperature:** {body_temperature} °F {body_temp_desc}")
+                st.markdown(f"**🦵 Limb Movement:** {limb_movement_val} {limb_desc}")
+                st.markdown(f"**🩸 Blood Oxygen:** {blood_oxygen} {oxygen_desc}")
+
+            # Expander for additional details
+            with st.expander("📊 View More Details"):
+                st.markdown(f"**👁️ Eye Movement:** {eye_movement_val} {eye_desc}")
+                st.markdown(f"**🛌 Sleeping Hours:** {sleeping_hours} {sleep_desc}")
+                st.markdown(f"**❤️ Heart Rate:** {heart_rate} {heart_desc}")
+
+            # Display warning if incomplete data
             if incomplete_data_warning:
-                st.markdown(f"**Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
-        
-            # Optionally, display additional visualizations or information here
-        
+                st.markdown(f"**⚠️ Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
+
+            # Provide recommendations based on inputs
+            recommendations = provide_recommendations(bmi, blood_oxygen, heart_rate)
+
+            st.markdown("## **💡 Recommendations:**")
+            for rec in recommendations:
+                st.markdown(f"- {rec}")
+
             # Save user input and prediction to history
             st.session_state.history.append({
                 "Age": age,
@@ -503,9 +543,9 @@ if st.button("Predict Stress Level"):
             })
 
 # -------------------------------
-# 10. Prediction History Section
+# 11. Prediction History Section
 # -------------------------------
-st.subheader("Prediction History")
+st.markdown("## 🕒 **Prediction History**")
 
 # Button to toggle showing prediction history with unique key
 if st.button("Show Prediction History", key="show_history_btn"):
@@ -521,9 +561,8 @@ if st.session_state.show_history:
         def create_download_link(df, filename="history.csv"):
             csv = df.to_csv(index=False)
             b64 = base64.b64encode(csv.encode()).decode()
-            return f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV file</a>'
+            return f'<a href="data:file/csv;base64,{b64}" download="{filename}">📥 Download CSV file</a>'
 
         st.markdown(create_download_link(df_history), unsafe_allow_html=True)
     else:
         st.info("No predictions made yet.")
-
