@@ -521,7 +521,7 @@ if st.button("Predict Stress Level"):
             incomplete_data_warning = ""
             if snoring_rate_val == 0 or limb_movement_val == 0 or eye_movement_val == 0:
                 incomplete_data_warning = (
-                    "<span style='color:#d32f2f'>⚠️ \nNote: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span><br>"
+                    "<span style='color:#d32f2f'>⚠️ <br>Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span><br>"
                     "<span style='color:#d32f2f'>The prediction may not be highly accurate due to incomplete data.</span>"
                 )
         
