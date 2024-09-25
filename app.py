@@ -11,7 +11,7 @@ def set_background_color():
         """
         <style>
         .stApp {
-            background-color: #ADD8E6; /* Light Blue */
+            background-color: #87CEEB; /* Light Blue */
         }
         </style>
         """,
