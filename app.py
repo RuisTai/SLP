@@ -6,19 +6,39 @@ import plotly.graph_objects as go
 from io import BytesIO
 import base64 
 
-def set_background_color():
+def set_calm_background():
     st.markdown(
         """
         <style>
         .stApp {
-            background-color: #87CEEB; /* Light Blue */
+            background-color: #E0F7FA; /* Soft Blue */
+            color: #263238; /* Dark Slate for text */
+        }
+        /* Button Styling */
+        .stButton>button {
+            background-color: #009688; /* Teal */
+            color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+        }
+        /* Input Styling */
+        .stTextInput>div>div>input {
+            background-color: #FFFFFF;
+            color: #263238;
+            border: 1px solid #B0BEC5;
+            border-radius: 4px;
+            padding: 8px;
+        }
+        /* Sidebar Styling */
+        .sidebar .sidebar-content {
+            background-color: #B2EBF2; /* Light Teal */
         }
         </style>
         """,
         unsafe_allow_html=True
     )
 
-set_background_color()
+set_calm_background()
 
 # Load the trained Gradient Boosting model
 model = joblib.load('gradient_boosting_model.pkl')
@@ -37,18 +57,18 @@ with st.sidebar:
     st.write("Enter the features below to predict the stress level from 0 to 4:")
 
     def get_user_input():
-        age = st.number_input("Age (Enter input : 18~80)", min_value=18, max_value=80, value=22, step=1)
+        age = st.number_input("Age (18-80)", min_value=18, max_value=80, value=22, step=1)
         marital_status = st.selectbox("Marital Status", options=["Yes", "No"])
         gender = st.selectbox("Gender", options=["Male", "Female"])
-        bmi = st.number_input("BMI (Enter input : 18.0~40.0)", min_value=18.0, max_value=40.0, value=25.0, step=0.1)
-        snoring_rate = st.text_input("Snoring Rate (Enter input : 0~50)", value="")
-        respiration_rate = st.number_input("Respiration Rate (Enter input : 0~50)", min_value=-1.0, max_value=50.0, value=15.0, step=0.1)
-        body_temperature = st.number_input("Body Temperature °F (Enter input : 60~110)", min_value=60.0, max_value=110.0, value=90.0, step=0.1)
-        limb_movement = st.text_input("Limb Movement (Enter input : 0~35)", value="")
-        blood_oxygen = st.number_input("Blood Oxygen (Enter input : 60~110)", min_value=60.0, max_value=110.0, value=80.0, step=0.1)
-        eye_movement = st.text_input("Eye Movement (Enter input : 0~35)", value="")
-        sleeping_hours = st.number_input("Sleeping Hours (Enter input : 0~24)", min_value=-1.0, max_value=24.0, value=8.0, step=0.1)
-        heart_rate = st.number_input("Heart Rate (Enter input : 30~100)", min_value=30.0, max_value=100.0, value=70.0, step=0.1)
+        bmi = st.number_input("BMI (18.0-40.0)", min_value=18.0, max_value=40.0, value=25.0, step=0.1)
+        snoring_rate = st.text_input("Snoring Rate (0-50)", value="")
+        respiration_rate = st.number_input("Respiration Rate (0-50)", min_value=0.0, max_value=50.0, value=15.0, step=0.1)
+        body_temperature = st.number_input("Body Temperature °F (60-110)", min_value=60.0, max_value=110.0, value=90.0, step=0.1)
+        limb_movement = st.text_input("Limb Movement (0-35)", value="")
+        blood_oxygen = st.number_input("Blood Oxygen (60-110)", min_value=60.0, max_value=110.0, value=80.0, step=0.1)
+        eye_movement = st.text_input("Eye Movement (0-35)", value="")
+        sleeping_hours = st.number_input("Sleeping Hours (0-24)", min_value=0.0, max_value=24.0, value=8.0, step=0.1)
+        heart_rate = st.number_input("Heart Rate (30-100)", min_value=30.0, max_value=100.0, value=70.0, step=0.1)
     
         marital_status = 1 if marital_status == "Yes" else 0
         gender = 1 if gender == "Male" else 0
@@ -244,7 +264,7 @@ if st.button("Predict Stress Level"):
             if snoring_rate_val == 0 or limb_movement_val == 0 or eye_movement_val == 0:
                 incomplete_data_warning = (
                     "<span style='color:#d61e40'>Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span>"
-                    "<span style='color:#d61e40'>The prediction may not be highly accurate due to incomplete data.)</span>"
+                    "<span style='color:#d61e40'> The prediction may not be highly accurate due to incomplete data.</span>"
                 )
         
             # Add the chat bubble above the correct section
@@ -271,7 +291,7 @@ if st.button("Predict Stress Level"):
             age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc = decode_user_input(
                 age, bmi, marital_status, gender, snoring_rate_val, respiration_rate, body_temperature, limb_movement_val, blood_oxygen, eye_movement_val, sleeping_hours, heart_rate
             )
-    
+
             st.write("") 
             st.write("") 
             st.markdown(f"**Your Input Interpretation:**")
@@ -327,4 +347,3 @@ if st.session_state.show_history and st.session_state.history:
         return f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV file</a>'
 
     st.markdown(create_download_link(df_history), unsafe_allow_html=True)
-
