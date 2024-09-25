@@ -10,22 +10,91 @@ def set_professional_background():
     st.markdown(
         """
         <style>
+        /* Main App Background and Text Color */
         .stApp {
             background-color: #FAFAFA; /* Light Beige */
             color: #212121; /* Dark Gray for text */
         }
+        
+        /* Sidebar Styling */
+        .sidebar .sidebar-content {
+            background-color: #FFFFFF; /* White Background for Sidebar */
+            padding: 20px; /* Increased padding for better spacing */
+            border-radius: 10px; /* Rounded corners for a modern look */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+        }
+        
+        /* Sidebar Title Font */
+        .sidebar .sidebar-content h2 {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #1A237E; /* Navy Blue */
+        }
+        
+        /* Sidebar Text Styling */
+        .sidebar .sidebar-content p {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            color: #212121; /* Dark Gray */
+        }
+        
         /* Button Styling */
         .stButton>button {
             background-color: #1A237E; /* Navy Blue */
             color: white;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+            font-weight: bold;
         }
-        body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        
+        /* Input Widget Styling */
+        /* Text Inputs */
+        .stTextInput>div>div>input {
+            background-color: #F0F0F0;
+            color: #212121;
+            border: 1px solid #B0BEC5;
+            border-radius: 5px;
+            padding: 8px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+        }
+        
+        /* Number Inputs */
+        .stNumberInput>div>div>input {
+            background-color: #F0F0F0;
+            color: #212121;
+            border: 1px solid #B0BEC5;
+            border-radius: 5px;
+            padding: 8px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+        }
+        
+        /* Select Boxes */
+        .stSelectbox>div>div>div>div>div>select {
+            background-color: #F0F0F0;
+            color: #212121;
+            border: 1px solid #B0BEC5;
+            border-radius: 5px;
+            padding: 8px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 14px;
+        }
+        
+        /* Adjusting Plotly Chart Container */
+        .plotly {
+            margin: 0 auto;
         }
         </style>
         """,
         unsafe_allow_html=True
     )
+
+# Apply the professional background and sidebar styling
 set_professional_background()
 
 # Load the trained Gradient Boosting model
@@ -42,7 +111,11 @@ st.title("Stress Prediction System")
 
 # Sidebar for input section
 with st.sidebar:
-    st.write("Enter the features below to predict the stress level from 0 to 4:")
+    # Custom sidebar title with unique font styling
+    st.markdown("<h2>Input Features</h2>", unsafe_allow_html=True)
+    
+    # Instructional text with customized font
+    st.markdown("<p>Enter the features below to predict the stress level from 0 to 4:</p>", unsafe_allow_html=True)
 
     def get_user_input():
         age = st.number_input("Age (18-80)", min_value=18, max_value=80, value=22, step=1)
@@ -220,28 +293,28 @@ if st.button("Predict Stress Level"):
         limb_movement_val = float(limb_movement)
         eye_movement_val = float(eye_movement)
     except ValueError:
-        st.write("**Error:** Please ensure that Snoring Rate, Limb Movement, and Eye Movement are numeric values.")
+        st.error("**Error:** Please ensure that Snoring Rate, Limb Movement, and Eye Movement are numeric values.")
     else:
         if not (18 <= age <= 80):
-            st.write("**Error:** Please insert the Age within the range (18-80).")
+            st.error("**Error:** Please insert the Age within the range (18-80).")
         elif not (18.0 <= bmi <= 40.0):
-            st.write("**Error:** Please insert the BMI within the range (18.0-40.0).")
+            st.error("**Error:** Please insert the BMI within the range (18.0-40.0).")
         elif not (0 <= snoring_rate_val <= 50):
-            st.write("**Error:** Please insert the Snoring Rate within the range (0-50).")
+            st.error("**Error:** Please insert the Snoring Rate within the range (0-50).")
         elif not (0 <= respiration_rate <= 50):
-            st.write("**Error:** Please insert the Respiration Rate within the range (0-50).")
+            st.error("**Error:** Please insert the Respiration Rate within the range (0-50).")
         elif not (60.0 <= body_temperature <= 110.0):
-            st.write("**Error:** Please insert the Body Temperature within the range (60.0-110.0 °F).")
+            st.error("**Error:** Please insert the Body Temperature within the range (60.0-110.0 °F).")
         elif not (0 <= limb_movement_val <= 35):
-            st.write("**Error:** Please insert the Limb Movement within the range (0-35).")
+            st.error("**Error:** Please insert the Limb Movement within the range (0-35).")
         elif not (60 <= blood_oxygen <= 110):
-            st.write("**Error:** Please insert the Blood Oxygen within the range (60-110).")
+            st.error("**Error:** Please insert the Blood Oxygen within the range (60-110).")
         elif not (0 <= eye_movement_val <= 35):
-            st.write("**Error:** Please insert the Eye Movement within the range (0-35).")
+            st.error("**Error:** Please insert the Eye Movement within the range (0-35).")
         elif not (0 <= sleeping_hours <= 24):
-            st.write("**Error:** Please insert the Sleeping Hours within the range (0-24).")
+            st.error("**Error:** Please insert the Sleeping Hours within the range (0-24).")
         elif not (30 <= heart_rate <= 100):
-            st.write("**Error:** Please insert the Heart Rate within the range (30-100).")
+            st.error("**Error:** Please insert the Heart Rate within the range (30-100).")
         else:
             # If inputs are valid, predict the stress level
             prediction = model.predict(user_input)[0]
@@ -280,24 +353,23 @@ if st.button("Predict Stress Level"):
                 age, bmi, marital_status, gender, snoring_rate_val, respiration_rate, body_temperature, limb_movement_val, blood_oxygen, eye_movement_val, sleeping_hours, heart_rate
             )
 
-            st.write("") 
-            st.write("") 
-            st.markdown(f"**Your Input Interpretation:**")
-            st.write(f"Age: {age} {age_desc}", unsafe_allow_html=True)
-            st.write(f"BMI: {bmi} {bmi_desc}", unsafe_allow_html=True)
-            st.write(f"Marital Status: {marital_desc}")
-            st.write(f"Gender: {gender_desc}")
-            st.write(f"Snoring Rate: {snoring_rate_val} {snoring_desc}", unsafe_allow_html=True)
-            st.write(f"Respiration Rate: {respiration_rate} {respiration_desc}", unsafe_allow_html=True)
-            st.write(f"Body Temperature: {body_temperature} °F {body_temp_desc}", unsafe_allow_html=True)
-            st.write(f"Limb Movement: {limb_movement_val} {limb_desc}", unsafe_allow_html=True)
-            st.write(f"Blood Oxygen: {blood_oxygen} {oxygen_desc}", unsafe_allow_html=True)
-            st.write(f"Eye Movement: {eye_movement_val} {eye_desc}", unsafe_allow_html=True)
-            st.write(f"Sleeping Hours: {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
-            st.markdown(f"Heart Rate: {heart_rate} {heart_desc}", unsafe_allow_html=True)
+            # Display interpretations with HTML styling
+            st.markdown("## **Your Input Interpretation:**")
+            st.markdown(f"**Age:** {age} {age_desc}", unsafe_allow_html=True)
+            st.markdown(f"**BMI:** {bmi} {bmi_desc}", unsafe_allow_html=True)
+            st.markdown(f"**Marital Status:** {marital_desc}")
+            st.markdown(f"**Gender:** {gender_desc}")
+            st.markdown(f"**Snoring Rate:** {snoring_rate_val} {snoring_desc}", unsafe_allow_html=True)
+            st.markdown(f"**Respiration Rate:** {respiration_rate} {respiration_desc}", unsafe_allow_html=True)
+            st.markdown(f"**Body Temperature:** {body_temperature} °F {body_temp_desc}", unsafe_allow_html=True)
+            st.markdown(f"**Limb Movement:** {limb_movement_val} {limb_desc}", unsafe_allow_html=True)
+            st.markdown(f"**Blood Oxygen:** {blood_oxygen} {oxygen_desc}", unsafe_allow_html=True)
+            st.markdown(f"**Eye Movement:** {eye_movement_val} {eye_desc}", unsafe_allow_html=True)
+            st.markdown(f"**Sleeping Hours:** {sleeping_hours} {sleep_desc}", unsafe_allow_html=True)
+            st.markdown(f"**Heart Rate:** {heart_rate} {heart_desc}", unsafe_allow_html=True)
         
             if incomplete_data_warning:
-                st.write(f"**Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
+                st.markdown(f"**Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
         
             # Save user input and prediction to history
             st.session_state.history.append({
