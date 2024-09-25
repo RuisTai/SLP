@@ -568,7 +568,7 @@ if st.button("Predict Stress Level"):
             st.markdown("## **📝 Your Input Interpretation:**")
 
             # Create three columns
-            col1, col2, col3 = st.columns(3)
+            col1 = st.columns(1)
 
             with col1:
                 age_color = get_status_color(age_desc)
@@ -588,8 +588,6 @@ if st.button("Predict Stress Level"):
                     f"**😴 Snoring Rate:** {snoring_rate_val} <span style='color:{snoring_color}'>{snoring_desc}</span>",
                     unsafe_allow_html=True
                 )
-        
-            with col2:
                 respiration_color = get_status_color(respiration_desc)
                 st.markdown(
                     f"**🌬️ Respiration Rate:** {respiration_rate} <span style='color:{respiration_color}'>{respiration_desc}</span>",
@@ -605,8 +603,6 @@ if st.button("Predict Stress Level"):
                     f"**🦵 Limb Movement:** {limb_movement_val} <span style='color:{limb_color}'>{limb_desc}</span>",
                     unsafe_allow_html=True
                 )
-        
-            with col3:
                 oxygen_color = get_status_color(oxygen_desc)
                 st.markdown(
                     f"**🩸 Blood Oxygen:** {blood_oxygen} <span style='color:{oxygen_color}'>{oxygen_desc}</span>",
@@ -627,10 +623,12 @@ if st.button("Predict Stress Level"):
                     f"**❤️ Heart Rate:** {heart_rate} <span style='color:{heart_color}'>{heart_desc}</span>",
                     unsafe_allow_html=True
                 )
+                st.markdown(f"** **")
 
                 # Display warning if incomplete data
             if incomplete_data_warning:
                 st.markdown(f"**⚠️ Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
+                st.markdown(f"** **")
                 
             # Expander for additional details with accessible colors
             with st.expander("📊 View Recommendations"):
