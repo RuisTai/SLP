@@ -103,7 +103,7 @@ for i in range(5):
         orientation='h',
         name=stress_descriptions[i],
         marker_color=colors[i],
-        width=0.5,
+        width=0.8,
         showlegend=False
     ))
 
