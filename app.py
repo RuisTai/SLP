@@ -11,7 +11,7 @@ def set_professional_background():
         """
         <style>
         .stApp {
-            background-color: #DDDDDD; /* Light Beige */
+            background-color: #FAFAFA; /* Light Beige */
             color: #212121; /* Dark Gray for text */
         }
         /* Button Styling */
