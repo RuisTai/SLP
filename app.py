@@ -6,6 +6,9 @@ import plotly.graph_objects as go
 from io import BytesIO
 import base64 
 
+# https://github.com/RuisTai/SLP/blob/main/background.jpg
+
+import streamlit as st
 
 def add_bg_from_url():
     st.markdown(
@@ -15,12 +18,16 @@ def add_bg_from_url():
             background-image: url("https://github.com/RuisTai/SLP/blob/main/background.jpg");
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
         }}
         </style>
         """,
         unsafe_allow_html=True
     )
+
 add_bg_from_url()
+
 
 
 # Load the trained Gradient Boosting model
