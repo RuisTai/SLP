@@ -12,7 +12,7 @@ def add_bg_from_url():
         f"""
         <style>
         .stApp {{
-            background-image: url("https://raw.githubusercontent.com/your_username/your_repository/branch/path_to_your_image");
+            background-image: url("https://github.com/RuisTai/SLP/blob/main/background.jpg");
             background-size: cover;
             background-position: center;
         }}
