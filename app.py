@@ -8,14 +8,13 @@ import base64
 
 # https://github.com/RuisTai/SLP/blob/main/background.jpg
 
-import streamlit as st
-
 def add_bg_from_url():
     st.markdown(
         f"""
         <style>
         .stApp {{
-            background-image: url("https://github.com/RuisTai/SLP/blob/main/background.jpg");
+            background-image: url("https://raw.githubusercontent.com/RuisTai/SLP/main/background.jpg
+");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
