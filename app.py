@@ -21,7 +21,7 @@ def add_bg_from_local(image_file):
         """,
         unsafe_allow_html=True
     )
-add_bg_from_local('C:\Users\ruist\OneDrive - Asia Pacific University\ClassMaterials-R\DEGREE 3 - SEM 1\FYP_Investigation\background.png.jpg')
+add_bg_from_local(r'C:\Users\ruist\OneDrive - Asia Pacific University\ClassMaterials-R\DEGREE 3 - SEM 1\FYP_Investigation\background.png.jpg')
 
 
 # Load the trained Gradient Boosting model
