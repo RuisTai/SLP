@@ -261,7 +261,7 @@ if st.button("Predict Stress Level"):
             arrowhead=2,
             ax=0,
             ay=-40,
-            font=dict(size=14, color="black"),
+            font=dict(size=15, color="black"),
             align="center",
             bgcolor="white",
             bordercolor=colors[prediction],
@@ -347,6 +347,9 @@ if st.session_state.show_history and st.session_state.history:
         return f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV file</a>'
 
     st.markdown(create_download_link(df_history), unsafe_allow_html=True)
+
+
+add_bg_from_url()
 
 
 
