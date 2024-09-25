@@ -111,7 +111,7 @@ model = joblib.load('gradient_boosting_model.pkl')
 # Cache the SHAP explainer using cache_resource
 @st.cache_resource
 def get_shap_explainer(_model):
-    return shap.Explainer(_model)
+    return shap.Explainer(_model.predict_proba, shap.maskers.Independent())
 
 explainer = get_shap_explainer(model)
 
@@ -413,24 +413,24 @@ if st.button("Predict Stress Level"):
         
             # Compute SHAP values for the user input
             shap_values = explainer(user_input)
-
+        
             # SHAP values for multiclass classification are a list with one array per class
             # We'll extract SHAP values for the predicted class
-            shap_values_pred = shap_values.values[prediction][0]  # Adjust indexing if necessary
-
+            shap_values_pred = shap_values.values[prediction]  # Adjust indexing if necessary
+        
             # Create a DataFrame for SHAP values
             shap_df = pd.DataFrame({
                 'Feature': feature_names,
-                'SHAP Value': shap_values_pred
+                'SHAP Value': shap_values_pred[0]  # Assuming shap_values_pred is a list or array
             })
-
+    
             # Sort features by absolute SHAP value
             shap_df['Abs SHAP'] = shap_df['SHAP Value'].abs()
             shap_df = shap_df.sort_values(by='Abs SHAP', ascending=True)
-
+    
             # Create a horizontal bar chart for SHAP values
             fig_shap = go.Figure()
-
+    
             fig_shap.add_trace(go.Bar(
                 x=shap_df['SHAP Value'],
                 y=shap_df['Feature'],
@@ -438,7 +438,7 @@ if st.button("Predict Stress Level"):
                 marker_color='rgba(58, 71, 80, 0.6)',
                 hoverinfo='x+y',
             ))
-
+    
             fig_shap.update_layout(
                 title='Feature Importance for Prediction',
                 xaxis_title='SHAP Value',
@@ -448,10 +448,10 @@ if st.button("Predict Stress Level"):
                 plot_bgcolor='white',
                 showlegend=False
             )
-
+    
             # Display the SHAP bar plot in Streamlit
             st.plotly_chart(fig_shap, use_container_width=True)
-
+    
             # Save user input and prediction to history
             st.session_state.history.append({
                 "Age": age,
