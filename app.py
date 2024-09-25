@@ -119,8 +119,8 @@ fig.update_layout(
     yaxis=dict(showticklabels=False, showgrid=False),
     plot_bgcolor="white",
     margin=dict(l=20, r=20, t=20, b=20),
-    height=500,
-    width=500
+    height=100,
+    width=400
 )
 
 # Function to decode user input back to human-readable labels
