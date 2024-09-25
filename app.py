@@ -21,7 +21,7 @@ def add_bg_from_local(image_file):
         """,
         unsafe_allow_html=True
     )
-add_bg_from_local('"C:\Users\ruist\OneDrive - Asia Pacific University\ClassMaterials-R\DEGREE 3 - SEM 1\FYP_Investigation\background.png.jpg"')
+add_bg_from_local('C:\Users\ruist\OneDrive - Asia Pacific University\ClassMaterials-R\DEGREE 3 - SEM 1\FYP_Investigation\background.png.jpg')
 
 
 # Load the trained Gradient Boosting model
@@ -114,8 +114,8 @@ fig.update_layout(
     yaxis=dict(showticklabels=False, showgrid=False),
     plot_bgcolor="white",
     margin=dict(l=30, r=30, t=30, b=30),
-    height=200,
-    width=600
+    height=300,
+    width=400
 )
 
 # Function to decode user input back to human-readable labels
