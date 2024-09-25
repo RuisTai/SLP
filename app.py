@@ -1,5 +1,3 @@
-pip install shap
-
 import shap
 import streamlit as st
 
