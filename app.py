@@ -7,20 +7,25 @@ from io import BytesIO
 import base64 
 
 def add_bg_from_local(image_file):
-    with open(image_file, "rb") as image_file:
-        encoded = base64.b64encode(image_file.read()).decode()
-    st.markdown(
-        f"""
-        <style>
-        .stApp {{
-            background-image: url("data:image/png;base64,{encoded}");
-            background-size: cover;
-            background-position: center;
-        }}
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
+    try:
+        with open(image_file, "rb") as image_file:
+            encoded = base64.b64encode(image_file.read()).decode()
+        st.markdown(
+            f"""
+            <style>
+            .stApp {{
+                background-image: url("data:image/png;base64,{encoded}");
+                background-size: cover;
+                background-position: center;
+            }}
+            </style>
+            """,
+            unsafe_allow_html=True
+        )
+    except FileNotFoundError:
+        st.error("The specified file was not found. Please check the file path.")
+
+# Correct way to specify the path in Windows using a raw string
 add_bg_from_local(r'C:\Users\ruist\OneDrive - Asia Pacific University\ClassMaterials-R\DEGREE 3 - SEM 1\FYP_Investigation\background.png.jpg')
 
 
