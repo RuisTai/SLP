@@ -3,10 +3,13 @@ import joblib
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-import shap
+import shap  # Ensure SHAP is installed: pip install shap
 from io import BytesIO
 import base64 
 
+# -------------------------------
+# 1. Set Professional Background
+# -------------------------------
 def set_professional_background():
     st.markdown(
         """
@@ -98,34 +101,43 @@ def set_professional_background():
 # Apply the professional background and sidebar styling
 set_professional_background()
 
+# -------------------------------
+# 2. Load Model and Initialize SHAP
+# -------------------------------
+
 # Load the trained Gradient Boosting model
 model = joblib.load('gradient_boosting_model.pkl')
 
-# Initialize SHAP explainer and cache it
-@st.cache(allow_output_mutation=True)
-def get_shap_explainer(model):
-    return shap.TreeExplainer(model)
+# Cache the SHAP explainer using cache_resource
+@st.cache_resource
+def get_shap_explainer(_model):
+    return shap.TreeExplainer(_model)
 
 explainer = get_shap_explainer(model)
 
-# Assuming you have access to the training data features for SHAP
-# Replace 'X_train' with your actual training feature DataFrame
-# For demonstration, let's assume you have stored feature names
-# If not, you can define them manually
-feature_names = ['Age', 'Marital Status', 'Gender', 'BMI', 'Snoring Rate',
-                'Respiration Rate', 'Body Temperature', 'Limb Movement',
-                'Blood Oxygen', 'Eye Movement', 'Sleeping Hours', 'Heart Rate']
+# Define feature names (ensure these match the order of your model's input features)
+feature_names = [
+    'Age', 'Marital Status', 'Gender', 'BMI', 'Snoring Rate',
+    'Respiration Rate', 'Body Temperature', 'Limb Movement',
+    'Blood Oxygen', 'Eye Movement', 'Sleeping Hours', 'Heart Rate'
+]
 
-# Initialize history
+# -------------------------------
+# 3. Initialize History
+# -------------------------------
 if 'history' not in st.session_state:
     st.session_state.history = []
 if 'show_history' not in st.session_state:
     st.session_state.show_history = False
 
-# Streamlit app title
+# -------------------------------
+# 4. Streamlit App Title
+# -------------------------------
 st.title("Stress Prediction System")
 
-# Sidebar for input section
+# -------------------------------
+# 5. Sidebar for Input
+# -------------------------------
 with st.sidebar:
     # Custom sidebar title with unique font styling
     st.markdown("<h2>Input Features</h2>", unsafe_allow_html=True)
@@ -150,10 +162,19 @@ with st.sidebar:
         marital_status = 1 if marital_status == "Yes" else 0
         gender = 1 if gender == "Male" else 0
         
-        # Convert empty or invalid inputs to zero
-        snoring_rate = float(snoring_rate) if snoring_rate else 0
-        limb_movement = float(limb_movement) if limb_movement else 0
-        eye_movement = float(eye_movement) if eye_movement else 0
+        # Convert empty or invalid inputs to zero with error handling
+        try:
+            snoring_rate = float(snoring_rate) if snoring_rate else 0
+        except ValueError:
+            snoring_rate = 0
+        try:
+            limb_movement = float(limb_movement) if limb_movement else 0
+        except ValueError:
+            limb_movement = 0
+        try:
+            eye_movement = float(eye_movement) if eye_movement else 0
+        except ValueError:
+            eye_movement = 0
     
         input_data = np.array([
             age, marital_status, gender, bmi, snoring_rate, respiration_rate,
@@ -165,7 +186,9 @@ with st.sidebar:
 
     user_input, age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate = get_user_input()
 
-# Define stress levels and corresponding descriptions
+# -------------------------------
+# 6. Define Stress Levels and Colors
+# -------------------------------
 stress_descriptions = {
     0: "No Stress",
     1: "Low Stress",
@@ -174,13 +197,13 @@ stress_descriptions = {
     4: "Max Stress"
 }
 
-# Define a gradient of colors from lime to red
 colors = ['#d0f0c0', '#b0e57c', '#f2b700', '#f77f00', '#d62839']
 
-# Create a horizontal bar chart with five sections
+# -------------------------------
+# 7. Create Horizontal Bar Chart
+# -------------------------------
 fig = go.Figure()
 
-# Add each section to the bar chart
 for i in range(5):
     fig.add_trace(go.Bar(
         x=[1],
@@ -192,7 +215,6 @@ for i in range(5):
         showlegend=False
     ))
 
-# Update layout to arrange sections
 fig.update_layout(
     barmode='stack',
     xaxis=dict(
@@ -208,7 +230,9 @@ fig.update_layout(
     width=800
 )
 
-# Function to decode user input back to human-readable labels
+# -------------------------------
+# 8. Decode User Input Function
+# -------------------------------
 def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate):
     if age <= 18:
         age_desc = "(Adolescent)"
@@ -299,7 +323,9 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
 
     return age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc
 
-# Predict button
+# -------------------------------
+# 9. Predict Button Functionality
+# -------------------------------
 if st.button("Predict Stress Level"):
     # Validate if all inputs are within the specified ranges
     try:
@@ -391,7 +417,7 @@ if st.button("Predict Stress Level"):
             # SHAP Bar Plot for feature importance
             shap_df = pd.DataFrame({
                 'Feature': feature_names,
-                'SHAP Value': shap_values[prediction][0]
+                'SHAP Value': shap_values[prediction][0]  # Adjust indexing as needed
             })
 
             # Sort features by absolute SHAP value
@@ -439,7 +465,9 @@ if st.button("Predict Stress Level"):
                 "Stress Level": stress_level
             })
 
-# Display user input history and provide download button
+# -------------------------------
+# 10. Prediction History Section
+# -------------------------------
 st.subheader("Prediction History")
 
 # Button to toggle showing prediction history
