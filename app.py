@@ -582,21 +582,19 @@ if st.button("Predict Stress Level"):
                     unsafe_allow_html=True
                 )
                 st.markdown(f"**💍 Marital Status:** {marital_desc}")
-        
-            with col2:
                 st.markdown(f"**♂️ Gender:** {gender_desc}")
                 snoring_color = get_status_color(snoring_desc)
                 st.markdown(
                     f"**😴 Snoring Rate:** {snoring_rate_val} <span style='color:{snoring_color}'>{snoring_desc}</span>",
                     unsafe_allow_html=True
-                )
+                ),
+        
+            with col2:
                 respiration_color = get_status_color(respiration_desc)
                 st.markdown(
                     f"**🌬️ Respiration Rate:** {respiration_rate} <span style='color:{respiration_color}'>{respiration_desc}</span>",
                     unsafe_allow_html=True
                 )
-        
-            with col3:
                 body_temp_color = get_status_color(body_temp_desc)
                 st.markdown(
                     f"**🌡️ Body Temperature:** {body_temperature} °F <span style='color:{body_temp_color}'>{body_temp_desc}</span>",
@@ -606,15 +604,14 @@ if st.button("Predict Stress Level"):
                 st.markdown(
                     f"**🦵 Limb Movement:** {limb_movement_val} <span style='color:{limb_color}'>{limb_desc}</span>",
                     unsafe_allow_html=True
-                )
+                ),
+        
+            with col3:
                 oxygen_color = get_status_color(oxygen_desc)
                 st.markdown(
                     f"**🩸 Blood Oxygen:** {blood_oxygen} <span style='color:{oxygen_color}'>{oxygen_desc}</span>",
                     unsafe_allow_html=True
                 )
-        
-            # Expander for additional details with accessible colors
-            with st.expander("📊 View More Details"):
                 eye_color = get_status_color(eye_desc)
                 st.markdown(
                     f"**👁️ Eye Movement:** {eye_movement_val} <span style='color:{eye_color}'>{eye_desc}</span>",
@@ -630,20 +627,19 @@ if st.button("Predict Stress Level"):
                     f"**❤️ Heart Rate:** {heart_rate} <span style='color:{heart_color}'>{heart_desc}</span>",
                     unsafe_allow_html=True
                 )
-        
-            # Display warning if incomplete data
+
+                # Display warning if incomplete data
             if incomplete_data_warning:
                 st.markdown(f"**⚠️ Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
-        
-            # Provide recommendations based on inputs
-            recommendations = provide_recommendations(
+                
+            # Expander for additional details with accessible colors
+            with st.expander("📊 View Recommendations"):
+                recommendations = provide_recommendations(
                 bmi, blood_oxygen, heart_rate, 
                 snoring_rate_val, respiration_rate, body_temperature, 
                 limb_movement_val, eye_movement_val, sleeping_hours
             )
-        
-            # Create a container for recommendations
-            with st.container():
+                
                 st.markdown("## **💡 Recommendations:**")
                 for rec in recommendations:
                     st.markdown(f"- {rec}")
