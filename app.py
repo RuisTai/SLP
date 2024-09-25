@@ -93,15 +93,6 @@ def set_professional_background():
         .plotly {
             margin: 0 auto;
         }
-        
-        /* Recommendation Container Styling */
-        .recommendation-container {
-            border-left: 4px solid #1A237E;
-            padding-left: 10px;
-            margin-bottom: 10px;
-            background-color: #E3F2FD; /* Light Blue Background */
-            border-radius: 5px;
-        }
         </style>
         """,
         unsafe_allow_html=True
@@ -331,11 +322,11 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
     elif bmi <= 24.9:
         bmi_desc = "(Normal weight)"
     elif bmi <= 29.9:
-        bmi_desc = "<span style='color:orange'>(Overweight)</span>"
+        bmi_desc = "(Overweight)"
     elif bmi <= 30:
-        bmi_desc = "<span style='color:red'>(Obese)</span>"
+        bmi_desc = "(Obese)"
     else:
-        bmi_desc = "<span style='color:red'>(Extremely Obese)</span>"
+        bmi_desc = "(Extremely Obese)"
 
     marital_desc = "Married" if marital_status == 1 else "Not married"
     gender_desc = "Male" if gender == 1 else "Female"
@@ -347,37 +338,37 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
     elif snoring_rate <= 30:
         snoring_desc = "(Moderate snoring)"
     elif snoring_rate <= 45:
-        snoring_desc = "<span style='color:orange'>(Heavy Snoring)</span>"
+        snoring_desc = "(Heavy Snoring)"
     else:
-        snoring_desc = "<span style='color:red'>(Severe Snoring)</span>"
+        snoring_desc = "(Severe Snoring)"
 
     if respiration_rate <= 11:
-        respiration_desc = "<span style='color:orange'>(Hypoventilation-Slow Breath)</span>"
+        respiration_desc = "(Hypoventilation-Slow Breath)"
     elif 12 <= respiration_rate <= 20:
         respiration_desc = "(Normal)"
     else:
-        respiration_desc = "<span style='color:red'>(Hyperventilation-Rapid Breath)</span>"
+        respiration_desc = "(Hyperventilation-Rapid Breath)"
 
     if body_temperature < 97.0:
-        body_temp_desc = "<span style='color:red'>(Hypothermia-Low)</span>"
+        body_temp_desc = "(Hypothermia-Low)"
     elif 97.0 <= body_temperature <= 99.5:
         body_temp_desc = "(Normal)"
     else:
-        body_temp_desc = "<span style='color:red'>(Hyperthermia-High)</span>"
+        body_temp_desc = "(Hyperthermia-High)"
 
     if limb_movement <= 5:
         limb_desc = "(Normal)"
     elif 6 <= limb_movement <= 25:
         limb_desc = "(Moderate)"
     else:
-        limb_desc = "<span style='color:red'>(Severe)</span>"
+        limb_desc = "(Severe)"
 
     if blood_oxygen <= 69:
-        oxygen_desc = "<span style='color:red'>(Cyanosis-Low)</span>"
+        oxygen_desc = "(Cyanosis-Low)"
     elif blood_oxygen <= 79:
-        oxygen_desc = "<span style='color:red'>(Severe Hypoxia)</span>"
+        oxygen_desc = "(Severe Hypoxia)"
     elif blood_oxygen <= 89:
-        oxygen_desc = "<span style='color:orange'>(Low Oxygen Level)</span>"
+        oxygen_desc = "(Low Oxygen Level)"
     elif 90 <= blood_oxygen <= 94:
         oxygen_desc = "(Moderate Oxygen Level)"
     else:
@@ -386,21 +377,21 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
     if eye_movement <= 25:
         eye_desc = "(Normal)"
     else:
-        eye_desc = "<span style='color:red'>(High REM)</span>"
+        eye_desc = "(High REM)"
 
     if sleeping_hours <= 6:
-        sleep_desc = "<span style='color:red'>(Sleep Deprivation)</span>"
+        sleep_desc = "(Sleep Deprivation)"
     elif 7 <= sleeping_hours <= 9:
         sleep_desc = "(Normal)"
     else:
-        sleep_desc = "<span style='color:red'>(Hypersomnia)</span>"
+        sleep_desc = "(Hypersomnia)"
 
     if heart_rate <= 39:
-        heart_desc = "<span style='color:red'>(Bradycardia-Too Slow)</span>"
+        heart_desc = "(Bradycardia-Too Slow)"
     elif 40 <= heart_rate <= 75:
         heart_desc = "(Normal)"
     else:
-        heart_desc = "<span style='color:red'>(Tachycardia-Too Rapid)</span>"
+        heart_desc = "(Tachycardia-Too Rapid)"
 
     return age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc
 
@@ -416,183 +407,75 @@ def provide_recommendations(
     
     # BMI Recommendations
     if bmi < 18.5:
-        recommendations.append({
-            "emoji": "📉",
-            "title": "Underweight",
-            "message": "Consider consulting a healthcare provider for a nutritional plan to reach a healthier weight."
-        })
+        recommendations.append("📉 **Underweight**: Consider consulting a healthcare provider for a nutritional plan to reach a healthier weight.")
     elif bmi <= 24.9:
-        recommendations.append({
-            "emoji": "✅",
-            "title": "Normal Weight",
-            "message": "Great job maintaining a healthy BMI! Keep up the good work."
-        })
+        recommendations.append("✅ **Normal Weight**: Great job maintaining a healthy BMI!")
     elif bmi <= 29.9:
-        recommendations.append({
-            "emoji": "⚖️",
-            "title": "Overweight",
-            "message": "Engaging in a balanced diet and regular physical activity can help manage your BMI."
-        })
+        recommendations.append("⚖️ **Overweight**: Engaging in a balanced diet and regular physical activity can help manage your BMI.")
     else:
-        recommendations.append({
-            "emoji": "📈",
-            "title": "Obese",
-            "message": "It's advisable to seek guidance from a healthcare professional for a comprehensive weight management plan."
-        })
+        recommendations.append("📈 **Obese**: It's advisable to seek guidance from a healthcare professional for a comprehensive weight management plan.")
     
     # Blood Oxygen Recommendations
     if blood_oxygen < 90:
-        recommendations.append({
-            "emoji": "🩸",
-            "title": "Low Blood Oxygen",
-            "message": "Low blood oxygen levels detected. Please consult a healthcare professional immediately."
-        })
+        recommendations.append("🩸 **Low Blood Oxygen**: Low blood oxygen levels detected. Please consult a healthcare professional immediately.")
     elif blood_oxygen <= 94:
-        recommendations.append({
-            "emoji": "🟠",
-            "title": "Low Oxygen Level",
-            "message": "Consider deep breathing exercises and ensure you're in a well-ventilated environment."
-        })
+        recommendations.append("🟠 **Low Oxygen Level**: Consider deep breathing exercises and ensure you're in a well-ventilated environment.")
     else:
-        recommendations.append({
-            "emoji": "🟢",
-            "title": "Normal Blood Oxygen",
-            "message": "Your blood oxygen levels are within the normal range."
-        })
+        recommendations.append("🟢 **Normal Blood Oxygen**: Your blood oxygen levels are within the normal range.")
     
     # Heart Rate Recommendations
     if heart_rate < 40:
-        recommendations.append({
-            "emoji": "❤️",
-            "title": "Bradycardia",
-            "message": "Abnormally low heart rate detected. Consider seeking medical advice."
-        })
+        recommendations.append("❤️ **Bradycardia**: Abnormally low heart rate detected. Consider seeking medical advice.")
     elif heart_rate <= 75:
-        recommendations.append({
-            "emoji": "🟢",
-            "title": "Normal Heart Rate",
-            "message": "Your heart rate is within the normal range."
-        })
+        recommendations.append("🟢 **Normal Heart Rate**: Your heart rate is within the normal range.")
     else:
-        recommendations.append({
-            "emoji": "❤️",
-            "title": "Tachycardia",
-            "message": "Abnormally high heart rate detected. It might be beneficial to engage in relaxation techniques or consult a healthcare provider."
-        })
+        recommendations.append("❤️ **Tachycardia**: Abnormally high heart rate detected. It might be beneficial to engage in relaxation techniques or consult a healthcare provider.")
     
     # Snoring Rate Recommendations
     if snoring_rate > 30:
-        recommendations.append({
-            "emoji": "😴",
-            "title": "Heavy Snoring",
-            "message": "Persistent heavy snoring may indicate sleep apnea. Consider consulting a sleep specialist."
-        })
+        recommendations.append("😴 **Heavy Snoring**: Persistent heavy snoring may indicate sleep apnea. Consider consulting a sleep specialist.")
     elif snoring_rate > 15:
-        recommendations.append({
-            "emoji": "😴",
-            "title": "Mild Snoring",
-            "message": "Moderate snoring can disrupt your sleep. Maintaining a healthy weight and avoiding alcohol before bedtime might help."
-        })
+        recommendations.append("😴 **Mild Snoring**: Moderate snoring can disrupt your sleep. Maintaining a healthy weight and avoiding alcohol before bedtime might help.")
     else:
-        recommendations.append({
-            "emoji": "✅",
-            "title": "Normal Snoring",
-            "message": "Your snoring rate is within the normal range."
-        })
+        recommendations.append("✅ **Normal Snoring**: Your snoring rate is within the normal range.")
     
     # Respiration Rate Recommendations
     if respiration_rate < 12:
-        recommendations.append({
-            "emoji": "🌬️",
-            "title": "Slow Respiration",
-            "message": "A lower respiration rate may indicate hypoventilation. Consider breathing exercises."
-        })
+        recommendations.append("🌬️ **Slow Respiration**: A lower respiration rate may indicate hypoventilation. Consider breathing exercises.")
     elif respiration_rate > 20:
-        recommendations.append({
-            "emoji": "🌬️",
-            "title": "Rapid Respiration",
-            "message": "A higher respiration rate may indicate hyperventilation. Practice relaxation techniques."
-        })
+        recommendations.append("🌬️ **Rapid Respiration**: A higher respiration rate may indicate hyperventilation. Practice relaxation techniques.")
     else:
-        recommendations.append({
-            "emoji": "🟢",
-            "title": "Normal Respiration Rate",
-            "message": "Your respiration rate is within the normal range."
-        })
+        recommendations.append("🟢 **Normal Respiration Rate**: Your respiration rate is within the normal range.")
     
     # Body Temperature Recommendations
     if body_temperature < 97.0:
-        recommendations.append({
-            "emoji": "🌡️",
-            "title": "Low Body Temperature",
-            "message": "Consider dressing warmly and consulting a healthcare provider if you feel unwell."
-        })
+        recommendations.append("🌡️ **Low Body Temperature**: Consider dressing warmly and consulting a healthcare provider if you feel unwell.")
     elif body_temperature > 99.5:
-        recommendations.append({
-            "emoji": "🌡️",
-            "title": "High Body Temperature",
-            "message": "Stay hydrated and consider seeking medical attention if the temperature persists."
-        })
+        recommendations.append("🌡️ **High Body Temperature**: Stay hydrated and consider seeking medical attention if the temperature persists.")
     else:
-        recommendations.append({
-            "emoji": "🟢",
-            "title": "Normal Body Temperature",
-            "message": "Your body temperature is within the normal range."
-        })
+        recommendations.append("🟢 **Normal Body Temperature**: Your body temperature is within the normal range.")
     
     # Limb Movement Recommendations
     if limb_movement > 25:
-        recommendations.append({
-            "emoji": "🦵",
-            "title": "Severe Limb Movement",
-            "message": "Excessive limb movement during sleep may affect sleep quality. Consider relaxation techniques before bedtime."
-        })
+        recommendations.append("🦵 **Severe Limb Movement**: Excessive limb movement during sleep may affect sleep quality. Consider relaxation techniques before bedtime.")
     elif limb_movement > 5:
-        recommendations.append({
-            "emoji": "🦵",
-            "title": "Moderate Limb Movement",
-            "message": "Some limb movement is normal, but excessive movement can disrupt sleep."
-        })
+        recommendations.append("🦵 **Moderate Limb Movement**: Some limb movement is normal, but excessive movement can disrupt sleep.")
     else:
-        recommendations.append({
-            "emoji": "✅",
-            "title": "Normal Limb Movement",
-            "message": "Your limb movement during sleep is within the normal range."
-        })
+        recommendations.append("✅ **Normal Limb Movement**: Your limb movement during sleep is within the normal range.")
     
     # Eye Movement Recommendations
     if eye_movement > 25:
-        recommendations.append({
-            "emoji": "👁️",
-            "title": "High REM Activity",
-            "message": "Elevated eye movement during sleep can be associated with stress. Consider stress-reduction techniques."
-        })
+        recommendations.append("👁️ **High REM Activity**: Elevated eye movement during sleep can be associated with stress. Consider stress-reduction techniques.")
     else:
-        recommendations.append({
-            "emoji": "🟢",
-            "title": "Normal Eye Movement",
-            "message": "Your eye movement during sleep is within the normal range."
-        })
+        recommendations.append("🟢 **Normal Eye Movement**: Your eye movement during sleep is within the normal range.")
     
     # Sleeping Hours Recommendations
     if sleeping_hours < 6:
-        recommendations.append({
-            "emoji": "🛌",
-            "title": "Sleep Deprivation",
-            "message": "Aim for 7-9 hours of sleep for optimal health. Consider establishing a regular sleep schedule."
-        })
+        recommendations.append("🛌 **Sleep Deprivation**: Aim for 7-9 hours of sleep for optimal health. Consider establishing a regular sleep schedule.")
     elif sleeping_hours > 9:
-        recommendations.append({
-            "emoji": "🛌",
-            "title": "Excessive Sleep",
-            "message": "Consistently sleeping more than 9 hours may affect your daily routine. Aim for 7-9 hours of sleep."
-        })
+        recommendations.append("🛌 **Excessive Sleep**: Consistently sleeping more than 9 hours may affect your daily routine. Aim for 7-9 hours of sleep.")
     else:
-        recommendations.append({
-            "emoji": "🟢",
-            "title": "Normal Sleeping Hours",
-            "message": "Your sleep duration is within the recommended range."
-        })
+        recommendations.append("🟢 **Normal Sleeping Hours**: Your sleep duration is within the recommended range.")
     
     return recommendations
 
@@ -638,8 +521,8 @@ if st.button("Predict Stress Level"):
             incomplete_data_warning = ""
             if snoring_rate_val == 0 or limb_movement_val == 0 or eye_movement_val == 0:
                 incomplete_data_warning = (
-                    "<span style='color:#d61e40'>⚠️ Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span>"
-                    "<span style='color:#d61e40'> The prediction may not be highly accurate due to incomplete data.</span>"
+                    "<span style='color:#d32f2f'>⚠️ Note: Some of the input variables (Snoring Rate, Limb Movement, Eye Movement) were not provided or are zero.</span><br>"
+                    "<span style='color:#d32f2f'>The prediction may not be highly accurate due to incomplete data.</span>"
                 )
         
             # Add the chat bubble above the correct section
@@ -667,52 +550,104 @@ if st.button("Predict Stress Level"):
                 age, bmi, marital_status, gender, snoring_rate_val, respiration_rate, body_temperature, limb_movement_val, blood_oxygen, eye_movement_val, sleeping_hours, heart_rate
             )
 
-            # Display interpretations with structured layout
+            def get_status_color(description):
+                critical_keywords = ["Underweight", "Hypoventilation", "Bradycardia", "Hypothermia", "Sleep Deprivation"]
+                warning_keywords = ["Overweight", "Low Oxygen Level", "Severe Hypoxia", "Hyperventilation", "Hypersomnia"]
+                normal_keywords = ["Normal"]
+
+                if any(keyword in description for keyword in critical_keywords):
+                    return "#d32f2f"  # Red
+                elif any(keyword in description for keyword in warning_keywords):
+                    return "#f57c00"  # Orange
+                elif any(keyword in description for keyword in normal_keywords):
+                    return "#388e3c"  # Green
+                else:
+                    return "#616161"  # Grey for unknown or neutral
+
+            # Display interpretations with structured layout and accessible colors
             st.markdown("## **📝 Your Input Interpretation:**")
 
             # Create three columns
             col1, col2, col3 = st.columns(3)
 
             with col1:
-                st.markdown(f"**🧑 Age:** {age} {age_desc}")
-                st.markdown(f"**⚖️ BMI:** {bmi} {bmi_desc}")
+                age_color = get_status_color(age_desc)
+                st.markdown(
+                    f"**🧑 Age:** {age} <span style='color:{age_color}'>{age_desc}</span>",
+                    unsafe_allow_html=True
+                )
+                bmi_color = get_status_color(bmi_desc)
+                st.markdown(
+                    f"**⚖️ BMI:** {bmi} <span style='color:{bmi_color}'>{bmi_desc}</span>",
+                    unsafe_allow_html=True
+                )
                 st.markdown(f"**💍 Marital Status:** {marital_desc}")
-
+        
             with col2:
                 st.markdown(f"**♂️ Gender:** {gender_desc}")
-                st.markdown(f"**😴 Snoring Rate:** {snoring_rate_val} {snoring_desc}")
-                st.markdown(f"**🌬️ Respiration Rate:** {respiration_rate} {respiration_desc}")
-
+                snoring_color = get_status_color(snoring_desc)
+                st.markdown(
+                    f"**😴 Snoring Rate:** {snoring_rate_val} <span style='color:{snoring_color}'>{snoring_desc}</span>",
+                    unsafe_allow_html=True
+                )
+                respiration_color = get_status_color(respiration_desc)
+                st.markdown(
+                    f"**🌬️ Respiration Rate:** {respiration_rate} <span style='color:{respiration_color}'>{respiration_desc}</span>",
+                    unsafe_allow_html=True
+                )
+        
             with col3:
-                st.markdown(f"**🌡️ Body Temperature:** {body_temperature} °F {body_temp_desc}")
-                st.markdown(f"**🦵 Limb Movement:** {limb_movement_val} {limb_desc}")
-                st.markdown(f"**🩸 Blood Oxygen:** {blood_oxygen} {oxygen_desc}")
-
-            # Expander for additional details
+                body_temp_color = get_status_color(body_temp_desc)
+                st.markdown(
+                    f"**🌡️ Body Temperature:** {body_temperature} °F <span style='color:{body_temp_color}'>{body_temp_desc}</span>",
+                    unsafe_allow_html=True
+                )
+                limb_color = get_status_color(limb_desc)
+                st.markdown(
+                    f"**🦵 Limb Movement:** {limb_movement_val} <span style='color:{limb_color}'>{limb_desc}</span>",
+                    unsafe_allow_html=True
+                )
+                oxygen_color = get_status_color(oxygen_desc)
+                st.markdown(
+                    f"**🩸 Blood Oxygen:** {blood_oxygen} <span style='color:{oxygen_color}'>{oxygen_desc}</span>",
+                    unsafe_allow_html=True
+                )
+        
+            # Expander for additional details with accessible colors
             with st.expander("📊 View More Details"):
-                st.markdown(f"**👁️ Eye Movement:** {eye_movement_val} {eye_desc}")
-                st.markdown(f"**🛌 Sleeping Hours:** {sleeping_hours} {sleep_desc}")
-                st.markdown(f"**❤️ Heart Rate:** {heart_rate} {heart_desc}")
-
+                eye_color = get_status_color(eye_desc)
+                st.markdown(
+                    f"**👁️ Eye Movement:** {eye_movement_val} <span style='color:{eye_color}'>{eye_desc}</span>",
+                    unsafe_allow_html=True
+                )
+                sleep_color = get_status_color(sleep_desc)
+                st.markdown(
+                    f"**🛌 Sleeping Hours:** {sleeping_hours} <span style='color:{sleep_color}'>{sleep_desc}</span>",
+                    unsafe_allow_html=True
+                )
+                heart_color = get_status_color(heart_desc)
+                st.markdown(
+                    f"**❤️ Heart Rate:** {heart_rate} <span style='color:{heart_color}'>{heart_desc}</span>",
+                    unsafe_allow_html=True
+                )
+        
             # Display warning if incomplete data
             if incomplete_data_warning:
                 st.markdown(f"**⚠️ Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
-
+        
             # Provide recommendations based on inputs
             recommendations = provide_recommendations(
                 bmi, blood_oxygen, heart_rate, 
                 snoring_rate_val, respiration_rate, body_temperature, 
                 limb_movement_val, eye_movement_val, sleeping_hours
             )
-
-            st.markdown("## **💡 Recommendations:**")
-            for rec in recommendations:
-                with st.container():
-                    st.markdown(
-                        f"<div class='recommendation-container'><strong>{rec['emoji']} {rec['title']}:</strong> {rec['message']}</div>",
-                        unsafe_allow_html=True
-                    )
-
+        
+            # Create a container for recommendations
+            with st.container():
+                st.markdown("## **💡 Recommendations:**")
+                for rec in recommendations:
+                    st.markdown(f"- {rec}")
+        
             # Save user input and prediction to history
             st.session_state.history.append({
                 "Age": age,
