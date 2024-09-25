@@ -14,7 +14,7 @@ def add_bg_from_local(image_file):
             f"""
             <style>
             .stApp {{
-                background-image: url("data:image/png;base64,{encoded}");
+                background-image: url("data:image/jpg;base64,{encoded}");
                 background-size: cover;
                 background-position: center;
             }}
@@ -118,9 +118,9 @@ fig.update_layout(
     ),
     yaxis=dict(showticklabels=False, showgrid=False),
     plot_bgcolor="white",
-    margin=dict(l=30, r=30, t=30, b=30),
+    margin=dict(l=20, r=20, t=20, b=20),
     height=300,
-    width=400
+    width=500
 )
 
 # Function to decode user input back to human-readable labels
