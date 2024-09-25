@@ -108,12 +108,41 @@ set_professional_background()
 # Load the trained Gradient Boosting model
 model = joblib.load('gradient_boosting_model.pkl')
 
+# Step 1: Load or define your background data
+# Option A: Using a subset of training data
+# Replace 'path_to_your_training_data.csv' with the actual path to your training data
+try:
+    X_train = pd.read_csv('path_to_your_training_data.csv')  # Ensure this file exists
+    background_data = X_train.sample(n=100, random_state=42)  # Adjust 'n' as needed
+except FileNotFoundError:
+    st.error("**Error:** Background training data file not found. Please ensure 'path_to_your_training_data.csv' exists.")
+    background_data = pd.DataFrame()  # Empty DataFrame to prevent further errors
+
+# Option B: Using synthetic data (if Option A is not feasible)
+if background_data.empty:
+    num_background = 100
+    background_data = pd.DataFrame({
+        'Age': np.random.randint(18, 81, size=num_background),
+        'Marital Status': np.random.choice([0, 1], size=num_background),
+        'Gender': np.random.choice([0, 1], size=num_background),
+        'BMI': np.random.uniform(18.0, 40.0, size=num_background),
+        'Snoring Rate': np.random.uniform(0, 50, size=num_background),
+        'Respiration Rate': np.random.uniform(0, 50, size=num_background),
+        'Body Temperature': np.random.uniform(60.0, 110.0, size=num_background),
+        'Limb Movement': np.random.uniform(0, 35, size=num_background),
+        'Blood Oxygen': np.random.uniform(60, 110, size=num_background),
+        'Eye Movement': np.random.uniform(0, 35, size=num_background),
+        'Sleeping Hours': np.random.uniform(0, 24, size=num_background),
+        'Heart Rate': np.random.uniform(30, 100, size=num_background)
+    })
+
 # Cache the SHAP explainer using cache_resource
 @st.cache_resource
-def get_shap_explainer(_model):
-    return shap.Explainer(_model.predict_proba, shap.maskers.Independent())
+def get_shap_explainer(_model, background_data):
+    masker = shap.maskers.Independent(data=background_data)
+    return shap.Explainer(_model.predict_proba, masker)
 
-explainer = get_shap_explainer(model)
+explainer = get_shap_explainer(model, background_data)
 
 # Define feature names (ensure these match the order of your model's input features)
 feature_names = [
@@ -416,12 +445,12 @@ if st.button("Predict Stress Level"):
         
             # SHAP values for multiclass classification are a list with one array per class
             # We'll extract SHAP values for the predicted class
-            shap_values_pred = shap_values.values[prediction]  # Adjust indexing if necessary
+            shap_values_pred = shap_values.values[prediction]
         
             # Create a DataFrame for SHAP values
             shap_df = pd.DataFrame({
                 'Feature': feature_names,
-                'SHAP Value': shap_values_pred[0]  # Assuming shap_values_pred is a list or array
+                'SHAP Value': shap_values_pred[0]  # Adjust indexing based on SHAP's output structure
             })
     
             # Sort features by absolute SHAP value
@@ -475,7 +504,7 @@ if st.button("Predict Stress Level"):
 st.subheader("Prediction History")
 
 # Button to toggle showing prediction history
-if st.button("Show Prediction History"):
+if st.button("Show Prediction History", key="show_history_btn"):
     st.session_state.show_history = not st.session_state.show_history  # Toggle history visibility
 
 # Display prediction history if the button was clicked and history exists
