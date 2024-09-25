@@ -116,7 +116,7 @@ fig.update_layout(
     height=250,
     width=800
 )
-
+add_bg_from_url()
 # Function to decode user input back to human-readable labels
 def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate):
     if age <= 18:
