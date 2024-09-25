@@ -587,7 +587,7 @@ if st.button("Predict Stress Level"):
                 st.markdown(
                     f"**😴 Snoring Rate:** {snoring_rate_val} <span style='color:{snoring_color}'>{snoring_desc}</span>",
                     unsafe_allow_html=True
-                ),
+                )
         
             with col2:
                 respiration_color = get_status_color(respiration_desc)
@@ -604,7 +604,7 @@ if st.button("Predict Stress Level"):
                 st.markdown(
                     f"**🦵 Limb Movement:** {limb_movement_val} <span style='color:{limb_color}'>{limb_desc}</span>",
                     unsafe_allow_html=True
-                ),
+                )
         
             with col3:
                 oxygen_color = get_status_color(oxygen_desc)
