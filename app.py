@@ -3,9 +3,9 @@ import joblib
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-import shap  # Ensure SHAP is installed: pip install shap
 from io import BytesIO
 import base64 
+import os
 
 # -------------------------------
 # 1. Set Professional Background
@@ -102,47 +102,21 @@ def set_professional_background():
 set_professional_background()
 
 # -------------------------------
-# 2. Load Model and Initialize SHAP
+# 2. Load Model with Caching
 # -------------------------------
 
-# Load the trained Gradient Boosting model
-model = joblib.load('gradient_boosting_model.pkl')
-
-# Step 1: Load or define your background data
-# Option A: Using a subset of training data
-# Replace 'path_to_your_training_data.csv' with the actual path to your training data
-try:
-    X_train = pd.read_csv('path_to_your_training_data.csv')  # Ensure this file exists
-    background_data = X_train.sample(n=100, random_state=42)  # Adjust 'n' as needed
-except FileNotFoundError:
-    st.error("**Error:** Background training data file not found. Please ensure 'path_to_your_training_data.csv' exists.")
-    background_data = pd.DataFrame()  # Empty DataFrame to prevent further errors
-
-# Option B: Using synthetic data (if Option A is not feasible)
-if background_data.empty:
-    num_background = 100
-    background_data = pd.DataFrame({
-        'Age': np.random.randint(18, 81, size=num_background),
-        'Marital Status': np.random.choice([0, 1], size=num_background),
-        'Gender': np.random.choice([0, 1], size=num_background),
-        'BMI': np.random.uniform(18.0, 40.0, size=num_background),
-        'Snoring Rate': np.random.uniform(0, 50, size=num_background),
-        'Respiration Rate': np.random.uniform(0, 50, size=num_background),
-        'Body Temperature': np.random.uniform(60.0, 110.0, size=num_background),
-        'Limb Movement': np.random.uniform(0, 35, size=num_background),
-        'Blood Oxygen': np.random.uniform(60, 110, size=num_background),
-        'Eye Movement': np.random.uniform(0, 35, size=num_background),
-        'Sleeping Hours': np.random.uniform(0, 24, size=num_background),
-        'Heart Rate': np.random.uniform(30, 100, size=num_background)
-    })
-
-# Cache the SHAP explainer using cache_resource
 @st.cache_resource
-def get_shap_explainer(_model, background_data):
-    masker = shap.maskers.Independent(data=background_data)
-    return shap.Explainer(_model.predict_proba, masker)
+def load_model(model_path):
+    if not os.path.exists(model_path):
+        st.error(f"**Error:** Model file '{model_path}' not found. Please ensure it exists in the specified path.")
+        st.stop()
+    return joblib.load(model_path)
 
-explainer = get_shap_explainer(model, background_data)
+# Specify the path to your model
+model_path = 'gradient_boosting_model.pkl'
+
+# Load the trained Gradient Boosting model
+model = load_model(model_path)
 
 # Define feature names (ensure these match the order of your model's input features)
 feature_names = [
@@ -165,7 +139,7 @@ if 'show_history' not in st.session_state:
 st.title("Stress Prediction System")
 
 # -------------------------------
-# 5. Sidebar for Input
+# 5. Sidebar for Input with Help Texts
 # -------------------------------
 with st.sidebar:
     # Custom sidebar title with unique font styling
@@ -175,18 +149,87 @@ with st.sidebar:
     st.markdown("<p>Enter the features below to predict the stress level from 0 to 4:</p>", unsafe_allow_html=True)
 
     def get_user_input():
-        age = st.number_input("Age (18-80)", min_value=18, max_value=80, value=22, step=1)
-        marital_status = st.selectbox("Marital Status", options=["Yes", "No"])
-        gender = st.selectbox("Gender", options=["Male", "Female"])
-        bmi = st.number_input("BMI (18.0-40.0)", min_value=18.0, max_value=40.0, value=25.0, step=0.1)
-        snoring_rate = st.text_input("Snoring Rate (0-50)", value="")
-        respiration_rate = st.number_input("Respiration Rate (0-50)", min_value=0.0, max_value=50.0, value=15.0, step=0.1)
-        body_temperature = st.number_input("Body Temperature °F (60-110)", min_value=60.0, max_value=110.0, value=90.0, step=0.1)
-        limb_movement = st.text_input("Limb Movement (0-35)", value="")
-        blood_oxygen = st.number_input("Blood Oxygen (60-110)", min_value=60.0, max_value=110.0, value=80.0, step=0.1)
-        eye_movement = st.text_input("Eye Movement (0-35)", value="")
-        sleeping_hours = st.number_input("Sleeping Hours (0-24)", min_value=0.0, max_value=24.0, value=8.0, step=0.1)
-        heart_rate = st.number_input("Heart Rate (30-100)", min_value=30.0, max_value=100.0, value=70.0, step=0.1)
+        age = st.number_input(
+            "Age (18-80)",
+            min_value=18,
+            max_value=80,
+            value=22,
+            step=1,
+            help="Enter your age in years (must be between 18 and 80)."
+        )
+        marital_status = st.selectbox(
+            "Marital Status",
+            options=["Yes", "No"],
+            help="Select 'Yes' if you are married, otherwise 'No'."
+        )
+        gender = st.selectbox(
+            "Gender",
+            options=["Male", "Female"],
+            help="Select your gender."
+        )
+        bmi = st.number_input(
+            "BMI (18.0-40.0)",
+            min_value=18.0,
+            max_value=40.0,
+            value=25.0,
+            step=0.1,
+            help="Enter your Body Mass Index (BMI) value."
+        )
+        snoring_rate = st.text_input(
+            "Snoring Rate (0-50)",
+            value="",
+            help="Enter your snoring rate. If unsure, leave blank or enter 0."
+        )
+        respiration_rate = st.number_input(
+            "Respiration Rate (0-50)",
+            min_value=0.0,
+            max_value=50.0,
+            value=15.0,
+            step=0.1,
+            help="Enter your respiration rate."
+        )
+        body_temperature = st.number_input(
+            "Body Temperature °F (60-110)",
+            min_value=60.0,
+            max_value=110.0,
+            value=90.0,
+            step=0.1,
+            help="Enter your body temperature in Fahrenheit."
+        )
+        limb_movement = st.text_input(
+            "Limb Movement (0-35)",
+            value="",
+            help="Enter your limb movement rate. If unsure, leave blank or enter 0."
+        )
+        blood_oxygen = st.number_input(
+            "Blood Oxygen (60-110)",
+            min_value=60.0,
+            max_value=110.0,
+            value=80.0,
+            step=0.1,
+            help="Enter your blood oxygen level."
+        )
+        eye_movement = st.text_input(
+            "Eye Movement (0-35)",
+            value="",
+            help="Enter your eye movement rate. If unsure, leave blank or enter 0."
+        )
+        sleeping_hours = st.number_input(
+            "Sleeping Hours (0-24)",
+            min_value=0.0,
+            max_value=24.0,
+            value=8.0,
+            step=0.1,
+            help="Enter the number of hours you slept."
+        )
+        heart_rate = st.number_input(
+            "Heart Rate (30-100)",
+            min_value=30.0,
+            max_value=100.0,
+            value=70.0,
+            step=0.1,
+            help="Enter your heart rate."
+        )
     
         marital_status = 1 if marital_status == "Yes" else 0
         gender = 1 if gender == "Male" else 0
@@ -440,47 +483,8 @@ if st.button("Predict Stress Level"):
             if incomplete_data_warning:
                 st.markdown(f"**Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
         
-            # Compute SHAP values for the user input
-            shap_values = explainer(user_input)
+            # Optionally, display additional visualizations or information here
         
-            # SHAP values for multiclass classification are a list with one array per class
-            # We'll extract SHAP values for the predicted class
-            shap_values_pred = shap_values.values[prediction]
-        
-            # Create a DataFrame for SHAP values
-            shap_df = pd.DataFrame({
-                'Feature': feature_names,
-                'SHAP Value': shap_values_pred[0]  # Adjust indexing based on SHAP's output structure
-            })
-    
-            # Sort features by absolute SHAP value
-            shap_df['Abs SHAP'] = shap_df['SHAP Value'].abs()
-            shap_df = shap_df.sort_values(by='Abs SHAP', ascending=True)
-    
-            # Create a horizontal bar chart for SHAP values
-            fig_shap = go.Figure()
-    
-            fig_shap.add_trace(go.Bar(
-                x=shap_df['SHAP Value'],
-                y=shap_df['Feature'],
-                orientation='h',
-                marker_color='rgba(58, 71, 80, 0.6)',
-                hoverinfo='x+y',
-            ))
-    
-            fig_shap.update_layout(
-                title='Feature Importance for Prediction',
-                xaxis_title='SHAP Value',
-                yaxis_title='Feature',
-                height=400,
-                margin=dict(l=150, r=50, t=50, b=50),
-                plot_bgcolor='white',
-                showlegend=False
-            )
-    
-            # Display the SHAP bar plot in Streamlit
-            st.plotly_chart(fig_shap, use_container_width=True)
-    
             # Save user input and prediction to history
             st.session_state.history.append({
                 "Age": age,
@@ -503,19 +507,23 @@ if st.button("Predict Stress Level"):
 # -------------------------------
 st.subheader("Prediction History")
 
-# Button to toggle showing prediction history
+# Button to toggle showing prediction history with unique key
 if st.button("Show Prediction History", key="show_history_btn"):
     st.session_state.show_history = not st.session_state.show_history  # Toggle history visibility
 
 # Display prediction history if the button was clicked and history exists
-if st.session_state.show_history and st.session_state.history:
-    df_history = pd.DataFrame(st.session_state.history)
-    st.write(df_history)
-    
-    # Create a downloadable CSV file
-    def create_download_link(df, filename="history.csv"):
-        csv = df.to_csv(index=False)
-        b64 = base64.b64encode(csv.encode()).decode()
-        return f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV file</a>'
+if st.session_state.show_history:
+    if st.session_state.history:
+        df_history = pd.DataFrame(st.session_state.history)
+        st.write(df_history)
+        
+        # Create a downloadable CSV file
+        def create_download_link(df, filename="history.csv"):
+            csv = df.to_csv(index=False)
+            b64 = base64.b64encode(csv.encode()).decode()
+            return f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download CSV file</a>'
 
-    st.markdown(create_download_link(df_history), unsafe_allow_html=True)
+        st.markdown(create_download_link(df_history), unsafe_allow_html=True)
+    else:
+        st.info("No predictions made yet.")
+
