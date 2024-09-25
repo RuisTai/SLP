@@ -568,7 +568,7 @@ if st.button("Predict Stress Level"):
             st.markdown("## **📝 Your Input Interpretation:**")
 
             # # Create three columns
-            # col1, col2 = st.columns(2)
+            col1, col2 = st.columns(2)
 
             with col1:
                 age_color = get_status_color(age_desc)
@@ -628,6 +628,9 @@ if st.button("Predict Stress Level"):
                 # Display warning if incomplete data
             if incomplete_data_warning:
                 st.markdown(f"**⚠️ Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
+                st.markdown(f"** **")
+
+            with col2:
                 st.markdown(f"** **")
                 
             # Expander for additional details with accessible colors
