@@ -349,9 +349,9 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
     else:
         respiration_desc = "<span style='color:red'>(Hyperventilation-Rapid Breath)</span>"
 
-    if body_temperature < 79:
+    if body_temperature < 97.0:
         body_temp_desc = "<span style='color:red'>(Hypothermia-Low)</span>"
-    elif 80 <= body_temperature <= 100:
+    elif 97.0 <= body_temperature <= 99.5:
         body_temp_desc = "(Normal)"
     else:
         body_temp_desc = "<span style='color:red'>(Hyperthermia-High)</span>"
@@ -398,24 +398,87 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
 # -------------------------------
 # 9. Recommendations Function
 # -------------------------------
-def provide_recommendations(bmi, blood_oxygen, heart_rate):
+def provide_recommendations(
+    bmi, blood_oxygen, heart_rate, 
+    snoring_rate, respiration_rate, body_temperature, 
+    limb_movement, eye_movement, sleeping_hours
+):
     recommendations = []
     
+    # BMI Recommendations
     if bmi < 18.5:
         recommendations.append("📉 **Underweight**: Consider consulting a healthcare provider for a nutritional plan to reach a healthier weight.")
-    elif bmi > 29.9:
-        recommendations.append("📈 **Overweight/Obese**: Engage in a balanced diet and regular physical activity to manage your BMI.")
+    elif bmi <= 24.9:
+        recommendations.append("✅ **Normal Weight**: Great job maintaining a healthy BMI!")
+    elif bmi <= 29.9:
+        recommendations.append("⚖️ **Overweight**: Engaging in a balanced diet and regular physical activity can help manage your BMI.")
+    else:
+        recommendations.append("📈 **Obese**: It's advisable to seek guidance from a healthcare professional for a comprehensive weight management plan.")
     
+    # Blood Oxygen Recommendations
     if blood_oxygen < 90:
-        recommendations.append("🩸 **Low Blood Oxygen**: Low blood oxygen levels detected. Please consult a healthcare professional.")
+        recommendations.append("🩸 **Low Blood Oxygen**: Low blood oxygen levels detected. Please consult a healthcare professional immediately.")
+    elif blood_oxygen <= 94:
+        recommendations.append("🟠 **Low Oxygen Level**: Consider deep breathing exercises and ensure you're in a well-ventilated environment.")
+    else:
+        recommendations.append("🟢 **Normal Blood Oxygen**: Your blood oxygen levels are within the normal range.")
     
-    if heart_rate < 40 or heart_rate > 75:
-        recommendations.append("❤️ **Abnormal Heart Rate**: Abnormal heart rate detected. Consider seeking medical advice.")
+    # Heart Rate Recommendations
+    if heart_rate < 40:
+        recommendations.append("❤️ **Bradycardia**: Abnormally low heart rate detected. Consider seeking medical advice.")
+    elif heart_rate <= 75:
+        recommendations.append("🟢 **Normal Heart Rate**: Your heart rate is within the normal range.")
+    else:
+        recommendations.append("❤️ **Tachycardia**: Abnormally high heart rate detected. It might be beneficial to engage in relaxation techniques or consult a healthcare provider.")
     
-    if not recommendations:
-        recommendations.append("✅ **All your health indicators are within normal ranges. Keep maintaining your healthy lifestyle!**")
+    # Snoring Rate Recommendations
+    if snoring_rate > 30:
+        recommendations.append("😴 **Heavy Snoring**: Persistent heavy snoring may indicate sleep apnea. Consider consulting a sleep specialist.")
+    elif snoring_rate > 15:
+        recommendations.append("😴 **Mild Snoring**: Moderate snoring can disrupt your sleep. Maintaining a healthy weight and avoiding alcohol before bedtime might help.")
+    else:
+        recommendations.append("✅ **Normal Snoring**: Your snoring rate is within the normal range.")
+    
+    # Respiration Rate Recommendations
+    if respiration_rate < 12:
+        recommendations.append("🌬️ **Slow Respiration**: A lower respiration rate may indicate hypoventilation. Consider breathing exercises.")
+    elif respiration_rate > 20:
+        recommendations.append("🌬️ **Rapid Respiration**: A higher respiration rate may indicate hyperventilation. Practice relaxation techniques.")
+    else:
+        recommendations.append("🟢 **Normal Respiration Rate**: Your respiration rate is within the normal range.")
+    
+    # Body Temperature Recommendations
+    if body_temperature < 97.0:
+        recommendations.append("🌡️ **Low Body Temperature**: Consider dressing warmly and consulting a healthcare provider if you feel unwell.")
+    elif body_temperature > 99.5:
+        recommendations.append("🌡️ **High Body Temperature**: Stay hydrated and consider seeking medical attention if the temperature persists.")
+    else:
+        recommendations.append("🟢 **Normal Body Temperature**: Your body temperature is within the normal range.")
+    
+    # Limb Movement Recommendations
+    if limb_movement > 25:
+        recommendations.append("🦵 **Severe Limb Movement**: Excessive limb movement during sleep may affect sleep quality. Consider relaxation techniques before bedtime.")
+    elif limb_movement > 5:
+        recommendations.append("🦵 **Moderate Limb Movement**: Some limb movement is normal, but excessive movement can disrupt sleep.")
+    else:
+        recommendations.append("✅ **Normal Limb Movement**: Your limb movement during sleep is within the normal range.")
+    
+    # Eye Movement Recommendations
+    if eye_movement > 25:
+        recommendations.append("👁️ **High REM Activity**: Elevated eye movement during sleep can be associated with stress. Consider stress-reduction techniques.")
+    else:
+        recommendations.append("🟢 **Normal Eye Movement**: Your eye movement during sleep is within the normal range.")
+    
+    # Sleeping Hours Recommendations
+    if sleeping_hours < 6:
+        recommendations.append("🛌 **Sleep Deprivation**: Aim for 7-9 hours of sleep for optimal health. Consider establishing a regular sleep schedule.")
+    elif sleeping_hours > 9:
+        recommendations.append("🛌 **Excessive Sleep**: Consistently sleeping more than 9 hours may affect your daily routine. Aim for 7-9 hours of sleep.")
+    else:
+        recommendations.append("🟢 **Normal Sleeping Hours**: Your sleep duration is within the recommended range.")
     
     return recommendations
+
 
 # -------------------------------
 # 10. Predict Button Functionality
@@ -429,6 +492,7 @@ if st.button("Predict Stress Level"):
     except ValueError:
         st.error("**Error:** Please ensure that Snoring Rate, Limb Movement, and Eye Movement are numeric values.")
     else:
+        # Validate input ranges
         if not (18 <= age <= 80):
             st.error("**Error:** Please insert the Age within the range (18-80).")
         elif not (18.0 <= bmi <= 40.0):
@@ -519,7 +583,11 @@ if st.button("Predict Stress Level"):
                 st.markdown(f"**⚠️ Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
 
             # Provide recommendations based on inputs
-            recommendations = provide_recommendations(bmi, blood_oxygen, heart_rate)
+            recommendations = provide_recommendations(
+                bmi, blood_oxygen, heart_rate, 
+                snoring_rate_val, respiration_rate, body_temperature, 
+                limb_movement_val, eye_movement_val, sleeping_hours
+            )
 
             st.markdown("## **💡 Recommendations:**")
             for rec in recommendations:
@@ -541,28 +609,3 @@ if st.button("Predict Stress Level"):
                 "Heart Rate": heart_rate,
                 "Stress Level": stress_level
             })
-
-# -------------------------------
-# 11. Prediction History Section
-# -------------------------------
-st.markdown("## 🕒 **Prediction History**")
-
-# Button to toggle showing prediction history with unique key
-if st.button("Show Prediction History", key="show_history_btn"):
-    st.session_state.show_history = not st.session_state.show_history  # Toggle history visibility
-
-# Display prediction history if the button was clicked and history exists
-if st.session_state.show_history:
-    if st.session_state.history:
-        df_history = pd.DataFrame(st.session_state.history)
-        st.write(df_history)
-        
-        # Create a downloadable CSV file
-        def create_download_link(df, filename="history.csv"):
-            csv = df.to_csv(index=False)
-            b64 = base64.b64encode(csv.encode()).decode()
-            return f'<a href="data:file/csv;base64,{b64}" download="{filename}">📥 Download CSV file</a>'
-
-        st.markdown(create_download_link(df_history), unsafe_allow_html=True)
-    else:
-        st.info("No predictions made yet.")
