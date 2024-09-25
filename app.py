@@ -567,8 +567,8 @@ if st.button("Predict Stress Level"):
             # Display interpretations with structured layout and accessible colors
             st.markdown("## **📝 Your Input Interpretation:**")
 
-            # Create three columns
-            col1 = st.columns(1)
+            # # Create three columns
+            # col1, col2 = st.columns(2)
 
             with col1:
                 age_color = get_status_color(age_desc)
