@@ -6,25 +6,28 @@ import plotly.graph_objects as go
 from io import BytesIO
 import base64 
 
-def set_vibrant_background():
+def set_dark_mode_background():
     st.markdown(
         """
         <style>
         .stApp {
-            background-color: #E0F2F1; /* Mint Green */
-            color: #004D40; /* Dark Teal for text */
+            background-color: #2C2C2C; /* Dark Charcoal */
+            color: #E0E0E0; /* Light Gray for text */
+        }
+        /* Card/Section Styling */
+        .stCard {
+            background-color: #424242; /* Dark Slate */
         }
         /* Button Styling */
         .stButton>button {
-            background-color: #FF7043; /* Coral */
+            background-color: #2979FF; /* Electric Blue */
             color: white;
         }
         </style>
         """,
         unsafe_allow_html=True
     )
-
-set_vibrant_background()
+set_dark_mode_background()
 
 # Load the trained Gradient Boosting model
 model = joblib.load('gradient_boosting_model.pkl')
