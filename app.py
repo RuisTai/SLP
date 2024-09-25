@@ -6,27 +6,21 @@ import plotly.graph_objects as go
 from io import BytesIO
 import base64 
 
-def add_bg_from_local(image_file):
-    try:
-        with open(image_file, "rb") as image_file:
-            encoded = base64.b64encode(image_file.read()).decode()
-        st.markdown(
-            f"""
-            <style>
-            .stApp {{
-                background-image: url("data:image/jpg;base64,{encoded}");
-                background-size: cover;
-                background-position: center;
-            }}
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-    except FileNotFoundError:
-        st.error("The specified file was not found. Please check the file path.")
 
-# Correct way to specify the path in Windows using a raw string
-add_bg_from_local(r'C:\Users\ruist\Downloads\background.png.jpg')
+def add_bg_from_url():
+    st.markdown(
+        f"""
+        <style>
+        .stApp {{
+            background-image: url("https://raw.githubusercontent.com/your_username/your_repository/branch/path_to_your_image");
+            background-size: cover;
+            background-position: center;
+        }}
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+add_bg_from_url()
 
 
 # Load the trained Gradient Boosting model
@@ -119,7 +113,7 @@ fig.update_layout(
     yaxis=dict(showticklabels=False, showgrid=False),
     plot_bgcolor="white",
     margin=dict(l=20, r=20, t=20, b=20),
-    height=200,
+    height=250,
     width=800
 )
 
