@@ -104,7 +104,6 @@ for i in range(5):
         name=stress_descriptions[i],
         marker_color=colors[i],
         width=0.6,
-        height=0.8,
         showlegend=False
     ))
 
@@ -120,7 +119,7 @@ fig.update_layout(
     yaxis=dict(showticklabels=False, showgrid=False),
     plot_bgcolor="white",
     margin=dict(l=20, r=20, t=20, b=20),
-    height=300,
+    height=500,
     width=500
 )
 
