@@ -3,6 +3,7 @@ import joblib
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
+import shap
 from io import BytesIO
 import base64 
 
@@ -100,6 +101,21 @@ set_professional_background()
 # Load the trained Gradient Boosting model
 model = joblib.load('gradient_boosting_model.pkl')
 
+# Initialize SHAP explainer and cache it
+@st.cache(allow_output_mutation=True)
+def get_shap_explainer(model):
+    return shap.TreeExplainer(model)
+
+explainer = get_shap_explainer(model)
+
+# Assuming you have access to the training data features for SHAP
+# Replace 'X_train' with your actual training feature DataFrame
+# For demonstration, let's assume you have stored feature names
+# If not, you can define them manually
+feature_names = ['Age', 'Marital Status', 'Gender', 'BMI', 'Snoring Rate',
+                'Respiration Rate', 'Body Temperature', 'Limb Movement',
+                'Blood Oxygen', 'Eye Movement', 'Sleeping Hours', 'Heart Rate']
+
 # Initialize history
 if 'history' not in st.session_state:
     st.session_state.history = []
@@ -146,7 +162,6 @@ with st.sidebar:
         ]).reshape(1, -1)
     
         return input_data, age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate
-
 
     user_input, age, bmi, marital_status, gender, snoring_rate, respiration_rate, body_temperature, limb_movement, blood_oxygen, eye_movement, sleeping_hours, heart_rate = get_user_input()
 
@@ -284,7 +299,6 @@ def decode_user_input(age, bmi, marital_status, gender, snoring_rate, respiratio
 
     return age_desc, bmi_desc, marital_desc, gender_desc, snoring_desc, respiration_desc, body_temp_desc, limb_desc, oxygen_desc, eye_desc, sleep_desc, heart_desc
 
-
 # Predict button
 if st.button("Predict Stress Level"):
     # Validate if all inputs are within the specified ranges
@@ -371,6 +385,43 @@ if st.button("Predict Stress Level"):
             if incomplete_data_warning:
                 st.markdown(f"**Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
         
+            # Compute SHAP values for the user input
+            shap_values = explainer.shap_values(user_input)
+        
+            # SHAP Bar Plot for feature importance
+            shap_df = pd.DataFrame({
+                'Feature': feature_names,
+                'SHAP Value': shap_values[prediction][0]
+            })
+
+            # Sort features by absolute SHAP value
+            shap_df['Abs SHAP'] = shap_df['SHAP Value'].abs()
+            shap_df = shap_df.sort_values(by='Abs SHAP', ascending=True)
+
+            # Create a horizontal bar chart for SHAP values
+            fig_shap = go.Figure()
+
+            fig_shap.add_trace(go.Bar(
+                x=shap_df['SHAP Value'],
+                y=shap_df['Feature'],
+                orientation='h',
+                marker_color='rgba(58, 71, 80, 0.6)',
+                hoverinfo='x+y',
+            ))
+
+            fig_shap.update_layout(
+                title='Feature Importance for Prediction',
+                xaxis_title='SHAP Value',
+                yaxis_title='Feature',
+                height=400,
+                margin=dict(l=150, r=50, t=50, b=50),
+                plot_bgcolor='white',
+                showlegend=False
+            )
+
+            # Display the SHAP bar plot in Streamlit
+            st.plotly_chart(fig_shap, use_container_width=True)
+
             # Save user input and prediction to history
             st.session_state.history.append({
                 "Age": age,
