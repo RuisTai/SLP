@@ -6,39 +6,24 @@ import plotly.graph_objects as go
 from io import BytesIO
 import base64 
 
-def set_calm_background():
+def set_professional_background():
     st.markdown(
         """
         <style>
         .stApp {
-            background-color: #E0F7FA; /* Soft Blue */
-            color: #263238; /* Dark Slate for text */
+            background-color: #FAFAFA; /* Light Beige */
+            color: #212121; /* Dark Gray for text */
         }
         /* Button Styling */
         .stButton>button {
-            background-color: #009688; /* Teal */
+            background-color: #1A237E; /* Navy Blue */
             color: white;
-            border-radius: 5px;
-            padding: 10px 20px;
-        }
-        /* Input Styling */
-        .stTextInput>div>div>input {
-            background-color: #FFFFFF;
-            color: #263238;
-            border: 1px solid #B0BEC5;
-            border-radius: 4px;
-            padding: 8px;
-        }
-        /* Sidebar Styling */
-        .sidebar .sidebar-content {
-            background-color: #B2EBF2; /* Light Teal */
         }
         </style>
         """,
         unsafe_allow_html=True
     )
-
-set_calm_background()
+set_professional_background()
 
 # Load the trained Gradient Boosting model
 model = joblib.load('gradient_boosting_model.pkl')
