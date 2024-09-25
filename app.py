@@ -630,9 +630,6 @@ if st.button("Predict Stress Level"):
             if incomplete_data_warning:
                 st.markdown(f"**⚠️ Warning:** {incomplete_data_warning}", unsafe_allow_html=True)
                 st.markdown(f"** **")
-
-            with col2:
-                # st.markdown(f"****")
                 
             # Expander for additional details with accessible colors
             with st.expander("📊 View Recommendations"):
