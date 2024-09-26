@@ -572,54 +572,54 @@ if st.button("Predict Stress Level"):
             with st.container():
                 age_color = get_status_color(age_desc)
                 st.markdown(
-                    f"**🧑 Age:** {age} <span style='color:{age_color}'>{age_desc}</span>",
+                    f"**Age:** {age} <span style='color:{age_color}'>{age_desc}</span>",
                     unsafe_allow_html=True
                 )
                 bmi_color = get_status_color(bmi_desc)
                 st.markdown(
-                    f"**⚖️ BMI:** {bmi} <span style='color:{bmi_color}'>{bmi_desc}</span>",
+                    f"**BMI:** {bmi} <span style='color:{bmi_color}'>{bmi_desc}</span>",
                     unsafe_allow_html=True
                 )
                 st.markdown(f"**💍 Marital Status:** {marital_desc}")
                 st.markdown(f"**♂️ Gender:** {gender_desc}")
                 snoring_color = get_status_color(snoring_desc)
                 st.markdown(
-                    f"**😴 Snoring Rate:** {snoring_rate_val} <span style='color:{snoring_color}'>{snoring_desc}</span>",
+                    f"**Snoring Rate:** {snoring_rate_val} <span style='color:{snoring_color}'>{snoring_desc}</span>",
                     unsafe_allow_html=True
                 )
                 respiration_color = get_status_color(respiration_desc)
                 st.markdown(
-                    f"**🌬️ Respiration Rate:** {respiration_rate} <span style='color:{respiration_color}'>{respiration_desc}</span>",
+                    f"**Respiration Rate:** {respiration_rate} <span style='color:{respiration_color}'>{respiration_desc}</span>",
                     unsafe_allow_html=True
                 )
                 body_temp_color = get_status_color(body_temp_desc)
                 st.markdown(
-                    f"**🌡️ Body Temperature:** {body_temperature} °F <span style='color:{body_temp_color}'>{body_temp_desc}</span>",
+                    f"**Body Temperature:** {body_temperature} °F <span style='color:{body_temp_color}'>{body_temp_desc}</span>",
                     unsafe_allow_html=True
                 )
                 limb_color = get_status_color(limb_desc)
                 st.markdown(
-                    f"**🦵 Limb Movement:** {limb_movement_val} <span style='color:{limb_color}'>{limb_desc}</span>",
+                    f"**Limb Movement:** {limb_movement_val} <span style='color:{limb_color}'>{limb_desc}</span>",
                     unsafe_allow_html=True
                 )
                 oxygen_color = get_status_color(oxygen_desc)
                 st.markdown(
-                    f"**🩸 Blood Oxygen:** {blood_oxygen} <span style='color:{oxygen_color}'>{oxygen_desc}</span>",
+                    f"**Blood Oxygen:** {blood_oxygen} <span style='color:{oxygen_color}'>{oxygen_desc}</span>",
                     unsafe_allow_html=True
                 )
                 eye_color = get_status_color(eye_desc)
                 st.markdown(
-                    f"**👁️ Eye Movement:** {eye_movement_val} <span style='color:{eye_color}'>{eye_desc}</span>",
+                    f"**Eye Movement:** {eye_movement_val} <span style='color:{eye_color}'>{eye_desc}</span>",
                     unsafe_allow_html=True
                 )
                 sleep_color = get_status_color(sleep_desc)
                 st.markdown(
-                    f"**🛌 Sleeping Hours:** {sleeping_hours} <span style='color:{sleep_color}'>{sleep_desc}</span>",
+                    f"**Sleeping Hours:** {sleeping_hours} <span style='color:{sleep_color}'>{sleep_desc}</span>",
                     unsafe_allow_html=True
                 )
                 heart_color = get_status_color(heart_desc)
                 st.markdown(
-                    f"**❤️ Heart Rate:** {heart_rate} <span style='color:{heart_color}'>{heart_desc}</span>",
+                    f"**Heart Rate:** {heart_rate} <span style='color:{heart_color}'>{heart_desc}</span>",
                     unsafe_allow_html=True
                 )
                 st.markdown(f"** **")
