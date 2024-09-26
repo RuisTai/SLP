@@ -495,19 +495,19 @@ if st.button("Predict Stress Level"):
         elif not (18.0 <= bmi <= 40.0):
             st.error("**Error:** Please insert the BMI within the range (18.0-40.0).")
         elif not (0 <= snoring_rate_val <= 50):
-            st.error("**Error:** Please insert the Snoring Rate within the range (0-50).")
+            st.error("**Error:** Please insert the Snoring Rate within the range (1-50).")
         elif not (0 <= respiration_rate <= 50):
-            st.error("**Error:** Please insert the Respiration Rate within the range (0-50).")
+            st.error("**Error:** Please insert the Respiration Rate within the range (1-50).")
         elif not (60.0 <= body_temperature <= 110.0):
             st.error("**Error:** Please insert the Body Temperature within the range (60.0-110.0 °F).")
         elif not (0 <= limb_movement_val <= 35):
-            st.error("**Error:** Please insert the Limb Movement within the range (0-35).")
+            st.error("**Error:** Please insert the Limb Movement within the range (1-35).")
         elif not (60 <= blood_oxygen <= 110):
             st.error("**Error:** Please insert the Blood Oxygen within the range (60-110).")
         elif not (0 <= eye_movement_val <= 35):
-            st.error("**Error:** Please insert the Eye Movement within the range (0-35).")
+            st.error("**Error:** Please insert the Eye Movement within the range (1-35).")
         elif not (0 <= sleeping_hours <= 24):
-            st.error("**Error:** Please insert the Sleeping Hours within the range (0-24).")
+            st.error("**Error:** Please insert the Sleeping Hours within the range (1-24).")
         elif not (30 <= heart_rate <= 100):
             st.error("**Error:** Please insert the Heart Rate within the range (30-100).")
         else:
