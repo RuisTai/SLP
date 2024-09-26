@@ -174,12 +174,12 @@ with st.sidebar:
             help="Enter your Body Mass Index (BMI) value."
         )
         snoring_rate = st.text_input(
-            "Snoring Rate (0-50)",
+            "Snoring Rate (1-50)",
             value="",
             help="Enter your snoring rate. If unsure, leave blank or enter 0."
         )
         respiration_rate = st.number_input(
-            "Respiration Rate (0-50)",
+            "Respiration Rate (1-50)",
             min_value=0.0,
             max_value=50.0,
             value=15.0,
@@ -195,7 +195,7 @@ with st.sidebar:
             help="Enter your body temperature in Fahrenheit."
         )
         limb_movement = st.text_input(
-            "Limb Movement (0-35)",
+            "Limb Movement (1-35)",
             value="",
             help="Enter your limb movement rate. If unsure, leave blank or enter 0."
         )
@@ -208,12 +208,12 @@ with st.sidebar:
             help="Enter your blood oxygen level."
         )
         eye_movement = st.text_input(
-            "Eye Movement (0-35)",
+            "Eye Movement (1-35)",
             value="",
             help="Enter your eye movement rate. If unsure, leave blank or enter 0."
         )
         sleeping_hours = st.number_input(
-            "Sleeping Hours (0-24)",
+            "Sleeping Hours (1-24)",
             min_value=0.0,
             max_value=24.0,
             value=8.0,
