@@ -580,8 +580,8 @@ if st.button("Predict Stress Level"):
                     f"**BMI:** {bmi} <span style='color:{bmi_color}'>{bmi_desc}</span>",
                     unsafe_allow_html=True
                 )
-                st.markdown(f"**💍 Marital Status:** {marital_desc}")
-                st.markdown(f"**♂️ Gender:** {gender_desc}")
+                st.markdown(f"**Marital Status:** {marital_desc}")
+                st.markdown(f"**Gender:** {gender_desc}")
                 snoring_color = get_status_color(snoring_desc)
                 st.markdown(
                     f"**Snoring Rate:** {snoring_rate_val} <span style='color:{snoring_color}'>{snoring_desc}</span>",
