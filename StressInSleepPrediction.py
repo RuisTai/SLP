@@ -16,7 +16,7 @@ def set_professional_background():
         <style>
         /* Main App Background and Text Color */
         .stApp {
-            background-color: #ECECEC; /* Light Beige */
+            background-color: #d6dace; /* Light Beige */
             color: #212121; /* Dark Gray for text */
         }
         
