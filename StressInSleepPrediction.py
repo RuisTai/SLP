@@ -16,13 +16,13 @@ def set_professional_background():
         <style>
         /* Main App Background and Text Color */
         .stApp {
-            background-color: #FAFAFA; /* Light Beige */
+            background-color: #ECECEC; /* Light Beige */
             color: #212121; /* Dark Gray for text */
         }
         
         /* Sidebar Styling */
         .sidebar .sidebar-content {
-            background-color: #FFFFFF; /* White Background for Sidebar */
+            background-color: #FAFAFA; /* White Background for Sidebar */
             padding: 20px; /* Increased padding for better spacing */
             border-radius: 10px; /* Rounded corners for a modern look */
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
@@ -97,8 +97,6 @@ def set_professional_background():
         """,
         unsafe_allow_html=True
     )
-
-# Apply the professional background and sidebar styling
 set_professional_background()
 
 # -------------------------------
