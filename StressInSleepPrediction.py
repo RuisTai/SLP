@@ -16,7 +16,7 @@ def set_professional_background():
         <style>
         /* Main App Background and Text Color */
         .stApp {
-            background-color: #d6dace; /* Light Beige */
+            background-color: #edf0e5; /* Light Beige */
             color: #212121; /* Dark Gray for text */
         }
         
@@ -34,7 +34,7 @@ def set_professional_background():
             font-size: 20px;
             font-weight: bold;
             margin-bottom: 15px;
-            color: #1A237E; /* Navy Blue */
+            color: #f0f0f0; /* Navy Blue */
         }
         
         /* Sidebar Text Styling */
