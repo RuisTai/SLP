@@ -661,6 +661,7 @@ if st.button("Predict Stress Level"):
 # -------------------------------
 # 11. Prediction History Section
 # -------------------------------
+st.markdown(f"** **")
 st.markdown("## 🕒 **Prediction History**")
 
 # Button to toggle showing prediction history with unique key
