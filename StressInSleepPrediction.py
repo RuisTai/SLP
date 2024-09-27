@@ -260,7 +260,7 @@ with st.sidebar:
 # 6. Define Stress Levels and Colors
 # -------------------------------
 stress_descriptions = {
-    0: "No Stress",
+    0: "Normal",
     1: "Low Stress",
     2: "Moderate Stress",
     3: "High Stress",
@@ -289,7 +289,7 @@ fig.update_layout(
     barmode='stack',
     xaxis=dict(
         tickvals=[0, 1, 2, 3, 4],
-        ticktext=["No Stress", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
+        ticktext=["Normal", "Low Stress", "Moderate Stress", "High Stress", "Max Stress"],
         showgrid=False,
         zeroline=False
     ),
@@ -549,8 +549,8 @@ if st.button("Predict Stress Level"):
             )
 
             def get_status_color(description):
-                critical_keywords = ["Underweight", "Hypoventilation", "Bradycardia", "Hypothermia", "Sleep Deprivation"]
-                warning_keywords = ["Overweight", "Low Oxygen Level", "Severe Hypoxia", "Hyperventilation", "Hypersomnia"]
+                critical_keywords = ["Underweight", "Hypoventilation", "Bradycardia", "Hypothermia", "Sleep Deprivation", "Extreme Obese", "Severe Snoring", "Severe hypoxia","Tachycardia-Too Rapid"]
+                warning_keywords = ["Obese","Heavy Snoring","Overweight", "Low Oxygen Level", "Severe Hypoxia", "Hyperventilation", "Hypersomnia", "Moderate Snoring", "Hyperthermia", "Cyanosis-Low", "High REM", "Tachycardia", "Severe", "Bradycardia-Too Slow")]
                 normal_keywords = ["Normal"]
 
                 if any(keyword in description for keyword in critical_keywords):
