@@ -16,7 +16,7 @@ def set_professional_background():
         <style>
         /* Main App Background and Text Color */
         .stApp {
-            background-color: #faeded; /* Light Beige */
+            background-color: #faf0f0; /* Light pink */
             color: #212121; /* Dark Gray for text */
         }
         
