@@ -550,7 +550,7 @@ if st.button("Predict Stress Level"):
 
             def get_status_color(description):
                 critical_keywords = ["Underweight", "Hypoventilation", "Bradycardia", "Hypothermia", "Sleep Deprivation", "Extreme Obese", "Severe Snoring", "Severe hypoxia","Tachycardia-Too Rapid"]
-                warning_keywords = ["Obese","Heavy Snoring","Overweight", "Low Oxygen Level", "Severe Hypoxia", "Hyperventilation", "Hypersomnia", "Moderate Snoring", "Hyperthermia", "Cyanosis-Low", "High REM", "Tachycardia", "Severe", "Bradycardia-Too Slow")]
+                warning_keywords = ["Obese","Heavy Snoring","Overweight", "Low Oxygen Level", "Severe Hypoxia", "Hyperventilation", "Hypersomnia", "Moderate Snoring", "Hyperthermia", "Cyanosis-Low", "High REM", "Tachycardia", "Severe", "Bradycardia-Too Slow"]
                 normal_keywords = ["Normal"]
 
                 if any(keyword in description for keyword in critical_keywords):
