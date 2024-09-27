@@ -171,7 +171,7 @@ with st.sidebar:
             max_value=40.0,
             value=25.0,
             step=0.1,
-            help="Enter your Body Mass Index (BMI) value."
+            help="Enter your Body Mass Index (BMI) value. BMI = weight/(height in m)^2"
         )
         snoring_rate = st.text_input(
             "Snoring Rate (1-50)",
